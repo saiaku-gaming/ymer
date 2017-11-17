@@ -35,6 +35,41 @@ public class PersonController {
 		Optional<Session> optSession = PersonServiceClient.get().signup(input.getUsername(), input.getPassword());
 
 		return optSession.<ResponseEntity<?>>map(s -> JS.message(HttpStatus.OK, s))
-				.orElse(JS.message(HttpStatus.NOT_FOUND, "COULD NOT FIND IT :("));
+				.orElse(JS.message(HttpStatus.CONFLICT, "The username is already taken"));
+	}
+
+	@RequestMapping(path = "/login", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> login(@RequestBody UsernamePasswordParameter input) {
+		Optional<Session> optSession = PersonServiceClient.get().login(input.getUsername(), input.getPassword());
+
+		return optSession.<ResponseEntity<?>>map(s -> JS.message(HttpStatus.OK, s))
+				.orElse(JS.message(HttpStatus.NOT_FOUND, "The username and password combination was not accepted"));
+	}
+
+	@RequestMapping(path = "/logout", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> login(@RequestBody UsernameParameter input) {
+		boolean successful = PersonServiceClient.get().logout(input.getUsername());
+
+		return JS.message(HttpStatus.OK, "person logged out");
+	}
+
+	@RequestMapping(path = "/check-login", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> checkLogin(@RequestBody UsernameParameter input) {
+		boolean loggedIn = PersonServiceClient.get().checkLogin(input.getUsername());
+
+		return loggedIn ? JS.message(HttpStatus.OK, "User logged in")
+				: JS.message(HttpStatus.CONFLICT, "User not logged in");
+	}
+
+	@RequestMapping(path = "/username-available", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> usernameAvailable(@RequestBody UsernameParameter input) {
+		boolean available = PersonServiceClient.get().isUsernameAvailable(input.getUsername());
+
+		return available ? JS.message(HttpStatus.OK, "Username available")
+				: JS.message(HttpStatus.CONFLICT, "Username not available");
 	}
 }
