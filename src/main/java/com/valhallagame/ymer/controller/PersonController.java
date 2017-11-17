@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.valhallagame.common.JS;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.personserviceclient.model.Person;
+import com.valhallagame.personserviceclient.model.Session;
 import com.valhallagame.ymer.message.UsernameParameter;
-import com.valhallagame.ymer.util.JS;
+import com.valhallagame.ymer.message.UsernamePasswordParameter;
 
 @Controller
 @RequestMapping(path = "/v1/person")
@@ -24,6 +26,15 @@ public class PersonController {
 	public ResponseEntity<?> getPerson(@RequestBody UsernameParameter username) {
 		Optional<Person> optPerson = PersonServiceClient.get().getPerson(username.getUsername());
 		return optPerson.<ResponseEntity<?>>map(p -> JS.message(HttpStatus.OK, p))
+				.orElse(JS.message(HttpStatus.NOT_FOUND, "COULD NOT FIND IT :("));
+	}
+
+	@RequestMapping(path = "/signup", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> signup(@RequestBody UsernamePasswordParameter input) {
+		Optional<Session> optSession = PersonServiceClient.get().signup(input.getUsername(), input.getPassword());
+
+		return optSession.<ResponseEntity<?>>map(s -> JS.message(HttpStatus.OK, s))
 				.orElse(JS.message(HttpStatus.NOT_FOUND, "COULD NOT FIND IT :("));
 	}
 }
