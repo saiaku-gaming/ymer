@@ -22,7 +22,7 @@ public class PersonController {
 	@RequestMapping(path = "/get-person", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> getPerson(@RequestBody UsernameParameter username) {
-		Optional<Person> optPerson = PersonServiceClient.getPerson(username.getUsername());
+		Optional<Person> optPerson = PersonServiceClient.get().getPerson(username.getUsername());
 		return optPerson.<ResponseEntity<?>>map(p -> JS.message(HttpStatus.OK, p))
 				.orElse(JS.message(HttpStatus.NOT_FOUND, "COULD NOT FIND IT :("));
 	}
