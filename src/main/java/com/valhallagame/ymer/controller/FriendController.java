@@ -17,7 +17,7 @@ public class FriendController {
 
 	@RequestMapping(path = "/send-invite", method = RequestMethod.POST)
 	public ResponseEntity<?> sendInvite(@RequestBody InviteParameter input) {
-		if (FriendServiceClient.get().sendFriendInvite(input.getSender(), input.getReceiver())) {
+		if (FriendServiceClient.get().sendFriendInvite(input.getSender(), input.getReceiver()).isOk()) {
 			return JS.message(HttpStatus.OK, "Friend invite sent!");
 		} else {
 			return JS.message(HttpStatus.NOT_FOUND, "THINGS!");

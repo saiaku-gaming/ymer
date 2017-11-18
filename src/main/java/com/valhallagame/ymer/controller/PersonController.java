@@ -24,7 +24,7 @@ public class PersonController {
 	@RequestMapping(path = "/get-person", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> getPerson(@RequestBody UsernameParameter username) {
-		Optional<Person> optPerson = PersonServiceClient.get().getPerson(username.getUsername());
+		Optional<Person> optPerson = PersonServiceClient.get().getPerson(username.getUsername()).getResponse();
 		return optPerson.<ResponseEntity<?>>map(p -> JS.message(HttpStatus.OK, p))
 				.orElse(JS.message(HttpStatus.NOT_FOUND, "COULD NOT FIND IT :("));
 	}
@@ -32,7 +32,8 @@ public class PersonController {
 	@RequestMapping(path = "/signup", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> signup(@RequestBody UsernamePasswordParameter input) {
-		Optional<Session> optSession = PersonServiceClient.get().signup(input.getUsername(), input.getPassword());
+		Optional<Session> optSession = PersonServiceClient.get().signup(input.getUsername(), input.getPassword())
+				.getResponse();
 
 		return optSession.<ResponseEntity<?>>map(s -> JS.message(HttpStatus.OK, s))
 				.orElse(JS.message(HttpStatus.CONFLICT, "The username is already taken"));
@@ -41,7 +42,8 @@ public class PersonController {
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> login(@RequestBody UsernamePasswordParameter input) {
-		Optional<Session> optSession = PersonServiceClient.get().login(input.getUsername(), input.getPassword());
+		Optional<Session> optSession = PersonServiceClient.get().login(input.getUsername(), input.getPassword())
+				.getResponse();
 
 		return optSession.<ResponseEntity<?>>map(s -> JS.message(HttpStatus.OK, s))
 				.orElse(JS.message(HttpStatus.NOT_FOUND, "The username and password combination was not accepted"));
@@ -50,7 +52,7 @@ public class PersonController {
 	@RequestMapping(path = "/logout", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> login(@RequestBody UsernameParameter input) {
-		boolean successful = PersonServiceClient.get().logout(input.getUsername());
+		boolean successful = PersonServiceClient.get().logout(input.getUsername()).isOk();
 
 		return JS.message(HttpStatus.OK, "person logged out");
 	}
@@ -58,7 +60,7 @@ public class PersonController {
 	@RequestMapping(path = "/check-login", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> checkLogin(@RequestBody UsernameParameter input) {
-		boolean loggedIn = PersonServiceClient.get().checkLogin(input.getUsername());
+		boolean loggedIn = PersonServiceClient.get().checkLogin(input.getUsername()).isOk();
 
 		return loggedIn ? JS.message(HttpStatus.OK, "User logged in")
 				: JS.message(HttpStatus.CONFLICT, "User not logged in");
@@ -67,7 +69,7 @@ public class PersonController {
 	@RequestMapping(path = "/username-available", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> usernameAvailable(@RequestBody UsernameParameter input) {
-		boolean available = PersonServiceClient.get().isUsernameAvailable(input.getUsername());
+		boolean available = PersonServiceClient.get().isUsernameAvailable(input.getUsername()).isOk();
 
 		return available ? JS.message(HttpStatus.OK, "Username available")
 				: JS.message(HttpStatus.CONFLICT, "Username not available");
