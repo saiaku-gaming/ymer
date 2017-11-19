@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.valhallagame.common.JS;
+import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.personserviceclient.model.Person;
 import com.valhallagame.personserviceclient.model.Session;
@@ -52,10 +53,11 @@ public class PersonController {
 	@RequestMapping(path = "/logout", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> login(@RequestBody UsernameParameter input) {
-		boolean successful = PersonServiceClient.get().logout(input.getUsername()).isOk();
-
-		return JS.message(HttpStatus.OK, "person logged out");
+		RestResponse<String> logout = PersonServiceClient.get().logout(input.getUsername());
+		return JS.message(logout);
 	}
+
+
 
 	@RequestMapping(path = "/check-login", method = RequestMethod.POST)
 	@ResponseBody

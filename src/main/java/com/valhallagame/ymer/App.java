@@ -20,7 +20,7 @@ public class App {
 	public FilterRegistrationBean personAuthenticationFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(getPersonAuthenticationFilter());
-		registration.addUrlPatterns("/v1/friend/*", "/v1/party/*");
+		registration.addUrlPatterns("/v1/friend/*", "/v1/party/*", "/v1/character/*");
 		registration.setName("personAuthenticationFilter");
 		registration.setOrder(1);
 		return registration;
