@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InviteParameter {
-	private String sender;
-	private String receiver;
+public class PartyIdParameter {
+	private Integer partyId;
 }
