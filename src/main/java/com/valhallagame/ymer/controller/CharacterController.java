@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.message.CharacterNameParameter;
-import com.valhallagame.characterserviceclient.message.CharacterParameter;
+import com.valhallagame.characterserviceclient.message.Character;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 
@@ -31,10 +31,10 @@ public class CharacterController {
 		return JS.message(CharacterServiceClient.get().getAll(username));
 	}
 
-	@RequestMapping(path = "/save", method = RequestMethod.POST)
-	public ResponseEntity<?> save(@RequestAttribute("username") String username, @RequestBody CharacterParameter input)
+	@RequestMapping(path = "/create", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestAttribute("username") String username, @RequestBody CharacterNameParameter input)
 			throws IOException {
-		return JS.message(CharacterServiceClient.get().save(input));
+		return JS.message(CharacterServiceClient.get().create(username, input.getCharacterName()));
 	}
 
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
