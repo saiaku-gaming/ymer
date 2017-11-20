@@ -1,5 +1,7 @@
 package com.valhallagame.ymer.controller;
 
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,7 @@ public class FriendController {
 
 	@RequestMapping(path = "/send-invite", method = RequestMethod.POST)
 	public ResponseEntity<?> sendInvite(@RequestAttribute("username") String username,
-			@RequestBody UsernameParameter input) {
+			@RequestBody UsernameParameter input) throws IOException {
 		if (FriendServiceClient.get().sendFriendInvite(username, input.getUsername()).isOk()) {
 			return JS.message(HttpStatus.OK, "Friend invite sent!");
 		} else {
@@ -27,8 +29,8 @@ public class FriendController {
 	}
 
 	@RequestMapping(path = "/accept", method = RequestMethod.POST)
-	public ResponseEntity<?> accept(@RequestAttribute("username") String username,
-			@RequestBody UsernameParameter input) {
+	public ResponseEntity<?> accept(@RequestAttribute("username") String username, @RequestBody UsernameParameter input)
+			throws IOException {
 		if (FriendServiceClient.get().acceptInvite(username, input.getUsername()).isOk()) {
 			return JS.message(HttpStatus.OK, "Friend invite accepted!");
 		} else {
@@ -38,7 +40,7 @@ public class FriendController {
 
 	@RequestMapping(path = "/decline", method = RequestMethod.POST)
 	public ResponseEntity<?> decline(@RequestAttribute("username") String username,
-			@RequestBody UsernameParameter input) {
+			@RequestBody UsernameParameter input) throws IOException {
 		if (FriendServiceClient.get().declineInvite(username, input.getUsername()).isOk()) {
 			return JS.message(HttpStatus.OK, "Friend invite declined!");
 		} else {
@@ -48,7 +50,7 @@ public class FriendController {
 
 	@RequestMapping(path = "/remove-friend", method = RequestMethod.POST)
 	public ResponseEntity<?> removeFriend(@RequestAttribute("username") String username,
-			@RequestBody UsernameParameter input) {
+			@RequestBody UsernameParameter input) throws IOException {
 		if (FriendServiceClient.get().removeFriend(username, input.getUsername()).isOk()) {
 			return JS.message(HttpStatus.OK, "Friend removed!");
 		} else {

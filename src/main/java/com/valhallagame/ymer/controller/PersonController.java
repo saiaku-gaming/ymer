@@ -1,5 +1,6 @@
 package com.valhallagame.ymer.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class PersonController {
 
 	@RequestMapping(path = "/get-person", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> getPerson(@RequestBody UsernameParameter username) {
+	public ResponseEntity<?> getPerson(@RequestBody UsernameParameter username) throws IOException {
 		Optional<Person> optPerson = PersonServiceClient.get().getPerson(username.getUsername()).getResponse();
 		return optPerson.<ResponseEntity<?>>map(p -> JS.message(HttpStatus.OK, p))
 				.orElse(JS.message(HttpStatus.NOT_FOUND, "COULD NOT FIND IT :("));
@@ -32,7 +33,7 @@ public class PersonController {
 
 	@RequestMapping(path = "/signup", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> signup(@RequestBody UsernamePasswordParameter input) {
+	public ResponseEntity<?> signup(@RequestBody UsernamePasswordParameter input) throws IOException {
 		Optional<Session> optSession = PersonServiceClient.get().signup(input.getUsername(), input.getPassword())
 				.getResponse();
 
@@ -42,7 +43,7 @@ public class PersonController {
 
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> login(@RequestBody UsernamePasswordParameter input) {
+	public ResponseEntity<?> login(@RequestBody UsernamePasswordParameter input) throws IOException {
 		Optional<Session> optSession = PersonServiceClient.get().login(input.getUsername(), input.getPassword())
 				.getResponse();
 
@@ -52,16 +53,14 @@ public class PersonController {
 
 	@RequestMapping(path = "/logout", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> login(@RequestBody UsernameParameter input) {
+	public ResponseEntity<?> login(@RequestBody UsernameParameter input) throws IOException {
 		RestResponse<String> logout = PersonServiceClient.get().logout(input.getUsername());
 		return JS.message(logout);
 	}
 
-
-
 	@RequestMapping(path = "/check-login", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> checkLogin(@RequestBody UsernameParameter input) {
+	public ResponseEntity<?> checkLogin(@RequestBody UsernameParameter input) throws IOException {
 		boolean loggedIn = PersonServiceClient.get().checkLogin(input.getUsername()).isOk();
 
 		return loggedIn ? JS.message(HttpStatus.OK, "User logged in")
@@ -70,7 +69,7 @@ public class PersonController {
 
 	@RequestMapping(path = "/username-available", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> usernameAvailable(@RequestBody UsernameParameter input) {
+	public ResponseEntity<?> usernameAvailable(@RequestBody UsernameParameter input) throws IOException {
 		boolean available = PersonServiceClient.get().isUsernameAvailable(input.getUsername()).isOk();
 
 		return available ? JS.message(HttpStatus.OK, "Username available")
