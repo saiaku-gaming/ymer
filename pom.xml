@@ -18,6 +18,14 @@
 		<name>Team Sämst HB</name>
 		<url>https://sämst.se</url>
 	</organization>
+	
+	<repositories>
+		<repository>
+			<id>myMavenRepo</id>
+			<url>${myMavenRepoReadUrl}</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
