@@ -26,7 +26,7 @@ public class CharacterController {
 		return JS.message(resp);
 	}
 
-	@RequestMapping(path = "/get-all", method = RequestMethod.POST)
+	@RequestMapping(path = "/get-all", method = RequestMethod.GET)
 	public ResponseEntity<?> getAll(@RequestAttribute("username") String username) throws IOException {
 		return JS.message(CharacterServiceClient.get().getAll(username));
 	}
