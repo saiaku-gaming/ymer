@@ -15,11 +15,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
+import com.valhallagame.characterserviceclient.CharacterServiceClient;
+import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.personserviceclient.model.Session;
 
 @Component
 public class PersonAuthenticationFilter extends GenericFilterBean {
+
+	private static CharacterServiceClient characterServiceClient = CharacterServiceClient.get();
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -53,69 +57,22 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			Optional<Session> userSession = personServiceClient.getSessionFromToken(token).getResponse();
 
 			if (token.contains("debug") && !userSession.isPresent()) {
-				// TODO fix this in person and character service
-				personServiceClient.createDebugPerson();
-				// This is needed because debug tokens have a tendency to be
-				// created with conflicts that aborts stuff.
-				// Person p = personService.createNewDebugPerson();
-				//
-				// // In case of reused name
-				// sessionService.deletePersonsSession(p);
-				//
-				// Char ch = p.getSelectedCharacter();
-				// if (ch == null) {
-				// // make sure that the debug name is available.
-				// characterService.deleteCharacterByName(p.getUsername());
-				//
-				// ObjectNode on = JsonNodeFactory.instance.objectNode();
-				// on.put("characterName", p.getUsername());
-				// ch = new Char(p.getUsername(), p, on);
-				// characterService.save(ch);
-				//
-				// List<EquippedItem> equippedItems = new ArrayList<>();
-				//
-				// EquippedItem leatherArmor = new EquippedItem();
-				// leatherArmor.setCharacter(ch);
-				// leatherArmor.setItemSlot("Chest");
-				// leatherArmor.setArmor("LeatherArmor");
-				// equippedItemService.saveEquippedItem(leatherArmor);
-				// equippedItems.add(leatherArmor);
-				//
-				// EquippedItem sword = new EquippedItem();
-				// sword.setCharacter(ch);
-				// sword.setItemSlot("Main Hand");
-				// sword.setArmament("Sword");
-				// equippedItemService.saveEquippedItem(sword);
-				// equippedItems.add(sword);
-				//
-				// EquippedItem shield = new EquippedItem();
-				// shield.setCharacter(ch);
-				// shield.setItemSlot("Offhand");
-				// shield.setArmament("MediumShield");
-				// equippedItemService.saveEquippedItem(shield);
-				// equippedItems.add(shield);
-				//
-				// p.setSelectedCharacter(ch);
-				// WardrobeItem mailArmor = new WardrobeItem();
-				// mailArmor.setCharacter(ch);
-				// mailArmor.setName("MailArmor");
-				// wardrobeService.saveWardrobeItem(mailArmor);
-				//
-				// WardrobeItem bow = new WardrobeItem();
-				// bow.setCharacter(ch);
-				// bow.setName("Bow");
-				// wardrobeService.saveWardrobeItem(bow);
-				//
-				// WardrobeItem warhammer = new WardrobeItem();
-				// warhammer.setCharacter(ch);
-				// warhammer.setName("Warhammer");
-				// wardrobeService.saveWardrobeItem(warhammer);
-				// }
-				// p.setOnline(true);
-				// p = personService.save(p);
-				//
-				// userSession = new Session(p, token);
-				// sessionService.saveSession(userSession);
+				RestResponse<Session> restPersonResponse = personServiceClient.createDebugPerson(token);
+				if (!restPersonResponse.isOk()) {
+					response.setStatus(restPersonResponse.getStatusCode().value());
+					return;
+				}
+
+				Session debugSession = restPersonResponse.getResponse().get();
+
+				RestResponse<String> restCharacterResponse = characterServiceClient.create(
+						debugSession.getPerson().getUsername(), debugSession.getPerson().getUsername() + "-char");
+				if (!restCharacterResponse.isOk()) {
+					response.setStatus(restCharacterResponse.getStatusCode().value());
+					return;
+				}
+
+				userSession = Optional.of(debugSession);
 			} else {
 
 				if (!userSession.isPresent()) {
