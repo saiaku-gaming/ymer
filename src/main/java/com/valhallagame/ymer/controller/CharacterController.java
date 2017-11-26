@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
-import com.valhallagame.characterserviceclient.message.CharacterNameParameter;
 import com.valhallagame.characterserviceclient.message.Character;
+import com.valhallagame.characterserviceclient.message.CharacterNameParameter;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 
@@ -32,8 +32,8 @@ public class CharacterController {
 	}
 
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
-	public ResponseEntity<?> create(@RequestAttribute("username") String username, @RequestBody CharacterNameParameter input)
-			throws IOException {
+	public ResponseEntity<?> create(@RequestAttribute("username") String username,
+			@RequestBody CharacterNameParameter input) throws IOException {
 		return JS.message(CharacterServiceClient.get().create(username, input.getCharacterName()));
 	}
 
@@ -55,9 +55,8 @@ public class CharacterController {
 		return JS.message(CharacterServiceClient.get().selectCharacter(username, input.getCharacterName()));
 	}
 
-	@RequestMapping(path = "/get-selected-character", method = RequestMethod.POST)
-	public ResponseEntity<?> getSelectedCharacter(@RequestAttribute("username") String username,
-			@RequestBody CharacterNameParameter input) throws IOException {
-		return JS.message(CharacterServiceClient.get().selectCharacter(username, input.getCharacterName()));
+	@RequestMapping(path = "/get-selected-character", method = RequestMethod.GET)
+	public ResponseEntity<?> getSelectedCharacter(@RequestAttribute("username") String username) throws IOException {
+		return JS.message(CharacterServiceClient.get().getSelectedCharacter(username));
 	}
 }
