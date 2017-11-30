@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,10 +52,10 @@ public class PersonController {
 				.orElse(JS.message(HttpStatus.NOT_FOUND, "The username and password combination was not accepted"));
 	}
 
-	@RequestMapping(path = "/logout", method = RequestMethod.POST)
+	@RequestMapping(path = "/logout", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> login(@RequestBody UsernameParameter input) throws IOException {
-		RestResponse<String> logout = PersonServiceClient.get().logout(input.getUsername());
+	public ResponseEntity<?> logout(@RequestAttribute("username") String username) throws IOException {
+		RestResponse<String> logout = PersonServiceClient.get().logout(username);
 		return JS.message(logout);
 	}
 
@@ -74,5 +75,11 @@ public class PersonController {
 
 		return available ? JS.message(HttpStatus.OK, "Username available")
 				: JS.message(HttpStatus.CONFLICT, "Username not available");
+	}
+
+	@RequestMapping(path = "/heartbeat", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<?> heartbeat(@RequestAttribute("username") String username) throws IOException {
+		return JS.message(PersonServiceClient.get().heartbeat(username));
 	}
 }

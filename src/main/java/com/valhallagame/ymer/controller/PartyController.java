@@ -46,4 +46,16 @@ public class PartyController {
 	public ResponseEntity<?> leaveParty(@RequestAttribute("username") String username) throws IOException {
 		return JS.message(PartyServiceClient.get().leaveParty(username));
 	}
+
+	@RequestMapping(path = "/promote-to-leader", method = RequestMethod.GET)
+	public ResponseEntity<?> leaveParty(@RequestAttribute("username") String username,
+			@RequestBody UsernameParameter input) throws IOException {
+		return JS.message(PartyServiceClient.get().promoteToLeader(username, input.getUsername()));
+	}
+
+	@RequestMapping(path = "/kick-from-party", method = RequestMethod.GET)
+	public ResponseEntity<?> kickFromParty(@RequestAttribute("username") String username,
+			@RequestBody UsernameParameter input) throws IOException {
+		return JS.message(PartyServiceClient.get().kickFromParty(username, input.getUsername()));
+	}
 }
