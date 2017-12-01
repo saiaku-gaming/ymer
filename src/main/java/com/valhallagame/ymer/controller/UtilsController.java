@@ -19,6 +19,8 @@ import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.message.Character;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
+import com.valhallagame.friendserviceclient.FriendServiceClient;
+import com.valhallagame.friendserviceclient.model.FriendsData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvites;
 
@@ -56,12 +58,15 @@ public class UtilsController {
 		out.set("achievementData", achievementsObj);
 
 		//FRIENDS
-		ObjectNode friendsObj = mapper.createObjectNode();
-		friendsObj.set("receivedInvites", mapper.createArrayNode());
-		friendsObj.set("sentInvites", mapper.createArrayNode());
-		friendsObj.set("friends", mapper.createArrayNode());
-		out.set("friendsData", friendsObj);
 		
+		FriendServiceClient friendServiceClient = FriendServiceClient.get();
+		
+		RestResponse<FriendsData> friendsDataResp = friendServiceClient.getFriendsData(username);
+		if(friendsDataResp.isOk()) {
+			FriendsData friendsData = friendsDataResp.getResponse().get();
+			out.set("friendsData", mapper.valueToTree(friendsData));
+		}
+				
 		ObjectNode itemHandlerObj = mapper.createObjectNode();
 		itemHandlerObj.set("equippedItems", mapper.createArrayNode());
 		out.set("itemHandlerData", itemHandlerObj);
@@ -78,7 +83,7 @@ public class UtilsController {
 		if(partyAndInvites.isOk()) {
 			PartyAndInvites pai = partyAndInvites.getResponse().get();
 			ObjectNode partyObj = mapper.createObjectNode();
-			partyObj.set("party", mapper.valueToTree(pai.getParty()));
+			partyObj.set("party", mapper.valueToTree(pai.getParty().orElse(null)));
 			partyObj.set("receivedInvites", mapper.valueToTree(pai.getInvites()));
 			out.set("partyData", partyObj);
 		}
