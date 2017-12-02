@@ -27,7 +27,7 @@ import com.valhallagame.partyserviceclient.model.PartyAndInvites;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 
 @Controller
-@RequestMapping(path = "/v1/util")
+@RequestMapping(path = "/v1/utils")
 public class UtilsController {
 
 	private static ObjectMapper mapper = new ObjectMapper();
