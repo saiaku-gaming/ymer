@@ -1,6 +1,7 @@
 package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,12 @@ import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.friendserviceclient.model.FriendsData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvites;
+import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 
 @Controller
 @RequestMapping(path = "/v1/util")
 public class UtilsController {
-	
+
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
@@ -35,67 +37,87 @@ public class UtilsController {
 	public ResponseEntity<?> ping() {
 		return JS.message(HttpStatus.OK, "Pong");
 	}
-	
+
 	@RequestMapping(path = "/user-data", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> userData(@RequestAttribute("username") String username) throws IOException {
-		
+
 		ObjectNode out = mapper.createObjectNode();
-		
-		//CHARACTER
-		
+
+		// CHARACTER
+
 		RestResponse<Character> selectedCharacter = CharacterServiceClient.get().getSelectedCharacter(username);
 		Optional<Character> response = selectedCharacter.getResponse();
-		out.set("selectedCharacterName", new TextNode(response.map(x -> x.getCharacterName()).orElse("")));
-		
-		//USERNAME
+		String characterName = response.map(x -> x.getCharacterName()).orElse("");
+		out.set("selectedCharacterName", new TextNode(characterName));
+
+		// USERNAME
 		out.set("username", new TextNode(username));
-		
-		//ACHIEVEMENTS
+
+		// ACHIEVEMENTS
 		ObjectNode achievementsObj = mapper.createObjectNode();
 		ArrayNode achievementsArr = mapper.createArrayNode();
 		achievementsObj.set("achievements", achievementsArr);
 		out.set("achievementData", achievementsObj);
 
-		//FRIENDS
-		
+		// FRIENDS
+
 		FriendServiceClient friendServiceClient = FriendServiceClient.get();
-		
-		RestResponse<FriendsData> friendsDataResp = friendServiceClient.getFriendsData(username);
-		if(friendsDataResp.isOk()) {
-			FriendsData friendsData = friendsDataResp.getResponse().get();
-			out.set("friendsData", mapper.valueToTree(friendsData));
+		RestResponse<FriendsData> friendsDataResp;
+		try {
+			friendsDataResp = friendServiceClient.getFriendsData(username);
+			if (friendsDataResp.isOk()) {
+				FriendsData friendsData = friendsDataResp.getResponse().get();
+				out.set("friendsData", mapper.valueToTree(friendsData));
+			}
+		} catch (IOException e2) {
+			System.err.println("NO FRIENDS RUNNING");
 		}
-				
+
 		ObjectNode itemHandlerObj = mapper.createObjectNode();
 		itemHandlerObj.set("equippedItems", mapper.createArrayNode());
 		out.set("itemHandlerData", itemHandlerObj);
-		
-		//NOTIFICATIONS
+
+		// NOTIFICATIONS
 		ObjectNode notificationsObj = mapper.createObjectNode();
 		ArrayNode notificationsArr = mapper.createArrayNode();
 		notificationsObj.set("notifications", notificationsArr);
 		out.set("notificationData", notificationsArr);
 
-		
 		PartyServiceClient partyServiceClient = PartyServiceClient.get();
-		RestResponse<PartyAndInvites> partyAndInvites = partyServiceClient.getPartyAndInvites(username);
-		if(partyAndInvites.isOk()) {
-			PartyAndInvites pai = partyAndInvites.getResponse().get();
-			ObjectNode partyObj = mapper.createObjectNode();
-			partyObj.set("party", mapper.valueToTree(pai.getParty().orElse(null)));
-			partyObj.set("receivedInvites", mapper.valueToTree(pai.getInvites()));
-			out.set("partyData", partyObj);
+		RestResponse<PartyAndInvites> partyAndInvites;
+		try {
+			partyAndInvites = partyServiceClient.getPartyAndInvites(username);
+			if (partyAndInvites.isOk()) {
+				PartyAndInvites pai = partyAndInvites.getResponse().get();
+				ObjectNode partyObj = mapper.createObjectNode();
+				partyObj.set("party", mapper.valueToTree(pai.getParty().orElse(null)));
+				partyObj.set("receivedInvites", mapper.valueToTree(pai.getInvites()));
+				out.set("partyData", partyObj);
+			}
+
+		} catch (IOException e1) {
+			System.err.println("NO PARTY RUNNING");
 		}
-		
+
 		out.set("skillData", new TextNode("NOT IMPL"));
-		
-		//WARDROBE
-		ObjectNode wardrobeObj = mapper.createObjectNode();
-		ArrayNode wardrobeArr = mapper.createArrayNode();
-		wardrobeObj.set("wardrobe", wardrobeArr);
-		out.set("wardrobeData", wardrobeObj);
-	
+
+		// WARDROBE
+
+		WardrobeServiceClient wardrobeServiceClient = WardrobeServiceClient.get();
+		RestResponse<List<String>> wardrobeItems;
+		try {
+			wardrobeItems = wardrobeServiceClient.getWardrobeItems(characterName);
+			if (wardrobeItems.isOk()) {
+				ObjectNode wardrobeObj = mapper.createObjectNode();
+				wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItems.getResponse().get()));
+				out.set("wardrobeData", wardrobeObj);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("NO WARDROBE RUNNING");
+		}
+
 		return JS.message(HttpStatus.OK, out);
 	}
 }

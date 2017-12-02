@@ -49,7 +49,7 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			return;
 		}
-		final String token = request.getHeader("session");
+		final String token = request.getHeader("token");
 
 		if (token == null) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());

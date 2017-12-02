@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 import com.valhallagame.ymer.security.PersonAuthenticationFilter;
+import com.valhallagame.ymer.security.ServerAuthenticationFilter;
 
 @SpringBootApplication
 public class App {
@@ -20,8 +21,19 @@ public class App {
 	public FilterRegistrationBean personAuthenticationFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(getPersonAuthenticationFilter());
-		registration.addUrlPatterns("/v1/friend/*", "/v1/party/*", "/v1/character/*", "/v1/person/logout", "/v1/util/user-data");
+		registration.addUrlPatterns("/v1/friend/*", "/v1/party/*", "/v1/character/*", "/v1/person/logout",
+				"/v1/util/user-data", "/v1/wardrobe/*");
 		registration.setName("personAuthenticationFilter");
+		registration.setOrder(1);
+		return registration;
+	}
+	
+	@Bean
+	public FilterRegistrationBean serverAuthenticationFilterRegistration() {
+		FilterRegistrationBean registration = new FilterRegistrationBean();
+		registration.setFilter(getServerAuthenticationFilter());
+		registration.addUrlPatterns("/v1/server-wardrobe/*");
+		registration.setName("serverAuthenticationFilter");
 		registration.setOrder(1);
 		return registration;
 	}
@@ -29,5 +41,10 @@ public class App {
 	@Bean(name = "personAuthenticationFilter")
 	public Filter getPersonAuthenticationFilter() {
 		return new PersonAuthenticationFilter();
+	}
+	
+	@Bean(name = "serverAuthenticationFilter")
+	public Filter getServerAuthenticationFilter() {
+		return new ServerAuthenticationFilter();
 	}
 }
