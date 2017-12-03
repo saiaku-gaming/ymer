@@ -32,7 +32,7 @@ public class App {
 	public FilterRegistrationBean serverAuthenticationFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(getServerAuthenticationFilter());
-		registration.addUrlPatterns("/v1/server-wardrobe/*");
+		registration.addUrlPatterns("/v1/server-wardrobe/*, /v1/server-character/*");
 		registration.setName("serverAuthenticationFilter");
 		registration.setOrder(1);
 		return registration;

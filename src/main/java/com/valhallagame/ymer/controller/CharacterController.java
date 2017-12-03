@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.message.Character;
 import com.valhallagame.characterserviceclient.message.CharacterNameParameter;
+import com.valhallagame.characterserviceclient.message.EqippedItemsParameter;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 
@@ -58,5 +59,10 @@ public class CharacterController {
 	@RequestMapping(path = "/get-selected-character", method = RequestMethod.GET)
 	public ResponseEntity<?> getSelectedCharacter(@RequestAttribute("username") String username) throws IOException {
 		return JS.message(CharacterServiceClient.get().getSelectedCharacter(username));
+	}
+	
+	@RequestMapping(path = "/save-equipped-items", method = RequestMethod.POST)
+	public ResponseEntity<?> saveEquippedItems(@RequestBody EqippedItemsParameter input) throws IOException {
+		return JS.message(CharacterServiceClient.get().saveEquippedItems(input));
 	}
 }
