@@ -27,7 +27,7 @@ public class App {
 		registration.setOrder(1);
 		return registration;
 	}
-	
+
 	@Bean
 	public FilterRegistrationBean serverAuthenticationFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
@@ -42,7 +42,7 @@ public class App {
 	public Filter getPersonAuthenticationFilter() {
 		return new PersonAuthenticationFilter();
 	}
-	
+
 	@Bean(name = "serverAuthenticationFilter")
 	public Filter getServerAuthenticationFilter() {
 		return new ServerAuthenticationFilter();

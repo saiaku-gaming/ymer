@@ -1,6 +1,7 @@
 package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,10 @@ import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvites;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Controller
 @RequestMapping(path = "/v1/utils")
 public class UtilsController {
@@ -47,8 +52,8 @@ public class UtilsController {
 		// CHARACTER
 
 		RestResponse<Character> selectedCharacter = CharacterServiceClient.get().getSelectedCharacter(username);
-		Optional<Character> response = selectedCharacter.getResponse();
-		String characterName = response.map(x -> x.getCharacterName()).orElse("");
+		Optional<Character> optCharacter = selectedCharacter.getResponse();
+		String characterName = optCharacter.map(x -> x.getCharacterName()).orElse("");
 		out.set("selectedCharacterName", new TextNode(characterName));
 
 		// USERNAME
@@ -74,15 +79,21 @@ public class UtilsController {
 			System.err.println("NO FRIENDS RUNNING");
 		}
 
+		Character character = optCharacter.get();
+		List<EquippedItem> equippedItems = new ArrayList<>();
+		equippedItems.add(new EquippedItem("Main Hand", character.getMainhandArmament(), null));
+		equippedItems.add(new EquippedItem("Offhand", character.getOffHandArmament(), null));
+		equippedItems.add(new EquippedItem("Chest", null, character.getChestItem()));
+
 		ObjectNode itemHandlerObj = mapper.createObjectNode();
-		itemHandlerObj.set("equippedItems", mapper.createArrayNode());
+		itemHandlerObj.set("equippedItems", mapper.valueToTree(equippedItems));
 		out.set("itemHandlerData", itemHandlerObj);
 
 		// NOTIFICATIONS
 		ObjectNode notificationsObj = mapper.createObjectNode();
 		ArrayNode notificationsArr = mapper.createArrayNode();
 		notificationsObj.set("notifications", notificationsArr);
-		out.set("notificationData", notificationsArr);
+		out.set("notificationData", notificationsObj);
 
 		PartyServiceClient partyServiceClient = PartyServiceClient.get();
 		RestResponse<PartyAndInvites> partyAndInvites;
@@ -100,7 +111,7 @@ public class UtilsController {
 			System.err.println("NO PARTY RUNNING");
 		}
 
-		out.set("skillData", new TextNode("NOT IMPL"));
+		out.set("skillData", mapper.createObjectNode());
 
 		// WARDROBE
 
@@ -119,5 +130,14 @@ public class UtilsController {
 		}
 
 		return JS.message(HttpStatus.OK, out);
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	private class EquippedItem {
+		private String itemSlot;
+		private String armament;
+		private String armor;
 	}
 }
