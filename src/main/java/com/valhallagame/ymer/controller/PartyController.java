@@ -18,6 +18,11 @@ import com.valhallagame.ymer.message.UsernameParameter;
 @RequestMapping("/v1/party")
 public class PartyController {
 
+	@RequestMapping(path = "/get", method = RequestMethod.GET)
+	public ResponseEntity<?> get(@RequestAttribute("username") String username) throws IOException {
+		return JS.message(PartyServiceClient.get().getPartyAndInvites(username));
+	}
+
 	@RequestMapping(path = "/invite-person", method = RequestMethod.POST)
 	public ResponseEntity<?> sendInvite(@RequestAttribute("username") String username,
 			@RequestBody UsernameParameter input) throws IOException {

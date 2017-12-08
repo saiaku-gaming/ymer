@@ -17,6 +17,11 @@ import com.valhallagame.ymer.message.UsernameParameter;
 @RequestMapping("/v1/friend")
 public class FriendController {
 
+	@RequestMapping(path = "/get", method = RequestMethod.GET)
+	public ResponseEntity<?> get(@RequestAttribute("username") String username) throws IOException {
+		return JS.message(FriendServiceClient.get().getFriendsData(username));
+	}
+
 	@RequestMapping(path = "/send-invite", method = RequestMethod.POST)
 	public ResponseEntity<?> sendInvite(@RequestAttribute("username") String username,
 			@RequestBody UsernameParameter input) throws IOException {

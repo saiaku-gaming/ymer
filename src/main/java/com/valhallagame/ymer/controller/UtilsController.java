@@ -103,7 +103,7 @@ public class UtilsController {
 				PartyAndInvites pai = partyAndInvites.getResponse().get();
 				ObjectNode partyObj = mapper.createObjectNode();
 				partyObj.set("party", mapper.valueToTree(pai.getParty().orElse(null)));
-				partyObj.set("receivedInvites", mapper.valueToTree(pai.getInvites()));
+				partyObj.set("receivedInvites", mapper.valueToTree(pai.getReceivedInvites()));
 				out.set("partyData", partyObj);
 			}
 
