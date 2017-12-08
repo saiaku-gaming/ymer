@@ -35,11 +35,7 @@ public class PersonController {
 	@RequestMapping(path = "/signup", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> signup(@RequestBody UsernamePasswordParameter input) throws IOException {
-		Optional<Session> optSession = PersonServiceClient.get().signup(input.getUsername(), input.getPassword())
-				.getResponse();
-
-		return optSession.<ResponseEntity<?>>map(s -> JS.message(HttpStatus.OK, s))
-				.orElse(JS.message(HttpStatus.CONFLICT, "The username is already taken"));
+		return JS.message(PersonServiceClient.get().signup(input.getUsername(), input.getPassword()));
 	}
 
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
