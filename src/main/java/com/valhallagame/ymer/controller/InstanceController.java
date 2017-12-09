@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.valhallagame.common.JS;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
-import com.valhallagame.ymer.message.VersionParameter;
+import com.valhallagame.ymer.message.StartDungeonParameter;
+import com.valhallagame.ymer.message.StopDungeonParameter;
+import com.valhallagame.ymer.message.GetSelectedInstanceParameter;
 
 @Controller
 @RequestMapping("/v1/instance")
@@ -19,8 +21,18 @@ public class InstanceController {
 	private static InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
 
 	//Return the instance that the user should be in. NOT the instance the user is actually in.
-	@RequestMapping(path = "/get-selected-instance", method = RequestMethod.POST)
-	public ResponseEntity<?> getSelectedInstance(@RequestAttribute("username") String username, VersionParameter input) throws IOException {
-		return JS.message(instanceServiceClient.getSelectedInstance(username, input.getVersion()));
+	@RequestMapping(path = "/get-game-session", method = RequestMethod.POST)
+	public ResponseEntity<?> getSelectedInstance(@RequestAttribute("username") String username, GetSelectedInstanceParameter input) throws IOException {
+		return JS.message(instanceServiceClient.getGameSession(username, input.getVersion()));
+	}
+	
+	@RequestMapping(path = "/start-dungeon", method = RequestMethod.POST)
+	public ResponseEntity<?> startDungeon(@RequestAttribute("username") String username, StartDungeonParameter input) throws IOException {
+		return JS.message(instanceServiceClient.startDungeon(username, input.getMap(), input.getVersion()));
+	}
+	
+	@RequestMapping(path = "/stop-dungeon", method = RequestMethod.POST)
+	public ResponseEntity<?> stopDungeon(@RequestAttribute("username") String username, StopDungeonParameter input) throws IOException {
+		return JS.message(instanceServiceClient.stopDungeon(username, input.getDungeonId()));
 	}
 }
