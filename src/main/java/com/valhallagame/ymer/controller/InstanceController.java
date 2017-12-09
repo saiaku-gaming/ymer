@@ -12,7 +12,7 @@ import com.valhallagame.common.JS;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.ymer.message.StartDungeonParameter;
 import com.valhallagame.ymer.message.StopDungeonParameter;
-import com.valhallagame.ymer.message.GetSelectedInstanceParameter;
+import com.valhallagame.ymer.message.GetPlayerSessionParamater;
 
 @Controller
 @RequestMapping("/v1/instance")
@@ -21,9 +21,9 @@ public class InstanceController {
 	private static InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
 
 	//Return the instance that the user should be in. NOT the instance the user is actually in.
-	@RequestMapping(path = "/get-game-session", method = RequestMethod.POST)
-	public ResponseEntity<?> getSelectedInstance(@RequestAttribute("username") String username, GetSelectedInstanceParameter input) throws IOException {
-		return JS.message(instanceServiceClient.getGameSession(username, input.getVersion()));
+	@RequestMapping(path = "/get-player-session", method = RequestMethod.POST)
+	public ResponseEntity<?> getSelectedInstance(@RequestAttribute("username") String username, GetPlayerSessionParamater input) throws IOException {
+		return JS.message(instanceServiceClient.getPlayerSession(username, input.getVersion()));
 	}
 	
 	@RequestMapping(path = "/start-dungeon", method = RequestMethod.POST)
