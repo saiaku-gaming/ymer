@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetPlayerSessionParamater {
+public class GetPlayerSessionAndConnectionParamater {
 	private String version;
 }
