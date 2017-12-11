@@ -19,8 +19,6 @@ public class InstanceController {
 
 	private static InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
 
-	// Return the instance that the user should be in. NOT the instance the user
-	// is actually in.
 	@RequestMapping(path = "/get-player-session-and-connection", method = RequestMethod.POST)
 	public ResponseEntity<?> getPlayerSessionAndConnection(@RequestAttribute("username") String username,
 			@RequestBody GetPlayerSessionAndConnectionParamater input) throws IOException {
