@@ -81,7 +81,7 @@ public class UtilsController {
 
 		Character character = optCharacter.get();
 		List<EquippedItem> equippedItems = new ArrayList<>();
-		equippedItems.add(new EquippedItem("Main Hand", character.getMainhandArmament(), null));
+		equippedItems.add(new EquippedItem("Mainhand", character.getMainhandArmament(), null));
 		equippedItems.add(new EquippedItem("Offhand", character.getOffHandArmament(), null));
 		equippedItems.add(new EquippedItem("Chest", null, character.getChestItem()));
 
