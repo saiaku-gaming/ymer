@@ -1,6 +1,4 @@
 
-SET PATH=%PATH%;C:\Program Files\PostgreSQL\9.6\bin\
-
 createuser -U postgres valhalla
 
 dropdb --if-exists -U postgres person_service
@@ -8,8 +6,8 @@ dropdb --if-exists -U postgres character_service
 dropdb --if-exists -U postgres party_service
 dropdb --if-exists -U postgres friend_service
 dropdb --if-exists -U postgres wardrobe_service
-dropdb --if-exists -U postgres instace_service
-dropdb --if-exists -U postgres instace_container_service
+dropdb --if-exists -U postgres instance_service
+dropdb --if-exists -U postgres instance_container_service
 
 createdb -U postgres -O valhalla person_service
 createdb -U postgres -O valhalla character_service
