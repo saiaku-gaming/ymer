@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.valhallagame.common.JS;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
-import com.valhallagame.ymer.message.ActivateInstanceParameter;
+import com.valhallagame.instanceserviceclient.message.ActivateInstanceParameter;
+import com.valhallagame.instanceserviceclient.message.DeactivateInstanceParameter;
 
 @Controller
 @RequestMapping("/v1/server-instance")
@@ -23,5 +24,11 @@ public class ServerInstanceController {
 	public ResponseEntity<?> activateInstance(@RequestBody ActivateInstanceParameter input) throws IOException {
 		return JS.message(
 				instanceServiceClient.activateInstance(input.getGameSessionId(), input.getAddress(), input.getPort()));
+	}
+
+	@RequestMapping(path = "deactivate-instance", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> deactivateInstance(@RequestBody DeactivateInstanceParameter input) throws IOException {
+		return JS.message(instanceServiceClient.deactivateInstance(input.getGameSessionId()));
 	}
 }
