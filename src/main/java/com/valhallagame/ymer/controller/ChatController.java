@@ -36,8 +36,8 @@ public class ChatController {
 	@ResponseBody
 	public ResponseEntity<?> whisperPerson(@RequestAttribute("username") String username,
 			@RequestBody WhisperCharacterParameter whisperParameter) throws IOException {
-
-		RestResponse<String> result = chatServiceClient.whisperCharacter(username, whisperParameter);
+		whisperParameter.setSenderUsername(username);
+		RestResponse<String> result = chatServiceClient.whisperCharacter(whisperParameter);
 		return JS.message(result);
 	}
 	
@@ -45,7 +45,8 @@ public class ChatController {
 	@ResponseBody
 	public ResponseEntity<?> whisperPerson(@RequestAttribute("username") String username,
 			@RequestBody WhisperPersonParameter whisperParameter) throws IOException {
-		RestResponse<String> result = chatServiceClient.whisperPerson(username, whisperParameter);
+		whisperParameter.setSenderUsername(username);
+		RestResponse<String> result = chatServiceClient.whisperPerson(whisperParameter);
 		return JS.message(result);
 	}
 
@@ -53,7 +54,8 @@ public class ChatController {
 	@ResponseBody
 	public ResponseEntity<?> instanceChat(@RequestAttribute("username") String username,
 			@RequestBody ChatParameter chatParameter) throws IOException {
-		RestResponse<String> result = chatServiceClient.instanceChat(username, chatParameter);
+		chatParameter.setSenderUsername(username);
+		RestResponse<String> result = chatServiceClient.instanceChat(chatParameter);
 		return JS.message(result);
 	}
 
@@ -61,7 +63,8 @@ public class ChatController {
 	@ResponseBody
 	public ResponseEntity<?> generalChat(@RequestAttribute("username") String username,
 			@RequestBody ChatParameter chatParameter) throws IOException {
-		RestResponse<String> result = chatServiceClient.generalChat(username, chatParameter);
+		chatParameter.setSenderUsername(username);
+		RestResponse<String> result = chatServiceClient.generalChat(chatParameter);
 
 		return JS.message(result);
 	}
@@ -70,7 +73,8 @@ public class ChatController {
 	@ResponseBody
 	public ResponseEntity<?> partyChat(@RequestAttribute("username") String username,
 			@RequestBody ChatParameter chatParameter) throws IOException {
-		RestResponse<String> result = chatServiceClient.partyChat(username, chatParameter);
+		chatParameter.setSenderUsername(username);
+		RestResponse<String> result = chatServiceClient.partyChat(chatParameter);
 		return JS.message(result);
 	}
 }
