@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.valhallagame.common.JS;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
+import com.valhallagame.ymer.message.CharacterParameter;
 import com.valhallagame.ymer.message.PartyIdParameter;
 import com.valhallagame.ymer.message.UsernameParameter;
 
@@ -28,6 +29,13 @@ public class PartyController {
 			@RequestBody UsernameParameter input) throws IOException {
 		return JS.message(PartyServiceClient.get().invitePerson(username, input.getUsername()));
 	}
+	
+	@RequestMapping(path = "/invite-character", method = RequestMethod.POST)
+	public ResponseEntity<?> sendInvite(@RequestAttribute("username") String username,
+			@RequestBody CharacterParameter input) throws IOException {
+		return JS.message(PartyServiceClient.get().inviteCharacter(username, input.getCharacterName()));
+	}
+
 
 	@RequestMapping(path = "/cancel-person-invite", method = RequestMethod.POST)
 	public ResponseEntity<?> cancelPersonInvite(@RequestAttribute("username") String username,
