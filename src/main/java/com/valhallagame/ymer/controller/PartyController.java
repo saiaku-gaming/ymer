@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.valhallagame.common.JS;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
-import com.valhallagame.ymer.message.CharacterParameter;
+import com.valhallagame.ymer.message.CharacterNameParameter;
 import com.valhallagame.ymer.message.PartyIdParameter;
 import com.valhallagame.ymer.message.UsernameParameter;
 
@@ -32,10 +32,15 @@ public class PartyController {
 	
 	@RequestMapping(path = "/invite-character", method = RequestMethod.POST)
 	public ResponseEntity<?> sendInvite(@RequestAttribute("username") String username,
-			@RequestBody CharacterParameter input) throws IOException {
+			@RequestBody CharacterNameParameter input) throws IOException {
 		return JS.message(PartyServiceClient.get().inviteCharacter(username, input.getCharacterName()));
 	}
 
+	@RequestMapping(path = "/cancel-character-invite", method = RequestMethod.POST)
+	public ResponseEntity<?> cancelCharacterInvite(@RequestAttribute("username") String username,
+			@RequestBody CharacterNameParameter input) throws IOException {
+		return JS.message(PartyServiceClient.get().cancelCharacterInvite(username, input.getCharacterName()));
+	}
 
 	@RequestMapping(path = "/cancel-person-invite", method = RequestMethod.POST)
 	public ResponseEntity<?> cancelPersonInvite(@RequestAttribute("username") String username,
@@ -60,15 +65,27 @@ public class PartyController {
 		return JS.message(PartyServiceClient.get().leaveParty(username));
 	}
 
-	@RequestMapping(path = "/promote-to-leader", method = RequestMethod.GET)
-	public ResponseEntity<?> leaveParty(@RequestAttribute("username") String username,
+	@RequestMapping(path = "/promote-person-to-leader", method = RequestMethod.GET)
+	public ResponseEntity<?> promotePersonToLeader(@RequestAttribute("username") String username,
 			@RequestBody UsernameParameter input) throws IOException {
-		return JS.message(PartyServiceClient.get().promoteToLeader(username, input.getUsername()));
+		return JS.message(PartyServiceClient.get().promotePersonToLeader(username, input.getUsername()));
+	}
+	
+	@RequestMapping(path = "/promote-character-to-leader", method = RequestMethod.GET)
+	public ResponseEntity<?> promoteCharacterToLeader(@RequestAttribute("username") String username,
+			@RequestBody CharacterNameParameter input) throws IOException {
+		return JS.message(PartyServiceClient.get().promoteCharacterToLeader(username, input.getCharacterName()));
+	}
+	
+	@RequestMapping(path = "/kick-character-from-party", method = RequestMethod.GET)
+	public ResponseEntity<?> kickCharacterFromParty(@RequestAttribute("username") String username,
+			@RequestBody UsernameParameter input) throws IOException {
+		return JS.message(PartyServiceClient.get().kickPersonFromParty(username, input.getUsername()));
 	}
 
-	@RequestMapping(path = "/kick-from-party", method = RequestMethod.GET)
-	public ResponseEntity<?> kickFromParty(@RequestAttribute("username") String username,
+	@RequestMapping(path = "/kick-person-from-party", method = RequestMethod.GET)
+	public ResponseEntity<?> kickPersonFromParty(@RequestAttribute("username") String username,
 			@RequestBody UsernameParameter input) throws IOException {
-		return JS.message(PartyServiceClient.get().kickFromParty(username, input.getUsername()));
+		return JS.message(PartyServiceClient.get().kickPersonFromParty(username, input.getUsername()));
 	}
 }
