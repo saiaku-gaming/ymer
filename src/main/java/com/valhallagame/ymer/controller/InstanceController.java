@@ -29,6 +29,7 @@ public class InstanceController {
 	@RequestMapping(path = "/start-dungeon", method = RequestMethod.POST)
 	public ResponseEntity<?> startDungeon(@RequestAttribute("username") String username,
 			@RequestBody StartDungeonParameter input) throws IOException {
+
 		return JS.message(instanceServiceClient.startDungeon(username, input.getMap(), input.getVersion()));
 	}
 }
