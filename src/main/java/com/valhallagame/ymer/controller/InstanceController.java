@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.valhallagame.common.JS;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.ymer.message.GetPlayerSessionAndConnectionParamater;
+import com.valhallagame.ymer.message.StartDungeonParameter;
 
 @Controller
 @RequestMapping("/v1/instance")
@@ -23,5 +24,11 @@ public class InstanceController {
 	public ResponseEntity<?> getPlayerSessionAndConnection(@RequestAttribute("username") String username,
 			@RequestBody GetPlayerSessionAndConnectionParamater input) throws IOException {
 		return JS.message(instanceServiceClient.getPlayerSessionAndConnection(username, input.getVersion()));
+	}
+
+	@RequestMapping(path = "/start-dungeon", method = RequestMethod.POST)
+	public ResponseEntity<?> startDungeon(@RequestAttribute("username") String username,
+			@RequestBody StartDungeonParameter input) throws IOException {
+		return JS.message(instanceServiceClient.startDungeon(username, input.getMap(), input.getVersion()));
 	}
 }
