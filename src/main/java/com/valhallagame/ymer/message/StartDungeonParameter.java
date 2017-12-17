@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StartDungeonParameter {
-	String version;
 	String map;
+	String version;
 }
