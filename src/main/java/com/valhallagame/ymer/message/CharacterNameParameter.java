@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharacterParameter {
+public class CharacterNameParameter {
 	private String characterName;
 }
