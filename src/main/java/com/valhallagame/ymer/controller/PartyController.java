@@ -65,25 +65,25 @@ public class PartyController {
 		return JS.message(PartyServiceClient.get().leaveParty(username));
 	}
 
-	@RequestMapping(path = "/promote-person-to-leader", method = RequestMethod.GET)
+	@RequestMapping(path = "/promote-person-to-leader", method = RequestMethod.POST)
 	public ResponseEntity<?> promotePersonToLeader(@RequestAttribute("username") String username,
 			@RequestBody UsernameParameter input) throws IOException {
 		return JS.message(PartyServiceClient.get().promotePersonToLeader(username, input.getUsername()));
 	}
 	
-	@RequestMapping(path = "/promote-character-to-leader", method = RequestMethod.GET)
+	@RequestMapping(path = "/promote-character-to-leader", method = RequestMethod.POST)
 	public ResponseEntity<?> promoteCharacterToLeader(@RequestAttribute("username") String username,
 			@RequestBody CharacterNameParameter input) throws IOException {
 		return JS.message(PartyServiceClient.get().promoteCharacterToLeader(username, input.getCharacterName()));
 	}
 	
-	@RequestMapping(path = "/kick-character-from-party", method = RequestMethod.GET)
+	@RequestMapping(path = "/kick-character-from-party", method = RequestMethod.POST)
 	public ResponseEntity<?> kickCharacterFromParty(@RequestAttribute("username") String username,
 			@RequestBody UsernameParameter input) throws IOException {
 		return JS.message(PartyServiceClient.get().kickPersonFromParty(username, input.getUsername()));
 	}
 
-	@RequestMapping(path = "/kick-person-from-party", method = RequestMethod.GET)
+	@RequestMapping(path = "/kick-person-from-party", method = RequestMethod.POST)
 	public ResponseEntity<?> kickPersonFromParty(@RequestAttribute("username") String username,
 			@RequestBody UsernameParameter input) throws IOException {
 		return JS.message(PartyServiceClient.get().kickPersonFromParty(username, input.getUsername()));
