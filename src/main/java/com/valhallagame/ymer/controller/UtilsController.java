@@ -53,8 +53,8 @@ public class UtilsController {
 
 		RestResponse<Character> selectedCharacter = CharacterServiceClient.get().getSelectedCharacter(username);
 		Optional<Character> optCharacter = selectedCharacter.getResponse();
-		String characterName = optCharacter.map(x -> x.getCharacterName()).orElse("");
-		out.set("selectedCharacterName", new TextNode(characterName));
+		String displayCharacterName = optCharacter.map(x -> x.getDisplayCharacterName()).orElse("");
+		out.set("displayCharacterName", new TextNode(displayCharacterName));
 
 		// USERNAME
 		out.set("username", new TextNode(username));
@@ -118,7 +118,7 @@ public class UtilsController {
 		WardrobeServiceClient wardrobeServiceClient = WardrobeServiceClient.get();
 		RestResponse<List<String>> wardrobeItems;
 		try {
-			wardrobeItems = wardrobeServiceClient.getWardrobeItems(characterName);
+			wardrobeItems = wardrobeServiceClient.getWardrobeItems(displayCharacterName.toLowerCase());
 			if (wardrobeItems.isOk()) {
 				ObjectNode wardrobeObj = mapper.createObjectNode();
 				wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItems.getResponse().get()));
