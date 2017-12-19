@@ -18,6 +18,7 @@ import com.valhallagame.common.RestResponse;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.message.GetHubParameter;
 import com.valhallagame.instanceserviceclient.message.GetRelevantDungeonsParameter;
+import com.valhallagame.ymer.message.GetDungeonConnectionParameter;
 import com.valhallagame.ymer.message.StartDungeonParameter;
 
 @Controller
@@ -37,6 +38,14 @@ public class InstanceController {
 			@RequestBody StartDungeonParameter input) throws IOException {
 
 		return JS.message(instanceServiceClient.startDungeon(username, input.getMap(), input.getVersion()));
+	}
+	
+	
+	@RequestMapping(path = "/get-dungeon-connection", method = RequestMethod.POST)
+	public ResponseEntity<?> getDungeonConnection(@RequestAttribute("username") String username,
+			@RequestBody GetDungeonConnectionParameter input) throws IOException {
+
+		return JS.message(instanceServiceClient.getDungeonConnection(username, input.getGameSessionId(), input.getVersion()));
 	}
 
 	@RequestMapping(path = "/get-relevant-dungeons", method = RequestMethod.POST)
