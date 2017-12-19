@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.valhallagame.common.JS;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.message.ActivateInstanceParameter;
+import com.valhallagame.instanceserviceclient.message.InstancePlayerLoginParameter;
+import com.valhallagame.instanceserviceclient.message.InstancePlayerLogoutParameter;
 import com.valhallagame.instanceserviceclient.message.UpdateInstanceStateParameter;
 
 @Controller
@@ -30,5 +32,17 @@ public class ServerInstanceController {
 	@ResponseBody
 	public ResponseEntity<?> updateInstanceState(@RequestBody UpdateInstanceStateParameter input) throws IOException {
 		return JS.message(instanceServiceClient.updateInstanceState(input.getGameSessionId(), input.getState()));
+	}
+
+	@RequestMapping(path = "/instance-player-login", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> instancePlayerLogin(@RequestBody InstancePlayerLoginParameter input) throws IOException {
+		return JS.message(instanceServiceClient.instancePlayerLogin(input.getUsername(), input.getGameSessionId()));
+	}
+
+	@RequestMapping(path = "/instance-player-logout", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> instancePlayerLogout(@RequestBody InstancePlayerLogoutParameter input) throws IOException {
+		return JS.message(instanceServiceClient.instancePlayerLogout(input.getUsername(), input.getGameSessionId()));
 	}
 }
