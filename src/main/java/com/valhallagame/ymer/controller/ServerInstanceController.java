@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.valhallagame.common.JS;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.message.ActivateInstanceParameter;
-import com.valhallagame.instanceserviceclient.message.DeactivateInstanceParameter;
+import com.valhallagame.instanceserviceclient.message.UpdateInstanceStateParameter;
 
 @Controller
 @RequestMapping("/v1/server-instance")
 public class ServerInstanceController {
 	InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
 
-	@RequestMapping(path = "activate-instance", method = RequestMethod.POST)
+	@RequestMapping(path = "/activate-instance", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> activateInstance(@RequestBody ActivateInstanceParameter input) throws IOException {
 		return JS.message(
 				instanceServiceClient.activateInstance(input.getGameSessionId(), input.getAddress(), input.getPort()));
 	}
 
-	@RequestMapping(path = "deactivate-instance", method = RequestMethod.POST)
+	@RequestMapping(path = "/update-instance-state", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> deactivateInstance(@RequestBody DeactivateInstanceParameter input) throws IOException {
-		return JS.message(instanceServiceClient.deactivateInstance(input.getGameSessionId()));
+	public ResponseEntity<?> updateInstanceState(@RequestBody UpdateInstanceStateParameter input) throws IOException {
+		return JS.message(instanceServiceClient.updateInstanceState(input.getGameSessionId(), input.getState()));
 	}
 }
