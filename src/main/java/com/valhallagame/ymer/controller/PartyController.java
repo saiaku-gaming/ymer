@@ -79,8 +79,8 @@ public class PartyController {
 	
 	@RequestMapping(path = "/kick-character-from-party", method = RequestMethod.POST)
 	public ResponseEntity<?> kickCharacterFromParty(@RequestAttribute("username") String username,
-			@RequestBody UsernameParameter input) throws IOException {
-		return JS.message(PartyServiceClient.get().kickPersonFromParty(username, input.getUsername()));
+			@RequestBody CharacterNameParameter input) throws IOException {
+		return JS.message(PartyServiceClient.get().kickCharacterFromParty(username, input.getCharacterName()));
 	}
 
 	@RequestMapping(path = "/kick-person-from-party", method = RequestMethod.POST)
