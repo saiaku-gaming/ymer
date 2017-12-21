@@ -46,7 +46,6 @@ public class UtilsController {
 	@RequestMapping(path = "/user-data", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> userData(@RequestAttribute("username") String username) throws IOException {
-
 		ObjectNode out = mapper.createObjectNode();
 
 		// CHARACTER

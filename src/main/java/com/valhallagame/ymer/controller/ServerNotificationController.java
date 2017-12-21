@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.valhallagame.common.JS;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.notificationserviceclient.model.NotificationListenerParameter;
+import com.valhallagame.notificationserviceclient.model.UnregisterNotificationListenerParameter;
 
 @Controller
 @RequestMapping(path = "/v1/server-notification")
@@ -23,15 +24,15 @@ public class ServerNotificationController {
 	@ResponseBody
 	public ResponseEntity<?> registerNotificationListener(@RequestBody NotificationListenerParameter input)
 			throws IOException {
-		return JS.message(notificationServiceClient.registerNotificationListener(input.getAddress(), input.getPort()));
+		return JS.message(notificationServiceClient.registerNotificationListener(input.getGameSessionId(),
+				input.getAddress(), input.getPort()));
 	}
 
 	@RequestMapping(path = "unregister-notification-listener", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> unregisterNotificationListener(@RequestBody NotificationListenerParameter input)
+	public ResponseEntity<?> unregisterNotificationListener(@RequestBody UnregisterNotificationListenerParameter input)
 			throws IOException {
-		return JS
-				.message(notificationServiceClient.unregisterNotificationListener(input.getAddress(), input.getPort()));
+		return JS.message(notificationServiceClient.unregisterNotificationListener(input.getGameSessionId()));
 	}
 
 }
