@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
+import com.valhallagame.common.JS;
+import com.valhallagame.common.JS.JsonMessage;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.personserviceclient.model.Session;
@@ -60,15 +62,19 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 				RestResponse<Session> restPersonResponse = personServiceClient.createDebugPerson(token);
 				if (!restPersonResponse.isOk()) {
 					response.setStatus(restPersonResponse.getStatusCode().value());
+					String string = JS.parse(JS.message(restPersonResponse.getErrorMessage())).toString();
+					response.getWriter().write(string);
 					return;
 				}
 
 				Session debugSession = restPersonResponse.getResponse().get();
 
-				RestResponse<String> restCharacterResponse = characterServiceClient.create(
+				RestResponse<String> restCharacterResponse = characterServiceClient.createDebugCharacter(
 						debugSession.getPerson().getUsername(), debugSession.getPerson().getUsername() + "-char");
 				if (!restCharacterResponse.isOk()) {
 					response.setStatus(restCharacterResponse.getStatusCode().value());
+					String string = JS.parse(JS.message(restCharacterResponse.getErrorMessage())).toString();
+					response.getWriter().write(string);
 					return;
 				}
 
