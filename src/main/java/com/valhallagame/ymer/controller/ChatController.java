@@ -1,7 +1,6 @@
 package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.valhallagame.chatserviceclient.ChatServiceClient;
-import com.valhallagame.chatserviceclient.model.ChatMessage;
 import com.valhallagame.chatserviceclient.model.ChatParameter;
-import com.valhallagame.chatserviceclient.model.WhisperCharacterParameter;
-import com.valhallagame.chatserviceclient.model.WhisperPersonParameter;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
+import com.valhallagame.ymer.message.GeneralChatParameter;
+import com.valhallagame.ymer.message.WhisperCharacterParameter;
+import com.valhallagame.ymer.message.WhisperPersonParameter;
 
 @Controller
 @RequestMapping("/v1/chat")
@@ -25,28 +24,24 @@ public class ChatController {
 
 	ChatServiceClient chatServiceClient = ChatServiceClient.get();
 
-	@RequestMapping(path = "/get-messages", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<?> getMessages(@RequestAttribute("username") String username) throws IOException {
-		RestResponse<List<ChatMessage>> chatMessages = chatServiceClient.getMessages(username);
-		return JS.message(chatMessages);
-	}
-
 	@RequestMapping(path = "/whisper-character", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> whisperPerson(@RequestAttribute("username") String username,
-			@RequestBody WhisperCharacterParameter whisperParameter) throws IOException {
-		whisperParameter.setSenderUsername(username);
-		RestResponse<String> result = chatServiceClient.whisperCharacter(whisperParameter);
+			@RequestBody WhisperCharacterParameter input) throws IOException {
+
+		RestResponse<String> result = chatServiceClient
+				.whisperCharacter(new com.valhallagame.chatserviceclient.model.WhisperCharacterParameter(username,
+						input.getMessage(), input.getTargetDisplayCharacterName()));
 		return JS.message(result);
 	}
-	
+
 	@RequestMapping(path = "/whisper-person", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> whisperPerson(@RequestAttribute("username") String username,
-			@RequestBody WhisperPersonParameter whisperParameter) throws IOException {
-		whisperParameter.setSenderUsername(username);
-		RestResponse<String> result = chatServiceClient.whisperPerson(whisperParameter);
+			@RequestBody WhisperPersonParameter input) throws IOException {
+		RestResponse<String> result = chatServiceClient
+				.whisperPerson(new com.valhallagame.chatserviceclient.model.WhisperPersonParameter(username,
+						input.getMessage(), input.getTargetDisplayUsername()));
 		return JS.message(result);
 	}
 
@@ -62,8 +57,8 @@ public class ChatController {
 	@RequestMapping(path = "/general-chat", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> generalChat(@RequestAttribute("username") String username,
-			@RequestBody ChatParameter chatParameter) throws IOException {
-		chatParameter.setSenderUsername(username);
+			@RequestBody GeneralChatParameter input) throws IOException {
+		ChatParameter chatParameter = new ChatParameter(username, input.getMessage());
 		RestResponse<String> result = chatServiceClient.generalChat(chatParameter);
 
 		return JS.message(result);
