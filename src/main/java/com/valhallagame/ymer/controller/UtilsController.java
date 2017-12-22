@@ -69,7 +69,7 @@ public class UtilsController {
 		FriendServiceClient friendServiceClient = FriendServiceClient.get();
 		RestResponse<FriendsData> friendsDataResp;
 		try {
-			friendsDataResp = friendServiceClient.getFriendsData(username);
+			friendsDataResp = friendServiceClient.getFriendData(username);
 			if (friendsDataResp.isOk()) {
 				FriendsData friendsData = friendsDataResp.getResponse().get();
 				out.set("friendsData", mapper.valueToTree(friendsData));
