@@ -17,7 +17,6 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.common.JS;
-import com.valhallagame.common.JS.JsonMessage;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.personserviceclient.model.Session;
