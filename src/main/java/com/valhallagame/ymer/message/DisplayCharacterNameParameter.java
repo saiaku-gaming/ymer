@@ -1,5 +1,7 @@
 package com.valhallagame.ymer.message;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharacterNameParameter {
-	private String characterName;
+public class DisplayCharacterNameParameter {
+	@NotNull
+	private String displayCharacterName;
 }
