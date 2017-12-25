@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.chatserviceclient.model.ChatParameter;
 import com.valhallagame.common.JS;
@@ -26,7 +27,7 @@ public class ChatController {
 
 	@RequestMapping(path = "/whisper-character", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> whisperPerson(@RequestAttribute("username") String username,
+	public ResponseEntity<JsonNode> whisperPerson(@RequestAttribute("username") String username,
 			@RequestBody WhisperCharacterParameter input) throws IOException {
 
 		RestResponse<String> result = chatServiceClient
@@ -37,7 +38,7 @@ public class ChatController {
 
 	@RequestMapping(path = "/whisper-person", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> whisperPerson(@RequestAttribute("username") String username,
+	public ResponseEntity<JsonNode> whisperPerson(@RequestAttribute("username") String username,
 			@RequestBody WhisperPersonParameter input) throws IOException {
 		RestResponse<String> result = chatServiceClient
 				.whisperPerson(new com.valhallagame.chatserviceclient.model.WhisperPersonParameter(username,
@@ -47,7 +48,7 @@ public class ChatController {
 
 	@RequestMapping(path = "/instance-chat", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> instanceChat(@RequestAttribute("username") String username,
+	public ResponseEntity<JsonNode> instanceChat(@RequestAttribute("username") String username,
 			@RequestBody ChatParameter chatParameter) throws IOException {
 		chatParameter.setSenderUsername(username);
 		RestResponse<String> result = chatServiceClient.instanceChat(chatParameter);
@@ -56,7 +57,7 @@ public class ChatController {
 
 	@RequestMapping(path = "/general-chat", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> generalChat(@RequestAttribute("username") String username,
+	public ResponseEntity<JsonNode> generalChat(@RequestAttribute("username") String username,
 			@RequestBody GeneralChatParameter input) throws IOException {
 		ChatParameter chatParameter = new ChatParameter(username, input.getMessage());
 		RestResponse<String> result = chatServiceClient.generalChat(chatParameter);
@@ -66,7 +67,7 @@ public class ChatController {
 
 	@RequestMapping(path = "/party-chat", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> partyChat(@RequestAttribute("username") String username,
+	public ResponseEntity<JsonNode> partyChat(@RequestAttribute("username") String username,
 			@RequestBody ChatParameter chatParameter) throws IOException {
 		chatParameter.setSenderUsername(username);
 		RestResponse<String> result = chatServiceClient.partyChat(chatParameter);
