@@ -25,13 +25,14 @@ import com.valhallagame.personserviceclient.model.Session;
 public class PersonAuthenticationFilter extends GenericFilterBean {
 
 	private static CharacterServiceClient characterServiceClient = CharacterServiceClient.get();
+	private static PersonServiceClient personServiceClient = PersonServiceClient.get();
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		PersonServiceClient personServiceClient = PersonServiceClient.get();
+
 
 		final String auth = request.getHeader("Authorization");
 		if (auth != null) {
@@ -58,56 +59,43 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			Optional<Session> userSession = personServiceClient.getSessionFromToken(token).getResponse();
 
 			if (token.contains("debug") && !userSession.isPresent()) {
-				RestResponse<Session> restPersonResponse = personServiceClient.createDebugPerson(token);
-				if (!restPersonResponse.isOk()) {
-					response.setStatus(restPersonResponse.getStatusCode().value());
-					String string = JS.parse(JS.message(restPersonResponse.getErrorMessage())).toString();
-					response.getWriter().write(string);
+				userSession = createDebugSession(response, token);
+				if(!userSession.isPresent()){
 					return;
 				}
-
-				Session debugSession = restPersonResponse.getResponse().get();
-
-				RestResponse<String> restCharacterResponse = characterServiceClient.createDebugCharacter(
-						debugSession.getPerson().getUsername(), debugSession.getPerson().getUsername() + "-char");
-				if (!restCharacterResponse.isOk()) {
-					response.setStatus(restCharacterResponse.getStatusCode().value());
-					String string = JS.parse(JS.message(restCharacterResponse.getErrorMessage())).toString();
-					response.getWriter().write(string);
-					return;
-				}
-
-				userSession = Optional.of(debugSession);
 			} else {
-
 				if (!userSession.isPresent()) {
 					response.setStatus(HttpStatus.UNAUTHORIZED.value());
 					return;
 				}
-
-				// TODO might need to move this to person service?
-				// if
-				// (userSession.getTimestamp().isBefore(Instant.now().minus(1,
-				// ChronoUnit.HOURS))) {
-				// // Session timed out.
-				// sessionService.deleteSession(userSession);
-				// response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				// } else {
-				// Just so that we don't write to the database every
-				// second
-				// for every player. It logs way to much when debugging
-				// and we want to keep writes low!
-				// if
-				// (userSession.getTimestamp().isBefore(Instant.now().minus(2,
-				// ChronoUnit.MINUTES))) {
-				// userSession.setTimestamp(Instant.now());
-				// sessionService.saveSession(userSession);
-				// }
-				// }
 			}
 			request.setAttribute("username", userSession.get().getPerson().getUsername());
 			chain.doFilter(req, res);
 		}
+	}
+
+	private Optional<Session> createDebugSession(HttpServletResponse response, String token) throws IOException {
+		RestResponse<Session> sessionResp = personServiceClient.createDebugPerson(token);
+		Optional<Session> sessionOpt = sessionResp.get();
+		if (!sessionOpt.isPresent()) {
+			response.setStatus(sessionResp.getStatusCode().value());
+			String string = JS.parse(JS.message(sessionResp.getErrorMessage())).toString();
+			response.getWriter().write(string);
+			return Optional.empty();
+		}
+
+		Session debugSession = sessionOpt.get();
+
+		RestResponse<String> restCharacterResponse = characterServiceClient.createDebugCharacter(
+				debugSession.getPerson().getUsername(), debugSession.getPerson().getUsername() + "-char");
+		if (!restCharacterResponse.isOk()) {
+			response.setStatus(restCharacterResponse.getStatusCode().value());
+			String string = JS.parse(JS.message(restCharacterResponse.getErrorMessage())).toString();
+			response.getWriter().write(string);
+			return Optional.empty();
+		}
+
+		return Optional.of(debugSession);
 	}
 
 }
