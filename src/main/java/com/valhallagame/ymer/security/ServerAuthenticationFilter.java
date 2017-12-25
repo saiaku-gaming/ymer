@@ -18,7 +18,7 @@ import org.springframework.web.filter.GenericFilterBean;
 public class ServerAuthenticationFilter extends GenericFilterBean {
 
 	@Value("${server.secret}")
-	private String ServerSecret;
+	private String serverSecret;
 	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -31,7 +31,7 @@ public class ServerAuthenticationFilter extends GenericFilterBean {
 		if (token == null) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		} else {
-			if(token.equals(ServerSecret)) {
+			if(token.equals(serverSecret)) {
 				chain.doFilter(req, res);
 			} else {
 				response.setStatus(HttpStatus.UNAUTHORIZED.value());
