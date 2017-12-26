@@ -16,8 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
-import com.valhallagame.personserviceclient.model.Person;
-import com.valhallagame.personserviceclient.model.Session;
+import com.valhallagame.personserviceclient.model.PersonData;
+import com.valhallagame.personserviceclient.model.SessionData;
 import com.valhallagame.ymer.message.UsernameParameter;
 import com.valhallagame.ymer.message.UsernamePasswordParameter;
 
@@ -28,7 +28,7 @@ public class PersonController {
 	@RequestMapping(path = "/get-person", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonNode> getPerson(@RequestBody UsernameParameter username) throws IOException {
-		Optional<Person> optPerson = PersonServiceClient.get().getPerson(username.getUsername()).getResponse();
+		Optional<PersonData> optPerson = PersonServiceClient.get().getPerson(username.getUsername()).getResponse();
 		return optPerson.map(p -> JS.message(HttpStatus.OK, p))
 				.orElse(JS.message(HttpStatus.NOT_FOUND, "COULD NOT FIND IT :("));
 	}
@@ -42,7 +42,7 @@ public class PersonController {
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonNode> login(@RequestBody UsernamePasswordParameter input) throws IOException {
-		Optional<Session> optSession = PersonServiceClient.get().login(input.getUsername(), input.getPassword())
+		Optional<SessionData> optSession = PersonServiceClient.get().login(input.getUsername(), input.getPassword())
 				.getResponse();
 
 		return optSession.map(s -> JS.message(HttpStatus.OK, s))

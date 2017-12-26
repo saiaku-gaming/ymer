@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
-import com.valhallagame.chatserviceclient.model.ChatParameter;
+import com.valhallagame.chatserviceclient.message.ChatParameter;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.ymer.message.GeneralChatParameter;
@@ -31,7 +31,7 @@ public class ChatController {
 			@RequestBody WhisperCharacterParameter input) throws IOException {
 
 		RestResponse<String> result = chatServiceClient
-				.whisperCharacter(new com.valhallagame.chatserviceclient.model.WhisperCharacterParameter(username,
+				.whisperCharacter(new com.valhallagame.chatserviceclient.message.WhisperCharacterParameter(username,
 						input.getMessage(), input.getTargetDisplayCharacterName()));
 		return JS.message(result);
 	}
@@ -41,7 +41,7 @@ public class ChatController {
 	public ResponseEntity<JsonNode> whisperPerson(@RequestAttribute("username") String username,
 			@RequestBody WhisperPersonParameter input) throws IOException {
 		RestResponse<String> result = chatServiceClient
-				.whisperPerson(new com.valhallagame.chatserviceclient.model.WhisperPersonParameter(username,
+				.whisperPerson(new com.valhallagame.chatserviceclient.message.WhisperPersonParameter(username,
 						input.getMessage(), input.getTargetDisplayUsername()));
 		return JS.message(result);
 	}

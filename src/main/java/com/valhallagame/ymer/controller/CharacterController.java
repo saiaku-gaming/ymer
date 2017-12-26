@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
-import com.valhallagame.characterserviceclient.message.Character;
 import com.valhallagame.characterserviceclient.message.CharacterNameParameter;
 import com.valhallagame.characterserviceclient.message.EqippedItemsParameter;
+import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 
@@ -24,7 +24,7 @@ public class CharacterController {
 	@RequestMapping(path = "/get", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> getCharacter(@RequestAttribute("username") String username,
 			@RequestBody CharacterNameParameter input) throws IOException {
-		RestResponse<Character> resp = CharacterServiceClient.get().getCharacter(username, input.getCharacterName());
+		RestResponse<CharacterData> resp = CharacterServiceClient.get().getCharacter(username, input.getCharacterName());
 		return JS.message(resp);
 	}
 

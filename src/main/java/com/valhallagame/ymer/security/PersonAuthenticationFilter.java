@@ -19,7 +19,7 @@ import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
-import com.valhallagame.personserviceclient.model.Session;
+import com.valhallagame.personserviceclient.model.SessionData;
 
 @Component
 public class PersonAuthenticationFilter extends GenericFilterBean {
@@ -56,7 +56,7 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 		if (token == null) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		} else {
-			Optional<Session> userSession = personServiceClient.getSessionFromToken(token).getResponse();
+			Optional<SessionData> userSession = personServiceClient.getSessionFromToken(token).getResponse();
 
 			if (token.contains("debug") && !userSession.isPresent()) {
 				userSession = createDebugSession(response, token);
@@ -74,9 +74,9 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 		}
 	}
 
-	private Optional<Session> createDebugSession(HttpServletResponse response, String token) throws IOException {
-		RestResponse<Session> sessionResp = personServiceClient.createDebugPerson(token);
-		Optional<Session> sessionOpt = sessionResp.get();
+	private Optional<SessionData> createDebugSession(HttpServletResponse response, String token) throws IOException {
+		RestResponse<SessionData> sessionResp = personServiceClient.createDebugPerson(token);
+		Optional<SessionData> sessionOpt = sessionResp.get();
 		if (!sessionOpt.isPresent()) {
 			response.setStatus(sessionResp.getStatusCode().value());
 			String string = JS.parse(JS.message(sessionResp.getErrorMessage())).toString();
@@ -84,7 +84,7 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			return Optional.empty();
 		}
 
-		Session debugSession = sessionOpt.get();
+		SessionData debugSession = sessionOpt.get();
 
 		RestResponse<String> restCharacterResponse = characterServiceClient.createDebugCharacter(
 				debugSession.getPerson().getUsername(), debugSession.getPerson().getUsername() + "-char");

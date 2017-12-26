@@ -21,13 +21,13 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
-import com.valhallagame.characterserviceclient.message.Character;
+import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.friendserviceclient.model.FriendsData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
-import com.valhallagame.partyserviceclient.model.PartyAndInvites;
+import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 
 import lombok.AllArgsConstructor;
@@ -55,15 +55,15 @@ public class UtilsController {
 
 		// CHARACTER
 
-		RestResponse<Character> selectedCharacter = CharacterServiceClient.get().getSelectedCharacter(username);
-		Optional<Character> optCharacter = selectedCharacter.get();
+		RestResponse<CharacterData> selectedCharacter = CharacterServiceClient.get().getSelectedCharacter(username);
+		Optional<CharacterData> optCharacter = selectedCharacter.get();
 		if (optCharacter.isPresent()) {
-			String displayCharacterName = optCharacter.map(Character::getDisplayCharacterName).orElse("");
+			String displayCharacterName = optCharacter.map(CharacterData::getDisplayCharacterName).orElse("");
 			out.set("displayCharacterName", new TextNode(displayCharacterName));
 
 			// ITEMS
 
-			Character character = optCharacter.get();
+			CharacterData character = optCharacter.get();
 			List<EquippedItem> equippedItems = new ArrayList<>();
 			equippedItems.add(new EquippedItem("Mainhand", character.getMainhandArmament(), null));
 			equippedItems.add(new EquippedItem("Offhand", character.getOffHandArmament(), null));
@@ -124,10 +124,10 @@ public class UtilsController {
 
 		PartyServiceClient partyServiceClient = PartyServiceClient.get();
 		
-		RestResponse<PartyAndInvites> partyAndInvites = partyServiceClient.getPartyAndInvites(username);
-		Optional<PartyAndInvites> partyAndInvitesOpt = partyAndInvites.get();
+		RestResponse<PartyAndInvitesData> partyAndInvites = partyServiceClient.getPartyAndInvites(username);
+		Optional<PartyAndInvitesData> partyAndInvitesOpt = partyAndInvites.get();
 		if (partyAndInvitesOpt.isPresent()) {
-			PartyAndInvites pai = partyAndInvitesOpt.get();
+			PartyAndInvitesData pai = partyAndInvitesOpt.get();
 			ObjectNode partyObj = mapper.createObjectNode();
 			partyObj.set("party", mapper.valueToTree(pai.getParty().orElse(null)));
 			partyObj.set("receivedInvites", mapper.valueToTree(pai.getReceivedInvites()));
