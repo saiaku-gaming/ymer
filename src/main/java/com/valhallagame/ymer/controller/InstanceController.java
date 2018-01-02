@@ -19,6 +19,7 @@ import com.valhallagame.common.RestResponse;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.message.GetHubParameter;
 import com.valhallagame.instanceserviceclient.message.GetRelevantDungeonsParameter;
+import com.valhallagame.instanceserviceclient.model.DungeonData;
 import com.valhallagame.ymer.message.GetDungeonConnectionParameter;
 import com.valhallagame.ymer.message.StartDungeonParameter;
 
@@ -40,21 +41,21 @@ public class InstanceController {
 
 		return JS.message(instanceServiceClient.startDungeon(username, input.getMap(), input.getVersion()));
 	}
-	
-	
+
 	@RequestMapping(path = "/get-dungeon-connection", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> getDungeonConnection(@RequestAttribute("username") String username,
 			@RequestBody GetDungeonConnectionParameter input) throws IOException {
 
-		return JS.message(instanceServiceClient.getDungeonConnection(username, input.getGameSessionId(), input.getVersion()));
+		return JS.message(
+				instanceServiceClient.getDungeonConnection(username, input.getGameSessionId(), input.getVersion()));
 	}
 
 	@RequestMapping(path = "/get-relevant-dungeons", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> getRelevantDungeons(@RequestAttribute("username") String username,
 			@RequestBody GetRelevantDungeonsParameter input) throws IOException {
 
-		RestResponse<List<String>> relevantDungeons = instanceServiceClient.getRelevantDungeons(input.getUsername(),
-				input.getVersion());
+		RestResponse<List<DungeonData>> relevantDungeons = instanceServiceClient
+				.getRelevantDungeons(input.getUsername(), input.getVersion());
 
 		Map<String, Object> body = new HashMap<>();
 		body.put("relevantDungeons", relevantDungeons);
