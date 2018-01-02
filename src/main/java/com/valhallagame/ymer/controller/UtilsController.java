@@ -98,7 +98,9 @@ public class UtilsController {
 				RestResponse<List<String>> featResp = featsServiceClient.getFeats(displayCharacterName.toLowerCase());
 				Optional<List<String>> featsOpt = featResp.get();
 				if (featsOpt.isPresent()) {
-					out.set("feats", mapper.valueToTree(featsOpt.get()));
+					ObjectNode featObj = mapper.createObjectNode();
+					featObj.set("feats", mapper.valueToTree(featsOpt.get()));
+					out.set("featData", featObj);
 				}
 			} catch (IOException e) {
 				logger.error("NO FEATS RUNNING");
