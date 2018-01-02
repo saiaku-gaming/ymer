@@ -24,6 +24,7 @@ import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
+import com.valhallagame.featserviceclient.FeatServiceClient;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.friendserviceclient.model.FriendsData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
@@ -88,6 +89,22 @@ public class UtilsController {
 			} catch (IOException e) {
 				logger.error("NO WARDROBE RUNNING");
 			}
+			
+			// FEATS
+			
+			FeatServiceClient featsServiceClient = FeatServiceClient.get();
+			
+			try {
+				RestResponse<List<String>> featResp = featsServiceClient.getFeats(displayCharacterName.toLowerCase());
+				Optional<List<String>> featsOpt = featResp.get();
+				if (featsOpt.isPresent()) {
+					ObjectNode featObj = mapper.createObjectNode();
+					featObj.set("feats", mapper.valueToTree(featsOpt.get()));
+					out.set("featData", featObj);
+				}
+			} catch (IOException e) {
+				logger.error("NO FEATS RUNNING");
+			}
 		} else {
 			logger.error("Missing character!!!");
 		}
@@ -95,12 +112,12 @@ public class UtilsController {
 		// USERNAME
 		out.set("username", new TextNode(username));
 
-		// ACHIEVEMENTS
+		// ACH -- deprecated
 		ObjectNode achievementsObj = mapper.createObjectNode();
 		ArrayNode achievementsArr = mapper.createArrayNode();
 		achievementsObj.set("achievements", achievementsArr);
 		out.set("achievementData", achievementsObj);
-
+		
 		// FRIENDS
 
 		FriendServiceClient friendServiceClient = FriendServiceClient.get();
