@@ -18,7 +18,7 @@
 		<name>Team Sämst HB</name>
 		<url>https://sämst.se</url>
 	</organization>
-	
+
 	<repositories>
 		<repository>
 			<id>myMavenRepo</id>
@@ -78,7 +78,7 @@
 			<groupId>com.valhallagame.valhalla</groupId>
 			<artifactId>feat-service-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>com.valhallagame.valhalla</groupId>
 			<artifactId>party-service-client</artifactId>
@@ -100,9 +100,14 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.siegmar</groupId>
+			<artifactId>logback-gelf</artifactId>
+			<version>1.0.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
