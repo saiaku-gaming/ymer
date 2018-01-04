@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,9 +28,12 @@ import com.valhallagame.common.RestResponse;
 import com.valhallagame.featserviceclient.FeatServiceClient;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.friendserviceclient.model.FriendsData;
+import com.valhallagame.instanceserviceclient.InstanceServiceClient;
+import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
+import com.valhallagame.ymer.message.VersionParameter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,9 +53,9 @@ public class UtilsController {
 		return JS.message(HttpStatus.OK, "Pong");
 	}
 
-	@RequestMapping(path = "/user-data", method = RequestMethod.GET)
+	@RequestMapping(path = "/user-data", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<JsonNode> userData(@RequestAttribute("username") String username) throws IOException {
+	public ResponseEntity<JsonNode> userData(@RequestAttribute("username") String username, @RequestBody VersionParameter input) throws IOException {
 		ObjectNode out = mapper.createObjectNode();
 
 		// CHARACTER
@@ -139,6 +143,8 @@ public class UtilsController {
 		notificationsObj.set("notifications", notificationsArr);
 		out.set("notificationData", notificationsObj);
 
+		
+		// PARTY
 		PartyServiceClient partyServiceClient = PartyServiceClient.get();
 		
 		RestResponse<PartyAndInvitesData> partyAndInvites = partyServiceClient.getPartyAndInvites(username);
@@ -150,6 +156,20 @@ public class UtilsController {
 			partyObj.set("receivedInvites", mapper.valueToTree(pai.getReceivedInvites()));
 			out.set("partyData", partyObj);
 		}
+		
+		// INSTANCE 
+		InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
+		RestResponse<RelevantDungeonData> relevantDungeons = instanceServiceClient
+				.getRelevantDungeons(username, input.getVersion());
+		Optional<RelevantDungeonData> relevantDungeonDataOpt = relevantDungeons.get();
+		if(relevantDungeonDataOpt.isPresent()) {
+			RelevantDungeonData relevantDungeonData = relevantDungeonDataOpt.get();
+			ObjectNode partyObj = mapper.createObjectNode();
+			partyObj.set("relevantDungeons", mapper.valueToTree(relevantDungeonData.getRelevantDungeons()));
+			partyObj.set("queuePlacements", mapper.valueToTree(relevantDungeonData.getQueuePlacements()));
+			out.set("instanceData", partyObj);
+		}
+		
 		
 		out.set("skillData", mapper.createObjectNode());
 		return JS.message(HttpStatus.OK, out);
