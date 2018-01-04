@@ -1,11 +1,7 @@
 package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -19,7 +15,7 @@ import com.valhallagame.common.RestResponse;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.message.GetHubParameter;
 import com.valhallagame.instanceserviceclient.message.GetRelevantDungeonsParameter;
-import com.valhallagame.instanceserviceclient.model.DungeonData;
+import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
 import com.valhallagame.ymer.message.GetDungeonConnectionParameter;
 import com.valhallagame.ymer.message.StartDungeonParameter;
 
@@ -54,12 +50,8 @@ public class InstanceController {
 	public ResponseEntity<JsonNode> getRelevantDungeons(@RequestAttribute("username") String username,
 			@RequestBody GetRelevantDungeonsParameter input) throws IOException {
 
-		RestResponse<List<DungeonData>> relevantDungeons = instanceServiceClient
+		RestResponse<RelevantDungeonData> relevantDungeons = instanceServiceClient
 				.getRelevantDungeons(input.getUsername(), input.getVersion());
-
-		Map<String, Object> body = new HashMap<>();
-		body.put("relevantDungeons", relevantDungeons);
-
-		return JS.message(HttpStatus.OK, body);
+		return JS.message(relevantDungeons);
 	}
 }
