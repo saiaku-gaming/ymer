@@ -46,11 +46,10 @@ public class PersonController {
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonNode> login(@RequestBody UsernamePasswordParameter input) throws IOException {
-		Optional<SessionData> optSession = personServiceClient.login(input.getUsername(), input.getPassword())
-				.getResponse();
+		RestResponse<SessionData> login = personServiceClient.login(input.getUsername(), input.getPassword());
+		Optional<SessionData> optSession = login.getResponse();
 
-		return optSession.map(s -> JS.message(HttpStatus.OK, s))
-				.orElse(JS.message(HttpStatus.NOT_FOUND, "The username and password combination was not accepted"));
+		return optSession.map(s -> JS.message(HttpStatus.OK, s)).orElse(JS.message(login));
 	}
 
 	@RequestMapping(path = "/logout", method = RequestMethod.GET)
