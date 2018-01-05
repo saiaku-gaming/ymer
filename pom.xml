@@ -19,13 +19,6 @@
 		<url>https://sämst.se</url>
 	</organization>
 
-	<repositories>
-		<repository>
-			<id>myMavenRepo</id>
-			<url>${myMavenRepoReadUrl}</url>
-		</repository>
-	</repositories>
-
 	<properties>
 		<docker.image.prefix>saiaku</docker.image.prefix>
 	</properties>
