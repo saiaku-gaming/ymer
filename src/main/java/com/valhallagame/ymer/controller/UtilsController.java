@@ -70,9 +70,9 @@ public class UtilsController {
 
 			CharacterData character = optCharacter.get();
 			List<EquippedItem> equippedItems = new ArrayList<>();
-			equippedItems.add(new EquippedItem("Mainhand", character.getMainhandArmament(), null));
-			equippedItems.add(new EquippedItem("Offhand", character.getOffHandArmament(), null));
-			equippedItems.add(new EquippedItem("Chest", null, character.getChestItem()));
+			equippedItems.add(new EquippedItem("MAINHAND", character.getMainhandArmament(), null));
+			equippedItems.add(new EquippedItem("OFFHAND", character.getOffHandArmament(), null));
+			equippedItems.add(new EquippedItem("CHEST", null, character.getChestItem()));
 
 			ObjectNode itemHandlerObj = mapper.createObjectNode();
 			itemHandlerObj.set("equippedItems", mapper.valueToTree(equippedItems));
