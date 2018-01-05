@@ -53,9 +53,16 @@ public class UtilsController {
 		return JS.message(HttpStatus.OK, "Pong");
 	}
 
+	@RequestMapping(path = "/pong", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<JsonNode> pong() {
+		return JS.message(HttpStatus.OK, "Ping");
+	}
+
 	@RequestMapping(path = "/user-data", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<JsonNode> userData(@RequestAttribute("username") String username, @RequestBody VersionParameter input) throws IOException {
+	public ResponseEntity<JsonNode> userData(@RequestAttribute("username") String username,
+			@RequestBody VersionParameter input) throws IOException {
 		ObjectNode out = mapper.createObjectNode();
 
 		// CHARACTER
@@ -81,9 +88,10 @@ public class UtilsController {
 			// WARDROBE
 
 			WardrobeServiceClient wardrobeServiceClient = WardrobeServiceClient.get();
-			
+
 			try {
-				RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient.getWardrobeItems(displayCharacterName.toLowerCase());
+				RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient
+						.getWardrobeItems(displayCharacterName.toLowerCase());
 				Optional<List<String>> wardrobeItemOpt = wardrobeItemsResp.get();
 				if (wardrobeItemOpt.isPresent()) {
 					ObjectNode wardrobeObj = mapper.createObjectNode();
@@ -93,11 +101,11 @@ public class UtilsController {
 			} catch (IOException e) {
 				logger.error("NO WARDROBE RUNNING");
 			}
-			
+
 			// FEATS
-			
+
 			FeatServiceClient featsServiceClient = FeatServiceClient.get();
-			
+
 			try {
 				RestResponse<List<String>> featResp = featsServiceClient.getFeats(displayCharacterName.toLowerCase());
 				Optional<List<String>> featsOpt = featResp.get();
@@ -121,7 +129,7 @@ public class UtilsController {
 		ArrayNode achievementsArr = mapper.createArrayNode();
 		achievementsObj.set("achievements", achievementsArr);
 		out.set("achievementData", achievementsObj);
-		
+
 		// FRIENDS
 
 		FriendServiceClient friendServiceClient = FriendServiceClient.get();
@@ -143,10 +151,9 @@ public class UtilsController {
 		notificationsObj.set("notifications", notificationsArr);
 		out.set("notificationData", notificationsObj);
 
-		
 		// PARTY
 		PartyServiceClient partyServiceClient = PartyServiceClient.get();
-		
+
 		RestResponse<PartyAndInvitesData> partyAndInvites = partyServiceClient.getPartyAndInvites(username);
 		Optional<PartyAndInvitesData> partyAndInvitesOpt = partyAndInvites.get();
 		if (partyAndInvitesOpt.isPresent()) {
@@ -156,21 +163,20 @@ public class UtilsController {
 			partyObj.set("receivedInvites", mapper.valueToTree(pai.getReceivedInvites()));
 			out.set("partyData", partyObj);
 		}
-		
-		// INSTANCE 
+
+		// INSTANCE
 		InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
-		RestResponse<RelevantDungeonData> relevantDungeons = instanceServiceClient
-				.getRelevantDungeons(username, input.getVersion());
+		RestResponse<RelevantDungeonData> relevantDungeons = instanceServiceClient.getRelevantDungeons(username,
+				input.getVersion());
 		Optional<RelevantDungeonData> relevantDungeonDataOpt = relevantDungeons.get();
-		if(relevantDungeonDataOpt.isPresent()) {
+		if (relevantDungeonDataOpt.isPresent()) {
 			RelevantDungeonData relevantDungeonData = relevantDungeonDataOpt.get();
 			ObjectNode partyObj = mapper.createObjectNode();
 			partyObj.set("relevantDungeons", mapper.valueToTree(relevantDungeonData.getRelevantDungeons()));
 			partyObj.set("queuePlacements", mapper.valueToTree(relevantDungeonData.getQueuePlacements()));
 			out.set("instanceData", partyObj);
 		}
-		
-		
+
 		out.set("skillData", mapper.createObjectNode());
 		return JS.message(HttpStatus.OK, out);
 	}
