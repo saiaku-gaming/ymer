@@ -12,6 +12,7 @@ import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.personserviceclient.PersonServiceClient;
+import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 
 @Configuration
@@ -60,5 +61,10 @@ public class DevConfig {
 	@Bean
 	public FriendServiceClient friendServiceClient() {
 		return FriendServiceClient.get();
+	}
+	
+	@Bean
+	public StatisticsServiceClient statisticsServiceClient() {
+		return StatisticsServiceClient.get();
 	}
 }
