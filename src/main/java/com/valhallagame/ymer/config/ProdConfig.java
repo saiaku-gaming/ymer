@@ -8,6 +8,7 @@ import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.common.DefaultServicePortMappings;
 import com.valhallagame.featserviceclient.FeatServiceClient;
+import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
@@ -64,5 +65,11 @@ public class ProdConfig {
 	public WardrobeServiceClient wardrobeServiceClient() {
 		WardrobeServiceClient.init("http://wardrobe-service:" + DefaultServicePortMappings.WARDROBE_SERVICE_PORT);
 		return WardrobeServiceClient.get();
+	}
+
+	@Bean
+	public FriendServiceClient friendServiceClient() {
+		FriendServiceClient.init("http://friend-service:" + DefaultServicePortMappings.FRIEND_SERVICE_PORT);
+		return FriendServiceClient.get();
 	}
 }

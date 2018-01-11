@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.featserviceclient.FeatServiceClient;
+import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
@@ -54,5 +55,10 @@ public class DevConfig {
 	@Bean
 	public WardrobeServiceClient wardrobeServiceClient() {
 		return WardrobeServiceClient.get();
+	}
+
+	@Bean
+	public FriendServiceClient friendServiceClient() {
+		return FriendServiceClient.get();
 	}
 }
