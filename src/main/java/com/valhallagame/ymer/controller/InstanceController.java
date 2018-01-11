@@ -2,6 +2,7 @@ package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -23,7 +24,8 @@ import com.valhallagame.ymer.message.StartDungeonParameter;
 @RequestMapping("/v1/instance")
 public class InstanceController {
 
-	private static InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
+	@Autowired
+	private InstanceServiceClient instanceServiceClient;
 
 	@RequestMapping(path = "/get-hub", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> getPlayerSessionAndConnection(@RequestAttribute("username") String username,

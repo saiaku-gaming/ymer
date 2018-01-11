@@ -2,6 +2,7 @@ package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,9 @@ import com.valhallagame.instanceserviceclient.message.UpdateInstanceStateParamet
 @Controller
 @RequestMapping("/v1/server-instance")
 public class ServerInstanceController {
-	InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
+
+	@Autowired
+	InstanceServiceClient instanceServiceClient;
 
 	@RequestMapping(path = "/activate-instance", method = RequestMethod.POST)
 	@ResponseBody
@@ -32,19 +35,22 @@ public class ServerInstanceController {
 
 	@RequestMapping(path = "/update-instance-state", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<JsonNode> updateInstanceState(@RequestBody UpdateInstanceStateParameter input) throws IOException {
+	public ResponseEntity<JsonNode> updateInstanceState(@RequestBody UpdateInstanceStateParameter input)
+			throws IOException {
 		return JS.message(instanceServiceClient.updateInstanceState(input.getGameSessionId(), input.getState()));
 	}
 
 	@RequestMapping(path = "/instance-player-login", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<JsonNode> instancePlayerLogin(@RequestBody InstancePlayerLoginParameter input) throws IOException {
+	public ResponseEntity<JsonNode> instancePlayerLogin(@RequestBody InstancePlayerLoginParameter input)
+			throws IOException {
 		return JS.message(instanceServiceClient.instancePlayerLogin(input.getToken(), input.getGameSessionId()));
 	}
 
 	@RequestMapping(path = "/instance-player-logout", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<JsonNode> instancePlayerLogout(@RequestBody InstancePlayerLogoutParameter input) throws IOException {
+	public ResponseEntity<JsonNode> instancePlayerLogout(@RequestBody InstancePlayerLogoutParameter input)
+			throws IOException {
 		return JS.message(instanceServiceClient.instancePlayerLogout(input.getUsername(), input.getGameSessionId()));
 	}
 

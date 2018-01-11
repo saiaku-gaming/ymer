@@ -2,6 +2,7 @@ package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -18,16 +19,17 @@ import com.valhallagame.ymer.message.FeatParameter;
 @RequestMapping("/v1/feat")
 public class FeatController {
 
-	FeatServiceClient featServiceClient = FeatServiceClient.get();
+	@Autowired
+	FeatServiceClient featServiceClient;
 
 	@RequestMapping(path = "/get-feats", method = RequestMethod.GET)
 	public ResponseEntity<JsonNode> getFeats(@RequestAttribute("username") String username) throws IOException {
 		return JS.message(featServiceClient.getFeats(username));
 	}
-	
+
 	@RequestMapping(path = "/debug-add-feat", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> debugAddFeats(@RequestAttribute("username") String username, @RequestBody FeatParameter input)
-			throws IOException {
+	public ResponseEntity<JsonNode> debugAddFeats(@RequestAttribute("username") String username,
+			@RequestBody FeatParameter input) throws IOException {
 		return JS.message(featServiceClient.debugAddFeat(username, input.getFeatName()));
 	}
 }

@@ -2,6 +2,7 @@ package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,11 +18,11 @@ import com.valhallagame.ymer.message.WardrobeItemParameter;
 @RequestMapping("/v1/server-wardrobe")
 public class ServerWardrobeController {
 
-	WardrobeServiceClient wardrobeServiceClient = WardrobeServiceClient.get();
+	@Autowired
+	WardrobeServiceClient wardrobeServiceClient;
 
 	@RequestMapping(path = "/add-wardrobe-item", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> addWardrobeItem(@RequestBody WardrobeItemParameter input)
-			throws IOException {
+	public ResponseEntity<JsonNode> addWardrobeItem(@RequestBody WardrobeItemParameter input) throws IOException {
 		return JS.message(wardrobeServiceClient.addWardrobeItem(input.getCharacterName(), input.getItemName()));
 	}
 

@@ -2,6 +2,7 @@ package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -23,7 +24,8 @@ import com.valhallagame.ymer.message.WhisperPersonParameter;
 @RequestMapping("/v1/chat")
 public class ChatController {
 
-	ChatServiceClient chatServiceClient = ChatServiceClient.get();
+	@Autowired
+	ChatServiceClient chatServiceClient;
 
 	@RequestMapping(path = "/whisper-character", method = RequestMethod.POST)
 	@ResponseBody

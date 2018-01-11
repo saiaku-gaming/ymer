@@ -2,6 +2,7 @@ package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,8 @@ import com.valhallagame.notificationserviceclient.message.UnregisterNotification
 @RequestMapping(path = "/v1/server-notification")
 public class ServerNotificationController {
 
-	NotificationServiceClient notificationServiceClient = NotificationServiceClient.get();
+	@Autowired
+	NotificationServiceClient notificationServiceClient;
 
 	@RequestMapping(path = "register-notification-listener", method = RequestMethod.POST)
 	@ResponseBody
@@ -31,8 +33,8 @@ public class ServerNotificationController {
 
 	@RequestMapping(path = "unregister-notification-listener", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<JsonNode> unregisterNotificationListener(@RequestBody UnregisterNotificationListenerParameter input)
-			throws IOException {
+	public ResponseEntity<JsonNode> unregisterNotificationListener(
+			@RequestBody UnregisterNotificationListenerParameter input) throws IOException {
 		return JS.message(notificationServiceClient.unregisterNotificationListener(input.getGameSessionId()));
 	}
 

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -47,6 +48,24 @@ public class UtilsController {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
+	@Autowired
+	private CharacterServiceClient characterServiceClient;
+
+	@Autowired
+	private InstanceServiceClient instanceServiceClient;
+
+	@Autowired
+	private WardrobeServiceClient wardrobeServiceClient;
+
+	@Autowired
+	private PartyServiceClient partyServiceClient;
+
+	@Autowired
+	private FriendServiceClient friendServiceClient;
+
+	@Autowired
+	private FeatServiceClient featServiceClient;
+
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<JsonNode> ping() {
@@ -67,7 +86,7 @@ public class UtilsController {
 
 		// CHARACTER
 
-		RestResponse<CharacterData> selectedCharacter = CharacterServiceClient.get().getSelectedCharacter(username);
+		RestResponse<CharacterData> selectedCharacter = characterServiceClient.getSelectedCharacter(username);
 		Optional<CharacterData> optCharacter = selectedCharacter.get();
 		if (optCharacter.isPresent()) {
 			String displayCharacterName = optCharacter.map(CharacterData::getDisplayCharacterName).orElse("");
@@ -87,8 +106,6 @@ public class UtilsController {
 
 			// WARDROBE
 
-			WardrobeServiceClient wardrobeServiceClient = WardrobeServiceClient.get();
-
 			try {
 				RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient
 						.getWardrobeItems(displayCharacterName.toLowerCase());
@@ -104,10 +121,8 @@ public class UtilsController {
 
 			// FEATS
 
-			FeatServiceClient featsServiceClient = FeatServiceClient.get();
-
 			try {
-				RestResponse<List<String>> featResp = featsServiceClient.getFeats(displayCharacterName.toLowerCase());
+				RestResponse<List<String>> featResp = featServiceClient.getFeats(displayCharacterName.toLowerCase());
 				Optional<List<String>> featsOpt = featResp.get();
 				if (featsOpt.isPresent()) {
 					ObjectNode featObj = mapper.createObjectNode();
@@ -132,7 +147,6 @@ public class UtilsController {
 
 		// FRIENDS
 
-		FriendServiceClient friendServiceClient = FriendServiceClient.get();
 		RestResponse<FriendsData> friendsDataResp;
 		try {
 			friendsDataResp = friendServiceClient.getFriendData(username);
@@ -152,7 +166,6 @@ public class UtilsController {
 		out.set("notificationData", notificationsObj);
 
 		// PARTY
-		PartyServiceClient partyServiceClient = PartyServiceClient.get();
 
 		RestResponse<PartyAndInvitesData> partyAndInvites = partyServiceClient.getPartyAndInvites(username);
 		Optional<PartyAndInvitesData> partyAndInvitesOpt = partyAndInvites.get();
@@ -165,7 +178,6 @@ public class UtilsController {
 		}
 
 		// INSTANCE
-		InstanceServiceClient instanceServiceClient = InstanceServiceClient.get();
 		RestResponse<RelevantDungeonData> relevantDungeons = instanceServiceClient.getRelevantDungeons(username,
 				input.getVersion());
 		Optional<RelevantDungeonData> relevantDungeonDataOpt = relevantDungeons.get();

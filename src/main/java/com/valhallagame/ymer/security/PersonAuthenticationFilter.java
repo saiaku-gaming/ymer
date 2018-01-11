@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -24,15 +25,17 @@ import com.valhallagame.personserviceclient.model.SessionData;
 @Component
 public class PersonAuthenticationFilter extends GenericFilterBean {
 
-	private static CharacterServiceClient characterServiceClient = CharacterServiceClient.get();
-	private static PersonServiceClient personServiceClient = PersonServiceClient.get();
+	@Autowired
+	private CharacterServiceClient characterServiceClient;
+
+	@Autowired
+	private PersonServiceClient personServiceClient;
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-
 
 		final String auth = request.getHeader("Authorization");
 		if (auth != null) {
@@ -60,7 +63,7 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 
 			if (token.contains("debug") && !userSession.isPresent()) {
 				userSession = createDebugSession(response, token);
-				if(!userSession.isPresent()){
+				if (!userSession.isPresent()) {
 					return;
 				}
 			} else {
