@@ -26,4 +26,8 @@ public class ServerFeatController {
 		return JS.message(featServiceClient.addFeat(input.getCharacterName(), input.getFeatName()));
 	}
 
+	@RequestMapping(path = "/remove-feat", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> removeFeat(@RequestBody FeatParameter input) throws IOException {
+		return JS.message(featServiceClient.removeFeat(input.getCharacterName(), input.getFeatName()));
+	}
 }
