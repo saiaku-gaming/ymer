@@ -27,6 +27,7 @@ import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.featserviceclient.FeatServiceClient;
+import com.valhallagame.featserviceclient.message.GetFeatsParameter;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.friendserviceclient.model.FriendsData;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
@@ -122,7 +123,7 @@ public class UtilsController {
 			// FEATS
 
 			try {
-				RestResponse<List<String>> featResp = featServiceClient.getFeats(displayCharacterName.toLowerCase());
+				RestResponse<List<String>> featResp = featServiceClient.getFeats(new GetFeatsParameter(displayCharacterName));
 				Optional<List<String>> featsOpt = featResp.get();
 				if (featsOpt.isPresent()) {
 					ObjectNode featObj = mapper.createObjectNode();
