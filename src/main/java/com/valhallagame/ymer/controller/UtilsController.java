@@ -115,6 +115,8 @@ public class UtilsController {
 					ObjectNode wardrobeObj = mapper.createObjectNode();
 					wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItemOpt.get()));
 					out.set("wardrobeData", wardrobeObj);
+				} else {
+					logger.error(wardrobeItemsResp.getErrorMessage());	
 				}
 			} catch (IOException e) {
 				logger.error("NO WARDROBE RUNNING");
