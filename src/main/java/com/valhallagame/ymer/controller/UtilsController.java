@@ -109,7 +109,7 @@ public class UtilsController {
 
 			try {
 				RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient
-						.getWardrobeItems(displayCharacterName.toLowerCase());
+						.getWardrobeItems(username);
 				Optional<List<String>> wardrobeItemOpt = wardrobeItemsResp.get();
 				if (wardrobeItemOpt.isPresent()) {
 					ObjectNode wardrobeObj = mapper.createObjectNode();
