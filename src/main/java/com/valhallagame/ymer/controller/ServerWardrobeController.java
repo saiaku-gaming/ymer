@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
-import com.valhallagame.ymer.message.WardrobeItemParameter;
+import com.valhallagame.wardrobeserviceclient.message.AddWardrobeItemParameter;
 
 @Controller
 @RequestMapping("/v1/server-wardrobe")
@@ -22,8 +22,8 @@ public class ServerWardrobeController {
 	WardrobeServiceClient wardrobeServiceClient;
 
 	@RequestMapping(path = "/add-wardrobe-item", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> addWardrobeItem(@RequestBody WardrobeItemParameter input) throws IOException {
-		return JS.message(wardrobeServiceClient.addWardrobeItem(input.getCharacterName(), input.getItemName()));
+	public ResponseEntity<JsonNode> addWardrobeItem(@RequestBody AddWardrobeItemParameter input) throws IOException {
+		return JS.message(wardrobeServiceClient.addWardrobeItem(input));
 	}
 
 }

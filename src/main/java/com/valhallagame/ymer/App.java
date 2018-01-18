@@ -56,7 +56,7 @@ public class App {
 		registration.setFilter(getPersonAuthenticationFilter());
 		registration.addUrlPatterns("/v1/friend/*", "/v1/party/*", "/v1/character/*", "/v1/person/logout",
 				"/v1/person/heartbeat", "/v1/utils/user-data", "/v1/wardrobe/*", "/v1/instance/*", "/v1/chat/*",
-				"/v1/feat/");
+				"/v1/feat/*");
 		registration.setName("personAuthenticationFilter");
 		registration.setOrder(1);
 		return registration;
