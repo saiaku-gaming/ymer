@@ -108,15 +108,14 @@ public class UtilsController {
 			// WARDROBE
 
 			try {
-				RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient
-						.getWardrobeItems(username);
+				RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient.getWardrobeItems(username);
 				Optional<List<String>> wardrobeItemOpt = wardrobeItemsResp.get();
 				if (wardrobeItemOpt.isPresent()) {
 					ObjectNode wardrobeObj = mapper.createObjectNode();
 					wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItemOpt.get()));
 					out.set("wardrobeData", wardrobeObj);
 				} else {
-					logger.error(wardrobeItemsResp.getErrorMessage());	
+					logger.error(wardrobeItemsResp.getErrorMessage());
 				}
 			} catch (IOException e) {
 				logger.error("NO WARDROBE RUNNING");
@@ -125,12 +124,15 @@ public class UtilsController {
 			// FEATS
 
 			try {
-				RestResponse<List<String>> featResp = featServiceClient.getFeats(new GetFeatsParameter(displayCharacterName));
+				RestResponse<List<String>> featResp = featServiceClient
+						.getFeats(new GetFeatsParameter(optCharacter.get().getCharacterName()));
 				Optional<List<String>> featsOpt = featResp.get();
 				if (featsOpt.isPresent()) {
 					ObjectNode featObj = mapper.createObjectNode();
 					featObj.set("feats", mapper.valueToTree(featsOpt.get()));
 					out.set("featData", featObj);
+				} else {
+					logger.error("message: {}, code: {}", featResp.getErrorMessage(), featResp.getStatusCode());
 				}
 			} catch (IOException e) {
 				logger.error("NO FEATS RUNNING");
