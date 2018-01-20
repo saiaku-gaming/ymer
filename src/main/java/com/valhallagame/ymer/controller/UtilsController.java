@@ -92,6 +92,7 @@ public class UtilsController {
 		if (optCharacter.isPresent()) {
 			String displayCharacterName = optCharacter.map(CharacterData::getDisplayCharacterName).orElse("");
 			out.set("displayCharacterName", new TextNode(displayCharacterName));
+			out.set("characterName", new TextNode(optCharacter.get().getCharacterName()));
 
 			// ITEMS
 
