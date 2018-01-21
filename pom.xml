@@ -49,7 +49,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.valhallagame.valhalla</groupId>
-			<artifactId>skill-service-client</artifactId>
+			<artifactId>trait-service-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

@@ -17,29 +17,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
-import com.valhallagame.skillserviceclient.SkillServiceClient;
+import com.valhallagame.traitserviceclient.TraitServiceClient;
 
 @Controller
-@RequestMapping("/v1/skill")
-public class SkillController {
+@RequestMapping("/v1/trait")
+public class TraitController {
 
 	@Autowired
-	SkillServiceClient skillServiceClient;
+	TraitServiceClient traitServiceClient;
 
-	@RequestMapping(path = "/get-skills", method = RequestMethod.GET)
-	public ResponseEntity<JsonNode> getSkills(@RequestAttribute("username") String username) throws IOException {
+	@RequestMapping(path = "/get-traits", method = RequestMethod.GET)
+	public ResponseEntity<JsonNode> getTraits(@RequestAttribute("username") String username) throws IOException {
 		
-		RestResponse<List<String>> skillsResp = skillServiceClient.getSkills(username);
+		RestResponse<List<String>> traitsResp = traitServiceClient.getTraits(username);
 		
-		if(skillsResp.isOk()) {
-			Optional<List<String>> opt = skillsResp.get();
+		if(traitsResp.isOk()) {
+			Optional<List<String>> opt = traitsResp.get();
 			if(opt.isPresent()) {
 				List<String> list = opt.get();
 				Map<String, List<String>> out = new HashMap<>();
-				out.put("skills", list);
+				out.put("traits", list);
 				return JS.message(HttpStatus.OK, out);	
 			}
 		} 
-		return JS.message(skillsResp);
+		return JS.message(traitsResp);
 	}
 }

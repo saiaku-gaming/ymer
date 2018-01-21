@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
-import com.valhallagame.skillserviceclient.SkillServiceClient;
-import com.valhallagame.skillserviceclient.message.AddSkillParameter;
+import com.valhallagame.traitserviceclient.TraitServiceClient;
+import com.valhallagame.traitserviceclient.message.AddTraitParameter;
 
 @Controller
 @RequestMapping("/v1/server-wardrobe")
-public class ServerSkillController {
+public class ServerTraitController {
 
 	@Autowired
-	SkillServiceClient skillServiceClient;
+	TraitServiceClient traitServiceClient;
 
-	@RequestMapping(path = "/add-skill", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> addWardrobeItem(@RequestBody AddSkillParameter input) throws IOException {
-		return JS.message(skillServiceClient.addSkill(input));
+	@RequestMapping(path = "/add-trait", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> addWardrobeItem(@RequestBody AddTraitParameter input) throws IOException {
+		return JS.message(traitServiceClient.addTrait(input));
 	}
 
 }

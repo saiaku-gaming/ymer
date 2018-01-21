@@ -14,8 +14,8 @@ import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
+import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
-import com.valhallagame.skillserviceclient.SkillServiceClient;
 
 @Configuration
 @Profile("production")
@@ -82,8 +82,8 @@ public class ProdConfig {
 	}
 	
 	@Bean
-	public SkillServiceClient skillServiceClient() {
-		SkillServiceClient.init("http://skill-service:" + DefaultServicePortMappings.SKILL_SERVICE_PORT);
-		return SkillServiceClient.get();
+	public TraitServiceClient traitServiceClient() {
+		TraitServiceClient.init("http://trait-service:" + DefaultServicePortMappings.TRAIT_SERVICE_PORT);
+		return TraitServiceClient.get();
 	}
 }

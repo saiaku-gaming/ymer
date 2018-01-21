@@ -34,7 +34,7 @@ import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
-import com.valhallagame.skillserviceclient.SkillServiceClient;
+import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 import com.valhallagame.ymer.message.VersionParameter;
 
@@ -69,7 +69,7 @@ public class UtilsController {
 	private FeatServiceClient featServiceClient;
 	
 	@Autowired
-	private SkillServiceClient skillServiceClient;
+	private TraitServiceClient traitServiceClient;
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
 	@ResponseBody
@@ -126,20 +126,20 @@ public class UtilsController {
 				logger.error("NO WARDROBE RUNNING");
 			}
 
-			// SKILL
+			// TRAIT
 
 			try {
-				RestResponse<List<String>> skillsResp = skillServiceClient.getSkills(username);
-				Optional<List<String>> skillsOpt = skillsResp.get();
-				if (skillsOpt.isPresent()) {
-					ObjectNode skillsObj = mapper.createObjectNode();
-					skillsObj.set("skills", mapper.valueToTree(skillsOpt.get()));
-					out.set("skillData", skillsObj);
+				RestResponse<List<String>> traitsResp = traitServiceClient.getTraits(username);
+				Optional<List<String>> traitsOpt = traitsResp.get();
+				if (traitsOpt.isPresent()) {
+					ObjectNode traitsObj = mapper.createObjectNode();
+					traitsObj.set("traits", mapper.valueToTree(traitsOpt.get()));
+					out.set("traitData", traitsObj);
 				} else {
-					logger.error(skillsResp.getErrorMessage());
+					logger.error(traitsResp.getErrorMessage());
 				}
 			} catch (IOException e) {
-				logger.error("NO WARDROBE RUNNING");
+				logger.error("NO TRAITS RUNNING");
 			}
 			
 			
@@ -165,12 +165,6 @@ public class UtilsController {
 
 		// USERNAME
 		out.set("username", new TextNode(username));
-
-		// ACH -- deprecated
-		ObjectNode achievementsObj = mapper.createObjectNode();
-		ArrayNode achievementsArr = mapper.createArrayNode();
-		achievementsObj.set("achievements", achievementsArr);
-		out.set("achievementData", achievementsObj);
 
 		// FRIENDS
 
@@ -216,7 +210,6 @@ public class UtilsController {
 			out.set("instanceData", partyObj);
 		}
 
-		out.set("skillData", mapper.createObjectNode());
 		return JS.message(HttpStatus.OK, out);
 	}
 

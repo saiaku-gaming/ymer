@@ -11,7 +11,7 @@ dropdb --if-exists -U postgres instance_container_service
 dropdb --if-exists -U postgres notification_service
 dropdb --if-exists -U postgres feat_service
 dropdb --if-exists -U postgres statistics_service
-dropdb --if-exists -U postgres skill_service
+dropdb --if-exists -U postgres trait_service
 
 createdb -U postgres -O valhalla person_service
 createdb -U postgres -O valhalla character_service
@@ -23,4 +23,4 @@ createdb -U postgres -O valhalla instance_container_service
 createdb -U postgres -O valhalla notification_service
 createdb -U postgres -O valhalla feat_service
 createdb -U postgres -O valhalla statistics_service
-createdb -U postgres -O valhalla skill_service
+createdb -U postgres -O valhalla trait_service
