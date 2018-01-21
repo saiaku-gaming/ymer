@@ -14,6 +14,7 @@ import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
+import com.valhallagame.skillserviceclient.SkillServiceClient;
 
 @Configuration
 @Profile("default")
@@ -66,5 +67,10 @@ public class DevConfig {
 	@Bean
 	public StatisticsServiceClient statisticsServiceClient() {
 		return StatisticsServiceClient.get();
+	}
+	
+	@Bean
+	public SkillServiceClient skillServiceClient() {
+		return SkillServiceClient.get();
 	}
 }

@@ -34,6 +34,7 @@ import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
+import com.valhallagame.skillserviceclient.SkillServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 import com.valhallagame.ymer.message.VersionParameter;
 
@@ -66,6 +67,9 @@ public class UtilsController {
 
 	@Autowired
 	private FeatServiceClient featServiceClient;
+	
+	@Autowired
+	private SkillServiceClient skillServiceClient;
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
 	@ResponseBody
@@ -122,6 +126,23 @@ public class UtilsController {
 				logger.error("NO WARDROBE RUNNING");
 			}
 
+			// SKILL
+
+			try {
+				RestResponse<List<String>> skillsResp = skillServiceClient.getSkills(username);
+				Optional<List<String>> skillsOpt = skillsResp.get();
+				if (skillsOpt.isPresent()) {
+					ObjectNode skillsObj = mapper.createObjectNode();
+					skillsObj.set("skills", mapper.valueToTree(skillsOpt.get()));
+					out.set("skillData", skillsObj);
+				} else {
+					logger.error(skillsResp.getErrorMessage());
+				}
+			} catch (IOException e) {
+				logger.error("NO WARDROBE RUNNING");
+			}
+			
+			
 			// FEATS
 
 			try {

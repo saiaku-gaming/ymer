@@ -15,6 +15,7 @@ import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
+import com.valhallagame.skillserviceclient.SkillServiceClient;
 
 @Configuration
 @Profile("production")
@@ -78,5 +79,11 @@ public class ProdConfig {
 	public StatisticsServiceClient statisticsServiceClient() {
 		StatisticsServiceClient.init("http://statistics-service:" + DefaultServicePortMappings.STATISTICS_SERVICE_PORT);
 		return StatisticsServiceClient.get();
+	}
+	
+	@Bean
+	public SkillServiceClient skillServiceClient() {
+		SkillServiceClient.init("http://skill-service:" + DefaultServicePortMappings.SKILL_SERVICE_PORT);
+		return SkillServiceClient.get();
 	}
 }
