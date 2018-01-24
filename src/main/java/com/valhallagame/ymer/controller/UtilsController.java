@@ -68,7 +68,7 @@ public class UtilsController {
 
 	@Autowired
 	private FeatServiceClient featServiceClient;
-	
+
 	@Autowired
 	private TraitServiceClient traitServiceClient;
 
@@ -90,128 +90,119 @@ public class UtilsController {
 			@RequestBody VersionParameter input) throws IOException {
 		ObjectNode out = mapper.createObjectNode();
 
-		// CHARACTER
-
-		RestResponse<CharacterData> selectedCharacter = characterServiceClient.getSelectedCharacter(username);
-		Optional<CharacterData> optCharacter = selectedCharacter.get();
-		if (optCharacter.isPresent()) {
-			String displayCharacterName = optCharacter.map(CharacterData::getDisplayCharacterName).orElse("");
-			out.set("displayCharacterName", new TextNode(displayCharacterName));
-			out.set("characterName", new TextNode(optCharacter.get().getCharacterName()));
-
-			// ITEMS
-
-			CharacterData character = optCharacter.get();
-			List<EquippedItem> equippedItems = new ArrayList<>();
-			equippedItems.add(new EquippedItem("MAINHAND", character.getMainhandArmament(), null));
-			equippedItems.add(new EquippedItem("OFFHAND", character.getOffHandArmament(), null));
-			equippedItems.add(new EquippedItem("CHEST", null, character.getChestItem()));
-
-			ObjectNode itemHandlerObj = mapper.createObjectNode();
-			itemHandlerObj.set("equippedItems", mapper.valueToTree(equippedItems));
-			out.set("itemHandlerData", itemHandlerObj);
-
-			// WARDROBE
-
-			try {
-				RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient.getWardrobeItems(username);
-				Optional<List<String>> wardrobeItemOpt = wardrobeItemsResp.get();
-				if (wardrobeItemOpt.isPresent()) {
-					ObjectNode wardrobeObj = mapper.createObjectNode();
-					wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItemOpt.get()));
-					out.set("wardrobeData", wardrobeObj);
-				} else {
-					logger.error(wardrobeItemsResp.getErrorMessage());
-				}
-			} catch (IOException e) {
-				logger.error("NO WARDROBE RUNNING");
-			}
-
-			// TRAIT
-
-			try {
-				RestResponse<List<TraitData>> traitsResp = traitServiceClient.getTraits(username);
-				Optional<List<TraitData>> traitsOpt = traitsResp.get();
-				if (traitsOpt.isPresent()) {
-					ObjectNode traitsObj = mapper.createObjectNode();
-					traitsObj.set("traits", mapper.valueToTree(traitsOpt.get()));
-					out.set("traitData", traitsObj);
-				} else {
-					logger.error(traitsResp.getErrorMessage());
-				}
-			} catch (IOException e) {
-				logger.error("NO TRAITS RUNNING", e);
-			}
-			
-			
-			// FEATS
-
-			try {
-				RestResponse<List<String>> featResp = featServiceClient
-						.getFeats(new GetFeatsParameter(optCharacter.get().getCharacterName()));
-				Optional<List<String>> featsOpt = featResp.get();
-				if (featsOpt.isPresent()) {
-					ObjectNode featObj = mapper.createObjectNode();
-					featObj.set("feats", mapper.valueToTree(featsOpt.get()));
-					out.set("featData", featObj);
-				} else {
-					logger.error("message: {}, code: {}", featResp.getErrorMessage(), featResp.getStatusCode());
-				}
-			} catch (IOException e) {
-				logger.error("NO FEATS RUNNING");
-			}
-		} else {
-			logger.error("Missing character!!!");
-		}
-
-		// USERNAME
 		out.set("username", new TextNode(username));
 
-		// FRIENDS
+		CharacterData character = getCharacterData(username);
+		out.set("displayCharacterName", new TextNode(character.getDisplayCharacterName()));
+		out.set("characterName", new TextNode(character.getCharacterName()));
+		
+		out.set("itemHandlerData", getItemHanderData(character));
+		out.set("wardrobeData", getWardrobeData(username));
+		out.set("traitData", getTraitData(username));
+		out.set("featData", getFeatsData(character));
+		out.set("friendsData", getFriendsData(username));
+		out.set("partyData", getPartyData(username));
+		out.set("instanceData", getInstanceData(username, input));
+		
+		return JS.message(HttpStatus.OK, out);
+	}
 
-		RestResponse<FriendsData> friendsDataResp;
-		try {
-			friendsDataResp = friendServiceClient.getFriendData(username);
-			Optional<FriendsData> friendsDataOpt = friendsDataResp.get();
-			if (friendsDataOpt.isPresent()) {
-				FriendsData friendsData = friendsDataOpt.get();
-				out.set("friendsData", mapper.valueToTree(friendsData));
-			}
-		} catch (IOException e2) {
-			logger.error("NO FRIENDS RUNNING");
+	private CharacterData getCharacterData(String username) throws IOException {
+		RestResponse<CharacterData> characterResp = characterServiceClient.getSelectedCharacter(username);
+		Optional<CharacterData> optCharacter = characterResp.get();
+		if (optCharacter.isPresent()) {
+			return optCharacter.get();
+		} else {
+			throw new IOException(characterResp.getErrorMessage());
 		}
+	}
 
-		// NOTIFICATIONS
-		ObjectNode notificationsObj = mapper.createObjectNode();
-		ArrayNode notificationsArr = mapper.createArrayNode();
-		notificationsObj.set("notifications", notificationsArr);
-		out.set("notificationData", notificationsObj);
-
-		// PARTY
-
-		RestResponse<PartyAndInvitesData> partyAndInvites = partyServiceClient.getPartyAndInvites(username);
-		Optional<PartyAndInvitesData> partyAndInvitesOpt = partyAndInvites.get();
-		if (partyAndInvitesOpt.isPresent()) {
-			PartyAndInvitesData pai = partyAndInvitesOpt.get();
-			ObjectNode partyObj = mapper.createObjectNode();
-			partyObj.set("party", mapper.valueToTree(pai.getParty().orElse(null)));
-			partyObj.set("receivedInvites", mapper.valueToTree(pai.getReceivedInvites()));
-			out.set("partyData", partyObj);
-		}
-
-		// INSTANCE
-		RestResponse<RelevantDungeonData> relevantDungeons = instanceServiceClient.getRelevantDungeons(username,
+	private ObjectNode getInstanceData(String username, VersionParameter input) throws IOException {
+		RestResponse<RelevantDungeonData> relevantDungeonsResp = instanceServiceClient.getRelevantDungeons(username,
 				input.getVersion());
-		Optional<RelevantDungeonData> relevantDungeonDataOpt = relevantDungeons.get();
+		Optional<RelevantDungeonData> relevantDungeonDataOpt = relevantDungeonsResp.get();
 		if (relevantDungeonDataOpt.isPresent()) {
 			RelevantDungeonData relevantDungeonData = relevantDungeonDataOpt.get();
 			ObjectNode partyObj = mapper.createObjectNode();
 			partyObj.set("relevantDungeons", mapper.valueToTree(relevantDungeonData.getRelevantDungeons()));
 			partyObj.set("queuePlacements", mapper.valueToTree(relevantDungeonData.getQueuePlacements()));
-			out.set("instanceData", partyObj);
+			return partyObj;
+		} else {
+			throw new IOException(relevantDungeonsResp.getErrorMessage());
 		}
+	}
 
-		return JS.message(HttpStatus.OK, out);
+	private ObjectNode getPartyData(String username) throws IOException {
+		RestResponse<PartyAndInvitesData> partyAndInvitesResp = partyServiceClient.getPartyAndInvites(username);
+		Optional<PartyAndInvitesData> partyAndInvitesOpt = partyAndInvitesResp.get();
+		if (partyAndInvitesOpt.isPresent()) {
+			PartyAndInvitesData pai = partyAndInvitesOpt.get();
+			ObjectNode partyObj = mapper.createObjectNode();
+			partyObj.set("party", mapper.valueToTree(pai.getParty().orElse(null)));
+			partyObj.set("receivedInvites", mapper.valueToTree(pai.getReceivedInvites()));
+			return partyObj;
+		} else {
+			throw new IOException(partyAndInvitesResp.getErrorMessage());
+		}
+	}
+
+	private JsonNode getFriendsData(String username) throws IOException {
+		RestResponse<FriendsData> friendsDataResp = friendServiceClient.getFriendData(username);
+		Optional<FriendsData> friendsDataOpt = friendsDataResp.get();
+		if (friendsDataOpt.isPresent()) {
+			FriendsData friendsData = friendsDataOpt.get();
+			return mapper.valueToTree(friendsData);
+		} else {
+			throw new IOException(friendsDataResp.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getFeatsData(CharacterData character) throws IOException {
+		RestResponse<List<String>> featResp = featServiceClient
+				.getFeats(new GetFeatsParameter(character.getCharacterName()));
+		Optional<List<String>> featsOpt = featResp.get();
+		if (featsOpt.isPresent()) {
+			ObjectNode featObj = mapper.createObjectNode();
+			featObj.set("feats", mapper.valueToTree(featsOpt.get()));
+			return featObj;
+		} else {
+			throw new IOException(featResp.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getTraitData(String username) throws IOException {
+		RestResponse<List<TraitData>> traitsResp = traitServiceClient.getTraits(username);
+		Optional<List<TraitData>> traitsOpt = traitsResp.get();
+		if (traitsOpt.isPresent()) {
+			ObjectNode traitsObj = mapper.createObjectNode();
+			traitsObj.set("traits", mapper.valueToTree(traitsOpt.get()));
+			return traitsObj;
+		} else {
+			throw new IOException(traitsResp.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getWardrobeData(String username) throws IOException {
+		RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient.getWardrobeItems(username);
+		Optional<List<String>> wardrobeItemOpt = wardrobeItemsResp.get();
+		if (wardrobeItemOpt.isPresent()) {
+			ObjectNode wardrobeObj = mapper.createObjectNode();
+			wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItemOpt.get()));
+			return wardrobeObj;
+		} else {
+			throw new IOException(wardrobeItemsResp.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getItemHanderData(CharacterData character) {
+		List<EquippedItem> equippedItems = new ArrayList<>();
+		equippedItems.add(new EquippedItem("MAINHAND", character.getMainhandArmament(), null));
+		equippedItems.add(new EquippedItem("OFFHAND", character.getOffHandArmament(), null));
+		equippedItems.add(new EquippedItem("CHEST", null, character.getChestItem()));
+
+		ObjectNode itemHandlerObj = mapper.createObjectNode();
+		itemHandlerObj.set("equippedItems", mapper.valueToTree(equippedItems));
+		return itemHandlerObj;
 	}
 
 	@Data
