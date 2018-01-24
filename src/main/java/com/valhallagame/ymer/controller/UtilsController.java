@@ -35,6 +35,7 @@ import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
+import com.valhallagame.traitserviceclient.message.TraitData;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 import com.valhallagame.ymer.message.VersionParameter;
 
@@ -129,8 +130,8 @@ public class UtilsController {
 			// TRAIT
 
 			try {
-				RestResponse<List<String>> traitsResp = traitServiceClient.getTraits(username);
-				Optional<List<String>> traitsOpt = traitsResp.get();
+				RestResponse<List<TraitData>> traitsResp = traitServiceClient.getTraits(username);
+				Optional<List<TraitData>> traitsOpt = traitsResp.get();
 				if (traitsOpt.isPresent()) {
 					ObjectNode traitsObj = mapper.createObjectNode();
 					traitsObj.set("traits", mapper.valueToTree(traitsOpt.get()));
@@ -139,7 +140,7 @@ public class UtilsController {
 					logger.error(traitsResp.getErrorMessage());
 				}
 			} catch (IOException e) {
-				logger.error("NO TRAITS RUNNING");
+				logger.error("NO TRAITS RUNNING", e);
 			}
 			
 			

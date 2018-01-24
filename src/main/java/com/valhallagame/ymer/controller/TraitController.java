@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
+import com.valhallagame.traitserviceclient.message.TraitData;
 import com.valhallagame.traitserviceclient.message.UpdateTraitBarIndexParameter;
 
 @Controller
@@ -31,13 +32,13 @@ public class TraitController {
 	@RequestMapping(path = "/get-traits", method = RequestMethod.GET)
 	public ResponseEntity<JsonNode> getTraits(@RequestAttribute("username") String username) throws IOException {
 
-		RestResponse<List<String>> traitsResp = traitServiceClient.getTraits(username);
+		RestResponse<List<TraitData>> traitsResp = traitServiceClient.getTraits(username);
 
 		if (traitsResp.isOk()) {
-			Optional<List<String>> opt = traitsResp.get();
+			Optional<List<TraitData>> opt = traitsResp.get();
 			if (opt.isPresent()) {
-				List<String> list = opt.get();
-				Map<String, List<String>> out = new HashMap<>();
+				List<TraitData> list = opt.get();
+				Map<String, List<TraitData>> out = new HashMap<>();
 				out.put("traits", list);
 				return JS.message(HttpStatus.OK, out);
 			}
