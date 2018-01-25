@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
@@ -46,8 +43,6 @@ import lombok.NoArgsConstructor;
 @Controller
 @RequestMapping(path = "/v1/utils")
 public class UtilsController {
-
-	private static final Logger logger = LoggerFactory.getLogger(UtilsController.class);
 
 	private static ObjectMapper mapper = new ObjectMapper();
 

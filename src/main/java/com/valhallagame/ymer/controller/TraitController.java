@@ -20,7 +20,7 @@ import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.traitserviceclient.message.TraitData;
-import com.valhallagame.traitserviceclient.message.UpdateTraitBarIndexParameter;
+import com.valhallagame.traitserviceclient.message.SaveTraitBarIndexParameter;
 
 @Controller
 @RequestMapping("/v1/trait")
@@ -46,10 +46,10 @@ public class TraitController {
 		return JS.message(traitsResp);
 	}
 
-	@RequestMapping(path = "/update-trait-bar-index", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> updateTraitBarIndex(@RequestAttribute("username") String username,
-			@RequestBody UpdateTraitBarIndexParameter input) throws IOException {
+	@RequestMapping(path = "/save-trait-bar-index", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> saveTraitBarIndex(@RequestAttribute("username") String username,
+			@RequestBody SaveTraitBarIndexParameter input) throws IOException {
 		input.setUsername(username);
-		return JS.message(traitServiceClient.updateTraitBarIndex(input));
+		return JS.message(traitServiceClient.saveTraitBarIndex(input));
 	}
 }
