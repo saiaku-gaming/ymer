@@ -15,7 +15,7 @@ import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.traitserviceclient.message.AddTraitParameter;
 
 @Controller
-@RequestMapping("/v1/server-wardrobe")
+@RequestMapping("/v1/server-trait")
 public class ServerTraitController {
 
 	@Autowired
