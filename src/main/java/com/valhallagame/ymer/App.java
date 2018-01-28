@@ -22,10 +22,10 @@ public class App {
 
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		if (args.length > 0) {
-			if(logger.isInfoEnabled()) {
-				logger.info("Args passed in: {}",  Arrays.asList(args).toString());
+			if (logger.isInfoEnabled()) {
+				logger.info("Args passed in: {}", Arrays.asList(args).toString());
 			}
 			// override system properties with local properties
 
