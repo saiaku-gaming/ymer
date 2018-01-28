@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
-import com.valhallagame.characterserviceclient.message.DeleteCharacterParameter;
-import com.valhallagame.characterserviceclient.message.SaveEquippedItemsParameter;
 import com.valhallagame.common.JS;
 import com.valhallagame.ymer.message.character.CharacterAvailableParameter;
 import com.valhallagame.ymer.message.character.CreateCharacterParameter;
+import com.valhallagame.ymer.message.character.DeleteCharacterParameter;
 import com.valhallagame.ymer.message.character.GetCharacterParameter;
+import com.valhallagame.ymer.message.character.SaveEquippedItemsParameter;
 import com.valhallagame.ymer.message.character.SelectCharacterParameter;
 
 @Controller
@@ -44,7 +44,7 @@ public class CharacterController {
 		return JS.message(characterServiceClient.createCharacter(username, input.getDisplayCharacterName()));
 	}
 
-	@RequestMapping(path = "/delete", method = RequestMethod.POST)
+	@RequestMapping(path = "/delete-character", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> delete(@RequestAttribute("username") String username,
 			@RequestBody DeleteCharacterParameter input) throws IOException {
 		return JS.message(characterServiceClient.deleteCharacter(username, input.getCharacterName()));
@@ -62,16 +62,10 @@ public class CharacterController {
 		return JS.message(characterServiceClient.selectCharacter(username, input.getCharacterName()));
 	}
 
-	@RequestMapping(path = "/get-selected-character", method = RequestMethod.GET)
-	public ResponseEntity<JsonNode> getSelectedCharacter(@RequestAttribute("username") String username)
-			throws IOException {
-		return JS.message(characterServiceClient.getSelectedCharacter(username));
-	}
-
 	@RequestMapping(path = "/save-equipped-items", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> saveEquippedItems(@RequestAttribute("username") String username,
 			@RequestBody SaveEquippedItemsParameter input) throws IOException {
-		return JS.message(characterServiceClient.saveEquippedItems(input.getUsername(), input.getCharacterName(),
+		return JS.message(characterServiceClient.saveEquippedItems(username, input.getCharacterName(),
 				input.getEquippedItems()));
 	}
 }

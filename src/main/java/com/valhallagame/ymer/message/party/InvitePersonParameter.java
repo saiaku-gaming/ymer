@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public final class InvitePersonParameter {
   @NotNull
   @CheckLowercase
-  String username;
+  String targetUsername;
 }

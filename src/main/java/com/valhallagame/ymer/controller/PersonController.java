@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.personserviceclient.PersonServiceClient;
-import com.valhallagame.personserviceclient.message.CheckLoginParameter;
-import com.valhallagame.ymer.message.person.GetPersonParameter;
 import com.valhallagame.ymer.message.person.LoginParameter;
 import com.valhallagame.ymer.message.person.SignupParameter;
 import com.valhallagame.ymer.message.person.UsernameAvailableParameter;
@@ -28,12 +26,6 @@ public class PersonController {
 
 	@Autowired
 	private PersonServiceClient personServiceClient;
-
-	@RequestMapping(path = "/get-person", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<JsonNode> getPerson(@RequestBody GetPersonParameter input) throws IOException {
-		return JS.message(personServiceClient.getPerson(input.getUsername()));
-	}
 
 	@RequestMapping(path = "/signup", method = RequestMethod.POST)
 	@ResponseBody
@@ -53,15 +45,10 @@ public class PersonController {
 		return JS.message(personServiceClient.logout(username));
 	}
 
-	@RequestMapping(path = "/check-login", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<JsonNode> checkLogin(@RequestBody CheckLoginParameter input) throws IOException {
-		return JS.message(personServiceClient.checkLogin(input.getUsername()));
-	}
-
 	@RequestMapping(path = "/username-available", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<JsonNode> usernameAvailable(@RequestBody UsernameAvailableParameter input) throws IOException {
+	public ResponseEntity<JsonNode> usernameAvailable(@RequestBody UsernameAvailableParameter input)
+			throws IOException {
 		return JS.message(personServiceClient.usernameAvailable(input.getDisplayUsername()));
 	}
 

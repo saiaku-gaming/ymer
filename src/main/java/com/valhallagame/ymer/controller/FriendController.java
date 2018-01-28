@@ -16,13 +16,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.ymer.message.friend.AcceptCharacterInviteParameter;
-import com.valhallagame.ymer.message.friend.AcceptPersonInviteParameter;
 import com.valhallagame.ymer.message.friend.DeclineCharacterParameter;
-import com.valhallagame.ymer.message.friend.DeclinePersonInviteParameter;
-import com.valhallagame.ymer.message.friend.InviteCharacterParameter;
-import com.valhallagame.ymer.message.friend.InvitePersonParameter;
 import com.valhallagame.ymer.message.friend.RemoveCharacterFriendParameter;
-import com.valhallagame.ymer.message.friend.RemovePersonFriendParameter;
+import com.valhallagame.ymer.message.friend.SendCharacterInviteParameter;
 
 @Controller
 @RequestMapping("/v1/friend")
@@ -36,49 +32,27 @@ public class FriendController {
 		return JS.message(friendServiceClient.getFriendData(username));
 	}
 
-	@RequestMapping(path = "/send-person-invite", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> sendPersonInvite(@RequestAttribute("username") String username,
-			@Valid @RequestBody InvitePersonParameter input) throws IOException {
-		return JS.message(friendServiceClient.sendPersonInvite(username, input.getUsername()));
-	}
-
 	@RequestMapping(path = "/send-character-invite", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> sendCharacterInvite(@RequestAttribute("username") String username,
-			@Valid @RequestBody InviteCharacterParameter input) throws IOException {
+			@Valid @RequestBody SendCharacterInviteParameter input) throws IOException {
 		return JS.message(
-				friendServiceClient.sendCharacterInvite(username, input.getCharacterName()));
+				friendServiceClient.sendCharacterInvite(username, input.getDisplayCharacterName()));
 	}
 
-	@RequestMapping(path = "/accept-person-invite", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> acceptPersonInvite(@RequestAttribute("username") String username,
-			@Valid @RequestBody AcceptPersonInviteParameter input) throws IOException {
-		return JS.message(friendServiceClient.acceptPersonInvite(username, input.getUsername()));
-	}
 
 	@RequestMapping(path = "/accept-character-invite", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> acceptCharacterInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody AcceptCharacterInviteParameter input) throws IOException {
 		return JS.message( 
-				friendServiceClient.acceptCharacterInvite(username, input.getCharacterName()));
+				friendServiceClient.acceptCharacterInvite(username, input.getDisplayCharacterName()));
 	}
 
-	@RequestMapping(path = "/decline-person-invite", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> declinePersonInvite(@RequestAttribute("username") String username,
-			@Valid @RequestBody DeclinePersonInviteParameter input) throws IOException {
-		return JS.message(friendServiceClient.declinePersonInvite(username, input.getUsername()));
-	}
 
 	@RequestMapping(path = "/decline-character-invite", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> declineCharacterInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody DeclineCharacterParameter input) throws IOException {
 		return JS.message(
 				friendServiceClient.declineCharacterInvite(username, input.getCharacterName()));
-	}
-
-	@RequestMapping(path = "/remove-person-friend", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> removePersonFriend(@RequestAttribute("username") String username,
-			@Valid @RequestBody RemovePersonFriendParameter input) throws IOException {
-		return JS.message(friendServiceClient.removePersonFriend(username, input.getUsername()));
 	}
 
 	@RequestMapping(path = "/remove-character-friend", method = RequestMethod.POST)

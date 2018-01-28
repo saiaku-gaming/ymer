@@ -17,14 +17,11 @@ import com.valhallagame.common.JS;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.ymer.message.party.AcceptParameter;
 import com.valhallagame.ymer.message.party.CancelCharacterInviteParameter;
-import com.valhallagame.ymer.message.party.CancelPersonInviteParameter;
 import com.valhallagame.ymer.message.party.DeclineParameter;
 import com.valhallagame.ymer.message.party.InviteCharacterParameter;
 import com.valhallagame.ymer.message.party.InvitePersonParameter;
 import com.valhallagame.ymer.message.party.KickCharacterFromPartyParameter;
-import com.valhallagame.ymer.message.party.KickPersonFromPartyParameter;
 import com.valhallagame.ymer.message.party.PromoteCharacterToLeaderParameter;
-import com.valhallagame.ymer.message.party.PromotePersonToLeaderParameter;
 
 @Controller
 @RequestMapping("/v1/party")
@@ -41,26 +38,19 @@ public class PartyController {
 	@RequestMapping(path = "/invite-person", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> sendInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody InvitePersonParameter input) throws IOException {
-		return JS.message(partyServiceClient.invitePerson(username, input.getUsername()));
+		return JS.message(partyServiceClient.invitePerson(username, input.getTargetUsername()));
 	}
 
 	@RequestMapping(path = "/invite-character", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> sendInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody InviteCharacterParameter input) throws IOException {
-		return JS.message(partyServiceClient.inviteCharacter(username, input.getCharacterName()));
+		return JS.message(partyServiceClient.inviteCharacter(username, input.getDisplayCharacterName()));
 	}
 
 	@RequestMapping(path = "/cancel-character-invite", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> cancelCharacterInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody CancelCharacterInviteParameter input) throws IOException {
-		return JS.message(
-				partyServiceClient.cancelCharacterInvite(username, input.getCharacterName()));
-	}
-
-	@RequestMapping(path = "/cancel-person-invite", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> cancelPersonInvite(@RequestAttribute("username") String username,
-			@Valid @RequestBody CancelPersonInviteParameter input) throws IOException {
-		return JS.message(partyServiceClient.cancelPersonInvite(username, input.getUsername()));
+		return JS.message(partyServiceClient.cancelCharacterInvite(username, input.getDisplayCharacterName()));
 	}
 
 	@RequestMapping(path = "/accept-invite", method = RequestMethod.POST)
@@ -80,29 +70,15 @@ public class PartyController {
 		return JS.message(partyServiceClient.leaveParty(username));
 	}
 
-	@RequestMapping(path = "/promote-person-to-leader", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> promotePersonToLeader(@RequestAttribute("username") String username,
-			@Valid @RequestBody PromotePersonToLeaderParameter input) throws IOException {
-		return JS.message(partyServiceClient.promotePersonToLeader(username, input.getUsername()));
-	}
-
 	@RequestMapping(path = "/promote-character-to-leader", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> promoteCharacterToLeader(@RequestAttribute("username") String username,
 			@Valid @RequestBody PromoteCharacterToLeaderParameter input) throws IOException {
-		return JS.message(
-				partyServiceClient.promoteCharacterToLeader(username, input.getCharacterName()));
+		return JS.message(partyServiceClient.promoteCharacterToLeader(username, input.getDisplayCharacterName()));
 	}
 
 	@RequestMapping(path = "/kick-character-from-party", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> kickCharacterFromParty(@RequestAttribute("username") String username,
 			@Valid @RequestBody KickCharacterFromPartyParameter input) throws IOException {
-		return JS.message(
-				partyServiceClient.kickCharacterFromParty(username, input.getCharacterName()));
-	}
-
-	@RequestMapping(path = "/kick-person-from-party", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> kickPersonFromParty(@RequestAttribute("username") String username,
-			@Valid @RequestBody KickPersonFromPartyParameter input) throws IOException {
-		return JS.message(partyServiceClient.kickPersonFromParty(username, input.getUsername()));
+		return JS.message(partyServiceClient.kickCharacterFromParty(username, input.getDisplayCharacterName()));
 	}
 }

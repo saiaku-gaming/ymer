@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public final class AcceptCharacterInviteParameter {
   @NotNull
   @CheckLowercase
-  String characterName;
+  String displayCharacterName;
 }

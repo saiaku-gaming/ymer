@@ -1,4 +1,4 @@
-package com.valhallagame.ymer.message.party;
+package com.valhallagame.ymer.message.friend;
 
 import com.valhallagame.common.validation.CheckLowercase;
 import javax.validation.constraints.NotNull;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class CancelCharacterInviteParameter {
+public final class SendPersonInviteParameter {
   @NotNull
   @CheckLowercase
-  String displayCharacterName;
+  String username;
 }
