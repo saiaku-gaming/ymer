@@ -166,12 +166,10 @@ public class UtilsController {
 	}
 
 	private ObjectNode getTraitData(String username) throws IOException {
-		RestResponse<List<TraitData>> traitsResp = traitServiceClient.getTraits(username);
-		Optional<List<TraitData>> traitsOpt = traitsResp.get();
+		RestResponse<TraitData> traitsResp = traitServiceClient.getTraits(username);
+		Optional<TraitData> traitsOpt = traitsResp.get();
 		if (traitsOpt.isPresent()) {
-			ObjectNode traitsObj = mapper.createObjectNode();
-			traitsObj.set("traits", mapper.valueToTree(traitsOpt.get()));
-			return traitsObj;
+			return mapper.valueToTree(traitsOpt.get());
 		} else {
 			throw new IOException(traitsResp.getErrorMessage());
 		}
