@@ -2,7 +2,6 @@ package com.valhallagame.ymer.message.trait;
 
 import com.valhallagame.common.validation.CheckLowercase;
 import com.valhallagame.traitserviceclient.message.TraitType;
-import java.lang.String;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

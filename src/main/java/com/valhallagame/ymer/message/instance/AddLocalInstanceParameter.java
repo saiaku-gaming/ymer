@@ -1,7 +1,5 @@
 package com.valhallagame.ymer.message.instance;
 
-import java.lang.Integer;
-import java.lang.String;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

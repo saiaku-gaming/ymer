@@ -1,4 +1,4 @@
-package com.valhallagame.ymer.message.instance;
+package com.valhallagame.ymer.message.chat;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class GetHubParameter {
+public final class GeneralChatParameter {
   @NotNull
-  String version;
+  String message;
 }

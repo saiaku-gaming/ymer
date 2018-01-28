@@ -17,8 +17,8 @@ import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.message.GetHubParameter;
 import com.valhallagame.instanceserviceclient.message.GetRelevantDungeonsParameter;
 import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
-import com.valhallagame.ymer.message.GetDungeonConnectionParameter;
-import com.valhallagame.ymer.message.StartDungeonParameter;
+import com.valhallagame.ymer.message.instance.GetDungeonConnectionParameter;
+import com.valhallagame.ymer.message.instance.StartDungeonParameter;
 
 @Controller
 @RequestMapping("/v1/instance")

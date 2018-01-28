@@ -1,6 +1,5 @@
 package com.valhallagame.ymer.message.notification;
 
-import java.lang.String;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
