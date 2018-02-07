@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
-import com.valhallagame.traitserviceclient.message.SaveTraitBarIndexParameter;
+import com.valhallagame.ymer.message.trait.SaveTraitBarIndexParameter;
 
 @Controller
 @RequestMapping("/v1/trait")
 public class TraitController {
 
 	@Autowired
-	TraitServiceClient traitServiceClient;
+	private TraitServiceClient traitServiceClient;
 
 	@RequestMapping(path = "/get-traits", method = RequestMethod.GET)
 	public ResponseEntity<JsonNode> getTraits(@RequestAttribute("username") String username) throws IOException {
@@ -30,7 +30,6 @@ public class TraitController {
 	@RequestMapping(path = "/save-trait-bar-index", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> saveTraitBarIndex(@RequestAttribute("username") String username,
 			@RequestBody SaveTraitBarIndexParameter input) throws IOException {
-		input.setUsername(username);
-		return JS.message(traitServiceClient.saveTraitBarIndex(input));
+		return JS.message(traitServiceClient.saveTraitBarIndex(username, input.getName(), input.getBarIndex()));
 	}
 }
