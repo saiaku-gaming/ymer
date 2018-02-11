@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
-import com.valhallagame.traitserviceclient.message.AddTraitParameter;
+import com.valhallagame.traitserviceclient.message.LockTraitParameter;
+import com.valhallagame.traitserviceclient.message.UnlockTraitParameter;
 
 @Controller
 @RequestMapping("/v1/server-trait")
@@ -21,9 +22,13 @@ public class ServerTraitController {
 	@Autowired
 	TraitServiceClient traitServiceClient;
 
-	@RequestMapping(path = "/add-trait", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> addWardrobeItem(@RequestBody AddTraitParameter input) throws IOException {
-		return JS.message(traitServiceClient.addTrait(input));
+	@RequestMapping(path = "/unlock-trait", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> unlockTrait(@RequestBody UnlockTraitParameter input) throws IOException {
+		return JS.message(traitServiceClient.unlockTrait(input));
 	}
 
+	@RequestMapping(path = "/lock-trait", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> lockTrait(@RequestBody LockTraitParameter input) throws IOException {
+		return JS.message(traitServiceClient.lockTrait(input));
+	}
 }
