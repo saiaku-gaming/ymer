@@ -1,8 +1,7 @@
 package com.valhallagame.ymer.message.trait;
 
-import com.valhallagame.traitserviceclient.message.TraitBarItem;
+import com.valhallagame.common.validation.CheckLowercase;
 import com.valhallagame.traitserviceclient.message.TraitType;
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class TraitData {
+public final class LockTraitParameter {
   @NotNull
-  List<TraitType> unlockedTraits;
+  @CheckLowercase
+  String characterName;
 
   @NotNull
-  List<TraitBarItem> traitBarItems;
+  TraitType name;
 }
