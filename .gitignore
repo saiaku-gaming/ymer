@@ -25,3 +25,7 @@ hs_err_pid*
 .factorypath
 .project
 .settings/
+
+#intellij
+.idea/
+ymer.iml
