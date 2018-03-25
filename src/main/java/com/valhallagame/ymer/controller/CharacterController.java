@@ -59,7 +59,7 @@ public class CharacterController {
 	@RequestMapping(path = "/select-character", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> selectCharacter(@RequestAttribute("username") String username,
 			@RequestBody SelectCharacterParameter input) throws IOException {
-		return JS.message(characterServiceClient.selectCharacter(username, input.getCharacterName()));
+		return JS.message(characterServiceClient.selectCharacter(username, input.getDisplayCharacterName()));
 	}
 
 	@RequestMapping(path = "/save-equipped-items", method = RequestMethod.POST)
