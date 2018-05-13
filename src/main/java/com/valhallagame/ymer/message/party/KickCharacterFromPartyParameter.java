@@ -1,6 +1,5 @@
 package com.valhallagame.ymer.message.party;
 
-import com.valhallagame.common.validation.CheckLowercase;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public final class KickCharacterFromPartyParameter {
   @NotNull
-  @CheckLowercase
   String displayCharacterName;
 }
