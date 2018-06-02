@@ -1,8 +1,10 @@
 package com.valhallagame.ymer.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,6 @@ public class PublicIntanceController {
 	@RequestMapping(path = "/get-fleets", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<JsonNode> getFleets() throws IOException {
-		return JS.message(instanceServiceClient.getFleets());
+		return JS.message(HttpStatus.OK, instanceServiceClient.getFleets().get().orElse(new ArrayList<>()));
 	}
 }
