@@ -22,7 +22,7 @@ public class PublicIntanceController {
 	
 	@RequestMapping(path = "/get-fleets", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<JsonNode> getFleats() throws IOException {
+	public ResponseEntity<JsonNode> getFleets() throws IOException {
 		return JS.message(instanceServiceClient.getFleets());
 	}
 }
