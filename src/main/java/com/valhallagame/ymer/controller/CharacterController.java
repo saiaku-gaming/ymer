@@ -47,7 +47,7 @@ public class CharacterController {
 	@RequestMapping(path = "/delete-character", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> delete(@RequestAttribute("username") String username,
 			@RequestBody DeleteCharacterParameter input) throws IOException {
-		return JS.message(characterServiceClient.deleteCharacter(username, input.getCharacterName()));
+		return JS.message(characterServiceClient.deleteCharacter(username, input.getDisplayCharacterName()));
 	}
 
 	@RequestMapping(path = "/character-available", method = RequestMethod.POST)
