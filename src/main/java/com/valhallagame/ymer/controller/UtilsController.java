@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
+import com.valhallagame.actionbarserviceclient.model.ActionbarWrapper;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.common.JS;
@@ -67,6 +69,9 @@ public class UtilsController {
 	@Autowired
 	private TraitServiceClient traitServiceClient;
 
+	@Autowired
+	private ActionbarServiceClient actionbarServiceClient;
+
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<JsonNode> ping() {
@@ -90,7 +95,7 @@ public class UtilsController {
 		CharacterData character = getCharacterData(username);
 		out.set("displayCharacterName", new TextNode(character.getDisplayCharacterName()));
 		out.set("characterName", new TextNode(character.getCharacterName()));
-		
+
 		out.set("itemHandlerData", getItemHanderData(character));
 		out.set("wardrobeData", getWardrobeData(username));
 		out.set("traitData", getTraitData(username));
@@ -98,7 +103,8 @@ public class UtilsController {
 		out.set("friendsData", getFriendsData(username));
 		out.set("partyData", getPartyData(username));
 		out.set("instanceData", getInstanceData(username, input));
-		
+		out.set("actionbarData", getActionbarData(character.getCharacterName()));
+
 		return JS.message(HttpStatus.OK, out);
 	}
 
@@ -124,6 +130,17 @@ public class UtilsController {
 			return partyObj;
 		} else {
 			throw new IOException(relevantDungeonsResp.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getActionbarData(String characterName) throws IOException {
+		RestResponse<ActionbarWrapper> actionbar = actionbarServiceClient.getActionbar(characterName);
+
+		if (actionbar.isOk() && actionbar.get().isPresent()) {
+			ActionbarWrapper actionbarWrapper = actionbar.get().get();
+			return mapper.valueToTree(actionbarWrapper);
+		} else {
+			throw new IOException(actionbar.getErrorMessage());
 		}
 	}
 
