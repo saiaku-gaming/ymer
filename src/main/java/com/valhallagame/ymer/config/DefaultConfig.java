@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.featserviceclient.FeatServiceClient;
@@ -24,7 +25,6 @@ import com.valhallagame.ymer.GenerateMessages;
 @Configuration
 @Profile("default")
 public class DefaultConfig {
-
 
 	@PostConstruct
 	public void init() throws IOException {
@@ -84,5 +84,10 @@ public class DefaultConfig {
 	@Bean
 	public TraitServiceClient traitServiceClient() {
 		return TraitServiceClient.get();
+	}
+
+	@Bean
+	public ActionbarServiceClient actionbarServiceClient() {
+		return ActionbarServiceClient.get();
 	}
 }

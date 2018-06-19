@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.common.DefaultServicePortMappings;
@@ -87,5 +88,12 @@ public class DevConfig {
 	public TraitServiceClient traitServiceClient() {
 		TraitServiceClient.init("http://dev-trait-service:" + DefaultServicePortMappings.TRAIT_SERVICE_PORT);
 		return TraitServiceClient.get();
+	}
+
+	@Bean
+	public ActionbarServiceClient actionbarServiceClient() {
+		ActionbarServiceClient
+				.init("http://dev-actionbar-service:" + DefaultServicePortMappings.ACTIONBAR_SERVICE_PORT);
+		return ActionbarServiceClient.get();
 	}
 }

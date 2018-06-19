@@ -50,7 +50,8 @@ public class GenerateMessages {
 						"com.valhallagame.instanceserviceclient.message",
 						"com.valhallagame.friendserviceclient.message", "com.valhallagame.featserviceclient.message",
 						"com.valhallagame.chatserviceclient.message",
-						"com.valhallagame.characterserviceclient.message")));
+						"com.valhallagame.characterserviceclient.message",
+						"com.valhallagame.actionbarserviceclient.message")));
 
 		Set<Class<? extends Object>> allClasses = reflections.getSubTypesOf(Object.class);
 
