@@ -2,6 +2,7 @@ package com.valhallagame.ymer.controller;
 
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,13 @@ import java.io.IOException;
 
 @Controller
 public class RootController {
+
+    @Autowired
+    NotificationServiceClient notificationServiceClient;
+
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public ResponseEntity<JsonNode> ping() throws IOException {
-		NotificationServiceClient.get().ping();
+        notificationServiceClient.ping();
 		return JS.message(HttpStatus.OK, "pong");
 	}
 }
