@@ -17,8 +17,6 @@ import java.io.IOException;
 public class RootController {
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public ResponseEntity<JsonNode> ping() throws IOException {
-		// For some reason, sometimes Ymer can't talk to Notification service. Added a ping so that the
-		// healthcheck can notice it. Maybe we should add all services?
 		NotificationServiceClient.get().ping();
 		return JS.message(HttpStatus.OK, "pong");
 	}
