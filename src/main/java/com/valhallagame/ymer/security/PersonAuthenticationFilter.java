@@ -1,7 +1,15 @@
 package com.valhallagame.ymer.security;
 
-import java.io.IOException;
-import java.util.Optional;
+import com.valhallagame.characterserviceclient.CharacterServiceClient;
+import com.valhallagame.common.JS;
+import com.valhallagame.common.RestResponse;
+import com.valhallagame.personserviceclient.PersonServiceClient;
+import com.valhallagame.personserviceclient.model.SessionData;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -9,18 +17,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
-
-import com.valhallagame.characterserviceclient.CharacterServiceClient;
-import com.valhallagame.common.JS;
-import com.valhallagame.common.RestResponse;
-import com.valhallagame.personserviceclient.PersonServiceClient;
-import com.valhallagame.personserviceclient.model.SessionData;
+import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class PersonAuthenticationFilter extends GenericFilterBean {
@@ -60,9 +58,8 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		} else {
 			Optional<SessionData> userSession = personServiceClient.getSessionFromToken(token).getResponse();
-
 			if (token.contains("debug") && !userSession.isPresent()) {
-				userSession = createDebugSession(response, token);
+				userSession = createDebugSession(response, token, request.getHeader("singleton"));
 				if (!userSession.isPresent()) {
 					return;
 				}
@@ -77,8 +74,8 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 		}
 	}
 
-	private Optional<SessionData> createDebugSession(HttpServletResponse response, String token) throws IOException {
-		RestResponse<SessionData> sessionResp = personServiceClient.createDebugPerson(token);
+	private Optional<SessionData> createDebugSession(HttpServletResponse response, String token, String singleton) throws IOException {
+		RestResponse<SessionData> sessionResp = personServiceClient.createDebugPerson(token, singleton);
 		Optional<SessionData> sessionOpt = sessionResp.get();
 		if (!sessionOpt.isPresent()) {
 			response.setStatus(sessionResp.getStatusCode().value());
