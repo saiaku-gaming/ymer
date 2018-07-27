@@ -1,7 +1,9 @@
 package com.valhallagame.ymer.controller;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.valhallagame.characterserviceclient.CharacterServiceClient;
+import com.valhallagame.common.JS;
+import com.valhallagame.ymer.message.character.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,15 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.valhallagame.characterserviceclient.CharacterServiceClient;
-import com.valhallagame.common.JS;
-import com.valhallagame.ymer.message.character.CharacterAvailableParameter;
-import com.valhallagame.ymer.message.character.CreateCharacterParameter;
-import com.valhallagame.ymer.message.character.DeleteCharacterParameter;
-import com.valhallagame.ymer.message.character.GetCharacterParameter;
-import com.valhallagame.ymer.message.character.SaveEquippedItemsParameter;
-import com.valhallagame.ymer.message.character.SelectCharacterParameter;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/v1/character")
@@ -41,7 +35,7 @@ public class CharacterController {
 	@RequestMapping(path = "/create-character", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> create(@RequestAttribute("username") String username,
 			@RequestBody CreateCharacterParameter input) throws IOException {
-		return JS.message(characterServiceClient.createCharacter(username, input.getDisplayCharacterName()));
+		return JS.message(characterServiceClient.createCharacter(username, input.getDisplayCharacterName(), input.getStartingClass()));
 	}
 
 	@RequestMapping(path = "/delete-character", method = RequestMethod.POST)

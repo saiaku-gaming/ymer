@@ -1,9 +1,10 @@
 package com.valhallagame.ymer.message.character;
 
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -11,4 +12,7 @@ import lombok.NoArgsConstructor;
 public final class CreateCharacterParameter {
   @NotNull
   String displayCharacterName;
+
+  @NotNull
+  String startingClass;
 }
