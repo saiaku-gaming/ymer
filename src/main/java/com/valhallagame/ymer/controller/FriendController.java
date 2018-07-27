@@ -1,9 +1,12 @@
 package com.valhallagame.ymer.controller;
 
-import java.io.IOException;
-
-import javax.validation.Valid;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.valhallagame.common.JS;
+import com.valhallagame.friendserviceclient.FriendServiceClient;
+import com.valhallagame.ymer.message.friend.AcceptCharacterInviteParameter;
+import com.valhallagame.ymer.message.friend.DeclineCharacterParameter;
+import com.valhallagame.ymer.message.friend.RemoveCharacterFriendParameter;
+import com.valhallagame.ymer.message.friend.SendCharacterInviteParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,13 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.valhallagame.common.JS;
-import com.valhallagame.friendserviceclient.FriendServiceClient;
-import com.valhallagame.ymer.message.friend.AcceptCharacterInviteParameter;
-import com.valhallagame.ymer.message.friend.DeclineCharacterParameter;
-import com.valhallagame.ymer.message.friend.RemoveCharacterFriendParameter;
-import com.valhallagame.ymer.message.friend.SendCharacterInviteParameter;
+import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/v1/friend")
@@ -59,6 +57,6 @@ public class FriendController {
 	public ResponseEntity<JsonNode> removeCharacterFriend(@RequestAttribute("username") String username,
 			@Valid @RequestBody RemoveCharacterFriendParameter input) throws IOException {
 		return JS.message(
-				friendServiceClient.removeCharacterFriend(username, input.getCharacterName()));
+				friendServiceClient.removeCharacterFriend(username, input.getDisplayCharacterName()));
 	}
 }
