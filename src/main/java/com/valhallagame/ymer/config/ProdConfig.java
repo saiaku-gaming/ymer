@@ -1,9 +1,5 @@
 package com.valhallagame.ymer.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
 import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
@@ -17,9 +13,12 @@ import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("production")
+@Profile({"production", "development"})
 public class ProdConfig {
 	@Bean
 	public CharacterServiceClient characterServiceClient() {
