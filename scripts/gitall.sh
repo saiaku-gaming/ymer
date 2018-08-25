@@ -8,7 +8,7 @@ if [ ! -e backend ]; then
 fi
 cd backend
 
-for i in "feat" "character" "person" "statistics" "wardrobe" "notification" "friend" "chat" "party" "instance" "instance-container" "trait"; do
+for i in "feat" "character" "person" "statistics" "wardrobe" "notification" "friend" "chat" "party" "instance" "instance-container" "trait" "actionbar"; do
 	if [ ! -e $i-service-server ]; then
 		git clone "git@github.com:saiaku-gaming/$i-service-server.git"
 	fi
@@ -37,5 +37,9 @@ fi
 
 if [ ! -e valhalla-game.se ]; then
 	git clone git@github.com:saiaku-gaming/valhalla-game.se.git
+fi
+
+if [ ! -e valhalla-intellij-root ]; then
+	git clone git@github.com:saiaku-gaming/valhalla-intellij-root.git
 fi
 
