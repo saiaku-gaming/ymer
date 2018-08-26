@@ -7,6 +7,7 @@ import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.personserviceclient.model.SessionData;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -18,6 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Component
@@ -28,6 +30,9 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 
 	@Autowired
 	private PersonServiceClient personServiceClient;
+
+    @Autowired
+    private Environment environment;
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -58,12 +63,18 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		} else {
 			Optional<SessionData> userSession = personServiceClient.getSessionFromToken(token).getResponse();
-			if (token.contains("debug") && !userSession.isPresent()) {
+
+            boolean production = Arrays.asList(environment.getActiveProfiles()).contains("production");
+            if (token.contains("debug") && !userSession.isPresent() && !production) {
 				userSession = createDebugSession(response, token, request.getHeader("singleton"));
 				if (!userSession.isPresent()) {
 					return;
 				}
 			} else {
+                if (token.contains("debug") && production) {
+                    throw new ServletException("No debug tokens allowed in production environment!");
+                }
+
 				if (!userSession.isPresent()) {
 					response.setStatus(HttpStatus.UNAUTHORIZED.value());
 					return;
