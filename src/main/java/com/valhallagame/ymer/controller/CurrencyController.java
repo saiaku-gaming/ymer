@@ -1,0 +1,28 @@
+package com.valhallagame.ymer.controller;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.valhallagame.common.JS;
+import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
+import com.valhallagame.currencyserviceclient.message.GetCurrencyParameter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+
+@Controller
+@RequestMapping("/v1/currency")
+public class CurrencyController {
+    @Autowired
+    private CurrencyServiceClient currencyServiceClient;
+
+    @PostMapping("/get-currency")
+    @ResponseBody
+    public ResponseEntity<JsonNode> getCurrency(@RequestBody GetCurrencyParameter input) throws IOException {
+        return JS.message(currencyServiceClient.getCurrency(input.getCharacterName(), input.getCurrencyType()));
+    }
+}

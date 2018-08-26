@@ -4,6 +4,7 @@ import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.common.DefaultServicePortMappings;
+import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
 import com.valhallagame.featserviceclient.FeatServiceClient;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
@@ -92,5 +93,12 @@ public class ProdConfig {
 		ActionbarServiceClient
 				.init("http://actionbar-service:" + DefaultServicePortMappings.ACTIONBAR_SERVICE_PORT);
 		return ActionbarServiceClient.get();
+	}
+
+	@Bean
+	public CurrencyServiceClient currencyServiceClient() {
+		CurrencyServiceClient
+				.init("http://currency-service:" + DefaultServicePortMappings.CURRENCY_SERVICE_PORT);
+		return CurrencyServiceClient.get();
 	}
 }
