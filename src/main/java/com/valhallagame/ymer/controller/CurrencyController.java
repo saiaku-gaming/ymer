@@ -3,6 +3,7 @@ package com.valhallagame.ymer.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
+import com.valhallagame.currencyserviceclient.message.GetCurrenciesParameter;
 import com.valhallagame.currencyserviceclient.message.GetCurrencyParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,11 @@ public class CurrencyController {
     @ResponseBody
     public ResponseEntity<JsonNode> getCurrency(@RequestBody GetCurrencyParameter input) throws IOException {
         return JS.message(currencyServiceClient.getCurrency(input.getCharacterName(), input.getCurrencyType()));
+    }
+
+    @PostMapping("/get-currencies")
+    @ResponseBody
+    public ResponseEntity<JsonNode> getCurrencies(@RequestBody GetCurrenciesParameter input) throws IOException {
+        return JS.message(currencyServiceClient.getCurrencies(input.getCharacterName()));
     }
 }
