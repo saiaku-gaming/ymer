@@ -1,20 +1,5 @@
 package com.valhallagame.ymer.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -25,6 +10,8 @@ import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
+import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
+import com.valhallagame.currencyserviceclient.message.CurrencyResult;
 import com.valhallagame.featserviceclient.FeatServiceClient;
 import com.valhallagame.featserviceclient.message.GetFeatsParameter;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
@@ -37,10 +24,19 @@ import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.traitserviceclient.message.TraitData;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
 import com.valhallagame.ymer.message.VersionParameter;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/v1/utils")
@@ -71,6 +67,9 @@ public class UtilsController {
 
 	@Autowired
 	private ActionbarServiceClient actionbarServiceClient;
+
+	@Autowired
+	private CurrencyServiceClient currencyServiceClient;
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
 	@ResponseBody
@@ -104,6 +103,7 @@ public class UtilsController {
 		out.set("partyData", getPartyData(username));
 		out.set("instanceData", getInstanceData(username, input));
 		out.set("actionbarData", getActionbarData(character.getCharacterName()));
+		out.set("currencyData", getCurrencyData(character.getCharacterName()));
 
 		return JS.message(HttpStatus.OK, out);
 	}
@@ -141,6 +141,19 @@ public class UtilsController {
 			return mapper.valueToTree(actionbarWrapper);
 		} else {
 			throw new IOException(actionbar.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getCurrencyData(String characterName) throws IOException {
+		RestResponse<List<CurrencyResult>> currenciesResponse = currencyServiceClient.getCurrencies(characterName);
+
+		if (currenciesResponse.get().isPresent()) {
+			List<CurrencyResult> currencyResults = currenciesResponse.get().get();
+			ObjectNode currenciesList = mapper.createObjectNode();
+			currenciesList.set("currencies",  mapper.valueToTree(currencyResults));
+			return currenciesList;
+		} else {
+			throw new IOException(currenciesResponse.getErrorMessage());
 		}
 	}
 
