@@ -1,6 +1,5 @@
 package com.valhallagame.ymer.message.friend;
 
-import com.valhallagame.common.ExposedNameInYmer;
 import com.valhallagame.common.validation.CheckLowercase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +13,5 @@ import javax.validation.constraints.NotNull;
 public final class AcceptPersonInviteParameter {
   @NotNull
   @CheckLowercase
-  @ExposedNameInYmer("username")
   String username;
 }

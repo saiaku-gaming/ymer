@@ -20,6 +20,8 @@ import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
+import com.valhallagame.recipeserviceclient.RecipeServiceClient;
+import com.valhallagame.recipeserviceclient.model.RecipeData;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.traitserviceclient.message.TraitData;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
@@ -44,32 +46,50 @@ public class UtilsController {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
-	@Autowired
-	private CharacterServiceClient characterServiceClient;
+	private final CharacterServiceClient characterServiceClient;
+
+	private final InstanceServiceClient instanceServiceClient;
+
+	private final WardrobeServiceClient wardrobeServiceClient;
+
+	private final PartyServiceClient partyServiceClient;
+
+	private final FriendServiceClient friendServiceClient;
+
+	private final FeatServiceClient featServiceClient;
+
+	private final TraitServiceClient traitServiceClient;
+
+	private final ActionbarServiceClient actionbarServiceClient;
+
+	private final CurrencyServiceClient currencyServiceClient;
+
+	private final RecipeServiceClient recipeServiceClient;
 
 	@Autowired
-	private InstanceServiceClient instanceServiceClient;
-
-	@Autowired
-	private WardrobeServiceClient wardrobeServiceClient;
-
-	@Autowired
-	private PartyServiceClient partyServiceClient;
-
-	@Autowired
-	private FriendServiceClient friendServiceClient;
-
-	@Autowired
-	private FeatServiceClient featServiceClient;
-
-	@Autowired
-	private TraitServiceClient traitServiceClient;
-
-	@Autowired
-	private ActionbarServiceClient actionbarServiceClient;
-
-	@Autowired
-	private CurrencyServiceClient currencyServiceClient;
+	public UtilsController(
+			CharacterServiceClient characterServiceClient,
+			InstanceServiceClient instanceServiceClient,
+			WardrobeServiceClient wardrobeServiceClient,
+			PartyServiceClient partyServiceClient,
+			FriendServiceClient friendServiceClient,
+			FeatServiceClient featServiceClient,
+			TraitServiceClient traitServiceClient,
+			ActionbarServiceClient actionbarServiceClient,
+			CurrencyServiceClient currencyServiceClient,
+			RecipeServiceClient recipeServiceClient
+	) {
+		this.characterServiceClient = characterServiceClient;
+		this.instanceServiceClient = instanceServiceClient;
+		this.wardrobeServiceClient = wardrobeServiceClient;
+		this.partyServiceClient = partyServiceClient;
+		this.friendServiceClient = friendServiceClient;
+		this.featServiceClient = featServiceClient;
+		this.traitServiceClient = traitServiceClient;
+		this.actionbarServiceClient = actionbarServiceClient;
+		this.currencyServiceClient = currencyServiceClient;
+		this.recipeServiceClient = recipeServiceClient;
+	}
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
 	@ResponseBody
@@ -104,7 +124,7 @@ public class UtilsController {
 		out.set("instanceData", getInstanceData(username, input));
 		out.set("actionbarData", getActionbarData(character.getCharacterName()));
 		out.set("currencyData", getCurrencyData(character.getCharacterName()));
-
+		out.set("recipeData", getRecipeData(username));
 		return JS.message(HttpStatus.OK, out);
 	}
 
@@ -154,6 +174,18 @@ public class UtilsController {
 			return currenciesList;
 		} else {
 			throw new IOException(currenciesResponse.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getRecipeData(String username) throws IOException {
+		RestResponse<List<RecipeData>> recipesResp = recipeServiceClient.getRecipes(username);
+		if (recipesResp.get().isPresent()) {
+			List<RecipeData> recipeResults = recipesResp.get().get();
+			ObjectNode recipeList = mapper.createObjectNode();
+			recipeList.set("recipes", mapper.valueToTree(recipeResults));
+			return recipeList;
+		} else {
+			throw new IOException(recipesResp.getErrorMessage());
 		}
 	}
 

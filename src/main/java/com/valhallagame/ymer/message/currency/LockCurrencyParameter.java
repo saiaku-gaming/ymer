@@ -1,22 +1,22 @@
-package com.valhallagame.ymer.message.recipe;
+package com.valhallagame.ymer.message.currency;
 
 import com.valhallagame.common.validation.CheckLowercase;
-import com.valhallagame.wardrobeserviceclient.message.WardrobeItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class AddRecipeParameter {
+public final class LockCurrencyParameter {
     @NotBlank
     @CheckLowercase
     String characterName;
 
-    @NotNull
-    WardrobeItem recipe;
+    @NotEmpty
+    List<com.valhallagame.currencyserviceclient.message.LockCurrencyParameter.Currency> currencies;
 }
