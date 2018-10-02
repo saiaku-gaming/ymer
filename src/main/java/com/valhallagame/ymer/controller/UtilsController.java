@@ -8,6 +8,7 @@ import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
 import com.valhallagame.actionbarserviceclient.model.ActionbarWrapper;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.model.CharacterData;
+import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
@@ -23,6 +24,7 @@ import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
 import com.valhallagame.recipeserviceclient.RecipeServiceClient;
 import com.valhallagame.recipeserviceclient.model.RecipeData;
+import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.traitserviceclient.message.TraitData;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
@@ -58,6 +60,8 @@ public class UtilsController {
 	private final CurrencyServiceClient currencyServiceClient;
 	private final RecipeServiceClient recipeServiceClient;
 	private final NotificationServiceClient notificationServiceClient;
+	private final StatisticsServiceClient statisticsServiceClient;
+	private final ChatServiceClient chatServiceClient;
 
 	@Autowired
 	public UtilsController(
@@ -71,7 +75,9 @@ public class UtilsController {
 			ActionbarServiceClient actionbarServiceClient,
 			CurrencyServiceClient currencyServiceClient,
 			RecipeServiceClient recipeServiceClient,
-			NotificationServiceClient notificationServiceClient
+			NotificationServiceClient notificationServiceClient,
+			StatisticsServiceClient statisticsServiceClient,
+			ChatServiceClient chatServiceClient
 	) {
 		this.characterServiceClient = characterServiceClient;
 		this.instanceServiceClient = instanceServiceClient;
@@ -84,6 +90,8 @@ public class UtilsController {
 		this.currencyServiceClient = currencyServiceClient;
 		this.recipeServiceClient = recipeServiceClient;
 		this.notificationServiceClient = notificationServiceClient;
+		this.statisticsServiceClient = statisticsServiceClient;
+		this.chatServiceClient = chatServiceClient;
 	}
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
@@ -137,6 +145,8 @@ public class UtilsController {
 		out.put("currencyServiceClient", currencyServiceClient.ping().getStatusCode().value());
 		out.put("recipeServiceClient", recipeServiceClient.ping().getStatusCode().value());
 		out.put("notificationServiceClient", notificationServiceClient.ping().getStatusCode().value());
+		out.put("statisticsServiceClient", statisticsServiceClient.ping().getStatusCode().value());
+		out.put("chatServiceClient", characterServiceClient.ping().getStatusCode().value());
 		return JS.message(HttpStatus.OK, out);
 	}
 
