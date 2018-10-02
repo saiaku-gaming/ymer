@@ -14,6 +14,7 @@ dropdb --if-exists -U postgres statistics_service
 dropdb --if-exists -U postgres trait_service
 dropdb --if-exists -U postgres actionbar_service
 dropdb --if-exists -U postgres recipe_service
+dropdb --if-exists -U postgres currency_service
 
 createdb -U postgres -O valhalla person_service
 createdb -U postgres -O valhalla character_service
@@ -28,3 +29,4 @@ createdb -U postgres -O valhalla statistics_service
 createdb -U postgres -O valhalla trait_service
 createdb -U postgres -O valhalla actionbar_service
 createdb -U postgres -O valhalla recipe_service
+createdb -U postgres -O valhalla currency_service

@@ -18,6 +18,7 @@ import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.friendserviceclient.model.FriendsData;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
+import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
 import com.valhallagame.recipeserviceclient.RecipeServiceClient;
@@ -47,24 +48,16 @@ public class UtilsController {
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	private final CharacterServiceClient characterServiceClient;
-
 	private final InstanceServiceClient instanceServiceClient;
-
 	private final WardrobeServiceClient wardrobeServiceClient;
-
 	private final PartyServiceClient partyServiceClient;
-
 	private final FriendServiceClient friendServiceClient;
-
 	private final FeatServiceClient featServiceClient;
-
 	private final TraitServiceClient traitServiceClient;
-
 	private final ActionbarServiceClient actionbarServiceClient;
-
 	private final CurrencyServiceClient currencyServiceClient;
-
 	private final RecipeServiceClient recipeServiceClient;
+	private final NotificationServiceClient notificationServiceClient;
 
 	@Autowired
 	public UtilsController(
@@ -77,7 +70,8 @@ public class UtilsController {
 			TraitServiceClient traitServiceClient,
 			ActionbarServiceClient actionbarServiceClient,
 			CurrencyServiceClient currencyServiceClient,
-			RecipeServiceClient recipeServiceClient
+			RecipeServiceClient recipeServiceClient,
+			NotificationServiceClient notificationServiceClient
 	) {
 		this.characterServiceClient = characterServiceClient;
 		this.instanceServiceClient = instanceServiceClient;
@@ -89,6 +83,7 @@ public class UtilsController {
 		this.actionbarServiceClient = actionbarServiceClient;
 		this.currencyServiceClient = currencyServiceClient;
 		this.recipeServiceClient = recipeServiceClient;
+		this.notificationServiceClient = notificationServiceClient;
 	}
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
@@ -125,6 +120,24 @@ public class UtilsController {
 		out.set("actionbarData", getActionbarData(character.getCharacterName()));
 		out.set("currencyData", getCurrencyData(character.getCharacterName()));
 		out.set("recipeData", getRecipeData(username));
+		return JS.message(HttpStatus.OK, out);
+	}
+
+	@RequestMapping(path = "/uberping", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<JsonNode> uberPing() throws IOException {
+		ObjectNode out = mapper.createObjectNode();
+		out.put("characterServiceClient", characterServiceClient.ping().getStatusCode().value());
+		out.put("instanceServiceClient", instanceServiceClient.ping().getStatusCode().value());
+		out.put("wardrobeServiceClient", wardrobeServiceClient.ping().getStatusCode().value());
+		out.put("partyServiceClient", partyServiceClient.ping().getStatusCode().value());
+		out.put("friendServiceClient", friendServiceClient.ping().getStatusCode().value());
+		out.put("featServiceClient", featServiceClient.ping().getStatusCode().value());
+		out.put("traitServiceClient", traitServiceClient.ping().getStatusCode().value());
+		out.put("actionbarServiceClient", actionbarServiceClient.ping().getStatusCode().value());
+		out.put("currencyServiceClient", currencyServiceClient.ping().getStatusCode().value());
+		out.put("recipeServiceClient", recipeServiceClient.ping().getStatusCode().value());
+		out.put("notificationServiceClient", notificationServiceClient.ping().getStatusCode().value());
 		return JS.message(HttpStatus.OK, out);
 	}
 
