@@ -109,7 +109,6 @@ public class UtilsController {
 		CharacterData character = getCharacterData(username);
 		out.set("displayCharacterName", new TextNode(character.getDisplayCharacterName()));
 		out.set("characterName", new TextNode(character.getCharacterName()));
-
 		out.set("itemHandlerData", getItemHanderData(character));
 		out.set("wardrobeData", getWardrobeData(username));
 		out.set("traitData", getTraitData(username));
