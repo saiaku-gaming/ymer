@@ -10,6 +10,7 @@ import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.personserviceclient.PersonServiceClient;
+import com.valhallagame.recipeserviceclient.RecipeServiceClient;
 import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
@@ -94,4 +95,9 @@ public class DefaultConfig {
 	public CurrencyServiceClient currencyServiceClient() {
 		return CurrencyServiceClient.get();
 	}
+
+    @Bean
+    public RecipeServiceClient recipeServiceClient() {
+        return RecipeServiceClient.get();
+    }
 }

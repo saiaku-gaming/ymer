@@ -17,15 +17,16 @@ import org.slf4j.LoggerFactory;
 import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GenerateMessages {
 
@@ -47,7 +48,8 @@ public class GenerateMessages {
                         "com.valhallagame.chatserviceclient.message",
                         "com.valhallagame.characterserviceclient.message",
                         "com.valhallagame.actionbarserviceclient.message",
-                        "com.valhallagame.currencyserviceclient.message")
+                        "com.valhallagame.currencyserviceclient.message",
+                        "com.valhallagame.recipeserviceclient.message")
                 )
         );
 
@@ -64,11 +66,34 @@ public class GenerateMessages {
                 }
 
                 String fieldName;
-                ExposedNameInYmer exposed = f.getAnnotation(ExposedNameInYmer.class);
-                if (exposed == null) {
+
+                // Intellij breaks f.getAnnotation(Classname.class) with some strange Proxy objects so we need to make some strange moves instead
+
+                // First we match on simple name as both the real deal and the proxy has the same simple name
+                Optional<Annotation> annotationOptional = Stream.of(f.getAnnotations())
+                        .filter(annotation -> annotation.annotationType().getSimpleName().equals(ExposedNameInYmer.class.getSimpleName()))
+                        .findAny();
+                if (!annotationOptional.isPresent()) {
                     fieldName = f.getName();
                 } else {
-                    fieldName = exposed.value();
+                    // If there is a simple name and the annotation is the real thing (aka ExposedNameInYmer.class) then we can just casts and use it
+                    if (annotationOptional.get() instanceof ExposedNameInYmer) {
+                        ExposedNameInYmer exposed = (ExposedNameInYmer) annotationOptional.get();
+                        fieldName = exposed.value();
+                    } else {
+                        // However if it is a proxy object the cast fails, but we can still
+                        // call the value method on the object and get our replacement name.
+                        // Strange as hell but it works
+                        Annotation a = annotationOptional.get();
+                        try {
+                            Method valueMethod = a.getClass().getMethod("value");
+                            Object invoke = valueMethod.invoke(a);
+                            fieldName = (String) invoke;
+                        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                            logger.error("Some strange proxy stuff going on with {}, {}", a, a.getClass());
+                            fieldName = f.getName();
+                        }
+                    }
                 }
 
                 TypeName typeName;

@@ -11,14 +11,13 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 import javax.servlet.Filter;
-import java.io.IOException;
 
 @SpringBootApplication
 public class App {
 
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Properties.load(args, logger);
 		SpringApplication.run(App.class, args);
 	}
