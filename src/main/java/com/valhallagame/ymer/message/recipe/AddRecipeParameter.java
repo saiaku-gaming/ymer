@@ -13,10 +13,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class AddRecipeParameter {
-    @NotBlank
-    @CheckLowercase
-    String characterName;
+  @NotBlank
+  @CheckLowercase
+  String characterName;
 
-    @NotNull
-    WardrobeItem recipe;
+  @NotNull
+  WardrobeItem recipe;
 }

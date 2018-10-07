@@ -38,7 +38,7 @@ public class App {
 	public FilterRegistrationBean serverAuthenticationFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(getServerAuthenticationFilter());
-		registration.addUrlPatterns("/v1/server-wardrobe/*, /v1/server-character/*", "/v1/server-instance/*",
+		registration.addUrlPatterns("/v1/server-recipe/*, /v1/server-wardrobe/*, /v1/server-character/*", "/v1/server-instance/*",
 				"/v1/server-feat/*", "/v1/server-statistics/*", "/v1/server-trait/*", "/v1/server-currency/*");
 		registration.setName("serverAuthenticationFilter");
 		registration.setOrder(1);

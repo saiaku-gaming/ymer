@@ -1,7 +1,7 @@
 package com.valhallagame.ymer.message.recipe;
 
 import com.valhallagame.common.validation.CheckLowercase;
-import com.valhallagame.currencyserviceclient.message.LockCurrencyParameter;
+import com.valhallagame.currencyserviceclient.model.CurrencyType;
 import com.valhallagame.wardrobeserviceclient.message.WardrobeItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,19 +9,19 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public final class ClaimRecipeParameter {
-    @NotBlank
-    @CheckLowercase
-    String characterName;
+  @NotBlank
+  @CheckLowercase
+  String characterName;
 
-    @NotNull
-    WardrobeItem recipe;
+  @NotNull
+  WardrobeItem recipe;
 
-    @NotNull
-    List<LockCurrencyParameter.Currency> currencies;
+  @NotNull
+  Map<CurrencyType, Integer> currencies;
 }
