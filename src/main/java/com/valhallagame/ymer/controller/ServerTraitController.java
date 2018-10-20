@@ -1,9 +1,9 @@
 package com.valhallagame.ymer.controller;
 
-import java.io.IOException;
-
-import javax.validation.Valid;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.valhallagame.common.JS;
+import com.valhallagame.traitserviceclient.TraitServiceClient;
+import com.valhallagame.traitserviceclient.message.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,13 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.valhallagame.common.JS;
-import com.valhallagame.traitserviceclient.TraitServiceClient;
-import com.valhallagame.traitserviceclient.message.LockTraitParameter;
-import com.valhallagame.traitserviceclient.message.SkillTraitParameter;
-import com.valhallagame.traitserviceclient.message.UnlockTraitParameter;
-import com.valhallagame.traitserviceclient.message.UnskillTraitParameter;
+import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/v1/server-trait")
@@ -47,5 +42,17 @@ public class ServerTraitController {
 	@ResponseBody
 	public ResponseEntity<JsonNode> unskillTrait(@Valid @RequestBody UnskillTraitParameter input) throws IOException {
 		return JS.message(traitServiceClient.unskillTrait(input));
+	}
+
+	@RequestMapping(path = "/specialize-trait", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonNode> specializeTrait(@Valid @RequestBody SpecializeTraitParameter input) throws IOException {
+		return JS.message(traitServiceClient.specializeTrait(input));
+	}
+
+	@RequestMapping(path = "/unspecialize-trait", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonNode> unspecializeTrait(@Valid @RequestBody UnspecializeTraitParameter input) throws IOException {
+		return JS.message(traitServiceClient.unspecializeTrait(input));
 	}
 }
