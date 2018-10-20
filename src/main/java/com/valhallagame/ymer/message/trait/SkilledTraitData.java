@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class SkilledTraitData {
-    TraitType trait;
+  TraitType trait;
 
-    AttributeType selectedAttribute;
+  AttributeType selectedAttribute;
 }

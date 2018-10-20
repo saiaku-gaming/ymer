@@ -26,11 +26,6 @@ import java.io.IOException;
 @Profile("default")
 public class DefaultConfig {
 
-	@PostConstruct
-	public void init() throws IOException {
-		GenerateMessages.generateSeviceMessages();
-	}
-
 	@Bean
 	public CharacterServiceClient characterServiceClient() {
 		return CharacterServiceClient.get();

@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Bean;
 import javax.servlet.Filter;
 
 @SpringBootApplication
-public class App {
+public class YmerApp {
 
-	private static final Logger logger = LoggerFactory.getLogger(App.class);
+	private static final Logger logger = LoggerFactory.getLogger(YmerApp.class);
 
 	public static void main(String[] args) {
 		Properties.load(args, logger);
-		SpringApplication.run(App.class, args);
+		SpringApplication.run(YmerApp.class, args);
 	}
 
 	@Bean

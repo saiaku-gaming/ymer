@@ -32,6 +32,10 @@ public class GenerateMessages {
 
     private static final Logger logger = LoggerFactory.getLogger(GenerateMessages.class);
 
+    public static void main(String[] args) throws IOException {
+        generateSeviceMessages();
+    }
+
     public static void generateSeviceMessages() throws IOException {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.forPackage("com.valhallagame")).setScanners(new SubTypesScanner(false))

@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class GetCurrenciesParameter {
-    @NotBlank
-    @CheckLowercase
-    String characterName;
+  @NotBlank
+  @CheckLowercase
+  String characterName;
 }

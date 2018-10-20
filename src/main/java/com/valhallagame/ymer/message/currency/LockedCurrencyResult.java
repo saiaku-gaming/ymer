@@ -1,25 +1,24 @@
 package com.valhallagame.ymer.message.currency;
 
 import com.valhallagame.currencyserviceclient.model.CurrencyType;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public final class LockedCurrencyResult {
-    Long id;
+  Long id;
 
-    String characterName;
+  String characterName;
 
-    CurrencyType type;
+  CurrencyType type;
 
-    int amount;
+  int amount;
 
-    String lockingId;
+  String lockingId;
 
-    Instant created;
+  Instant created;
 }
