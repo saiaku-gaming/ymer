@@ -1,6 +1,7 @@
 package com.valhallagame.ymer.config;
 
 import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
+import com.valhallagame.bankserviceclient.BankServiceClient;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.common.DefaultServicePortMappings;
@@ -109,4 +110,11 @@ public class ProdConfig {
                 .init("http://recipe-service:" + DefaultServicePortMappings.RECIPE_SERVICE_PORT);
         return RecipeServiceClient.get();
     }
+
+	@Bean
+	public BankServiceClient bankServiceClient() {
+		BankServiceClient
+				.init("http://bank-service:" + DefaultServicePortMappings.BANK_SERVICE_PORT);
+		return BankServiceClient.get();
+	}
 }

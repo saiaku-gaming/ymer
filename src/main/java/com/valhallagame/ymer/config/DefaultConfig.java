@@ -1,6 +1,7 @@
 package com.valhallagame.ymer.config;
 
 import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
+import com.valhallagame.bankserviceclient.BankServiceClient;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
 import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
@@ -14,13 +15,9 @@ import com.valhallagame.recipeserviceclient.RecipeServiceClient;
 import com.valhallagame.statisticsserviceclient.StatisticsServiceClient;
 import com.valhallagame.traitserviceclient.TraitServiceClient;
 import com.valhallagame.wardrobeserviceclient.WardrobeServiceClient;
-import com.valhallagame.ymer.GenerateMessages;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 @Configuration
 @Profile("default")
@@ -95,4 +92,9 @@ public class DefaultConfig {
     public RecipeServiceClient recipeServiceClient() {
         return RecipeServiceClient.get();
     }
+
+	@Bean
+	public BankServiceClient bankServiceClient() {
+		return BankServiceClient.get();
+	}
 }
