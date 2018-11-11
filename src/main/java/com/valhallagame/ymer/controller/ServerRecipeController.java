@@ -3,8 +3,9 @@ package com.valhallagame.ymer.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.recipeserviceclient.RecipeServiceClient;
+import com.valhallagame.recipeserviceclient.message.ClaimRecipeParameter;
 import com.valhallagame.ymer.message.recipe.AddRecipeParameter;
-import com.valhallagame.ymer.message.recipe.ClaimRecipeParameter;
+import com.valhallagame.ymer.message.recipe.RemoveRecipeParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,5 +37,11 @@ public class ServerRecipeController {
     @ResponseBody
     public ResponseEntity<JsonNode> add(@RequestBody AddRecipeParameter input) throws IOException {
         return JS.message(recipeServiceClient.addRecipe(input.getCharacterName(), input.getRecipe()));
+    }
+
+    @PostMapping("/remove")
+    @ResponseBody
+    public ResponseEntity<JsonNode> add(@RequestBody RemoveRecipeParameter input) throws IOException {
+        return JS.message(recipeServiceClient.removeRecipe(input.getCharacterName(), input.getRecipe()));
     }
 }

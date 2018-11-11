@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.valhallagame.actionbarserviceclient.ActionbarServiceClient;
 import com.valhallagame.actionbarserviceclient.model.ActionbarWrapper;
+import com.valhallagame.bankserviceclient.BankServiceClient;
+import com.valhallagame.bankserviceclient.message.BankItemResult;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
 import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.chatserviceclient.ChatServiceClient;
@@ -62,6 +64,7 @@ public class UtilsController {
 	private final NotificationServiceClient notificationServiceClient;
 	private final StatisticsServiceClient statisticsServiceClient;
 	private final ChatServiceClient chatServiceClient;
+	private final BankServiceClient bankServiceClient;
 
 	@Autowired
 	public UtilsController(
@@ -77,7 +80,8 @@ public class UtilsController {
 			RecipeServiceClient recipeServiceClient,
 			NotificationServiceClient notificationServiceClient,
 			StatisticsServiceClient statisticsServiceClient,
-			ChatServiceClient chatServiceClient
+			ChatServiceClient chatServiceClient,
+			BankServiceClient bankServiceClient
 	) {
 		this.characterServiceClient = characterServiceClient;
 		this.instanceServiceClient = instanceServiceClient;
@@ -92,6 +96,7 @@ public class UtilsController {
 		this.notificationServiceClient = notificationServiceClient;
 		this.statisticsServiceClient = statisticsServiceClient;
 		this.chatServiceClient = chatServiceClient;
+		this.bankServiceClient = bankServiceClient;
 	}
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
@@ -127,6 +132,7 @@ public class UtilsController {
 		out.set("actionbarData", getActionbarData(character.getCharacterName()));
 		out.set("currencyData", getCurrencyData(character.getCharacterName()));
 		out.set("recipeData", getRecipeData(username));
+		out.set("bankData", getBankData(character.getCharacterName()));
 		return JS.message(HttpStatus.OK, out);
 	}
 
@@ -208,6 +214,18 @@ public class UtilsController {
 			return recipeList;
 		} else {
 			throw new IOException(recipesResp.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getBankData(String characterName) throws IOException {
+		RestResponse<List<BankItemResult>> bankItems = bankServiceClient.getBankItems(characterName);
+		if(bankItems.get().isPresent()) {
+			List<BankItemResult> bankItemResults = bankItems.get().get();
+			ObjectNode bankItemList = mapper.createObjectNode();
+			bankItemList.set("bankItems", mapper.valueToTree(bankItemResults));
+			return bankItemList;
+		} else {
+			throw new IOException(bankItems.getErrorMessage());
 		}
 	}
 

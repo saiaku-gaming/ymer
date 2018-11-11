@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class CurrencyResult {
-    Long id;
+  Long id;
 
-    String characterName;
+  String characterName;
 
-    CurrencyType type;
+  CurrencyType type;
 
-    int amount;
+  int amount;
 }
