@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/v1/server-controller")
+@RequestMapping("/v1/server-character")
 public class ServerCharacterController {
     @Autowired
     private CharacterServiceClient characterServiceClient;
