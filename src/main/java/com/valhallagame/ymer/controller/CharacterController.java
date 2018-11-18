@@ -56,13 +56,6 @@ public class CharacterController {
 		return JS.message(characterServiceClient.selectCharacter(username, input.getDisplayCharacterName()));
 	}
 
-	@RequestMapping(path = "/save-equipped-items", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> saveEquippedItems(@RequestAttribute("username") String username,
-			@RequestBody SaveEquippedItemsParameter input) throws IOException {
-		return JS.message(characterServiceClient.saveEquippedItems(username, input.getCharacterName(),
-				input.getEquippedItems()));
-	}
-	
 	@RequestMapping(path = "/get-selected-character", method = RequestMethod.GET)
 	public ResponseEntity<JsonNode> selectCharacter(@RequestAttribute("username") String username) throws IOException {
 		return JS.message(characterServiceClient.getSelectedCharacter(username));

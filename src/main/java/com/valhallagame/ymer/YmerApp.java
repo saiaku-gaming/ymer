@@ -52,6 +52,8 @@ public class YmerApp {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(getServerAuthenticationFilter());
         registration.addUrlPatterns(
+				"/v1/server-character/*",
+				"/v1/server-bank/*",
                 "/v1/server-recipe/*",
                 "/v1/server-wardrobe/*",
                 "/v1/server-character/*",
