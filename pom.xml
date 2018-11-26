@@ -12,7 +12,7 @@
 	<groupId>com.valhallagame.valhalla</groupId>
 	<name>Ymer</name>
 	<description>första jätten</description>
-	<version>1.7</version>
+	<version>1.8</version>
 	<url>https://valhalla-game.com</url>
 	<organization>
 		<name>Team Sämst HB</name>
@@ -152,7 +152,7 @@
 		<dependency>
 			<groupId>com.valhallagame.valhalla</groupId>
 			<artifactId>bank-service-client</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 		</dependency>
 	</dependencies>
 	<build>

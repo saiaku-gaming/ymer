@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.bankserviceclient.BankServiceClient;
 import com.valhallagame.bankserviceclient.message.AddBankItemParameter;
 import com.valhallagame.bankserviceclient.message.DeleteBankItemParameter;
+import com.valhallagame.bankserviceclient.message.SetBankItemContentsParameter;
 import com.valhallagame.common.JS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,11 @@ public class ServerBankController {
     @ResponseBody
     public ResponseEntity<JsonNode> deleteBankItem(@Valid @RequestBody DeleteBankItemParameter input) throws IOException {
         return JS.message(bankServiceClient.deleteBankItem(input.getCharacterName(), input.getPositionX(), input.getPositionY()));
+    }
+
+    @PostMapping("/set-bank-contents")
+    @ResponseBody
+    public ResponseEntity<JsonNode> setBankContents(@Valid @RequestBody SetBankItemContentsParameter input) throws IOException {
+        return JS.message(bankServiceClient.setBankContents(input.getCharacterName(), input.getItems()));
     }
 }
