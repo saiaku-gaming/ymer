@@ -12,6 +12,6 @@ public final class CreateCharacterParameter {
   @NotBlank
   String displayCharacterName;
 
-  @NotNull
+  @NotBlank
   String startingClass;
 }
