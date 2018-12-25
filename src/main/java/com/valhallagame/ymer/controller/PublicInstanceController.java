@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
+
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping(path = "/v1/public-instance")
 public class PublicInstanceController {
@@ -30,7 +33,7 @@ public class PublicInstanceController {
 	@RequestMapping(path = "/latest-version", method = RequestMethod.POST)
 	@CrossOrigin
 	@ResponseBody
-	public ResponseEntity<JsonNode> getLatestVersion(@RequestBody LatestVersionParameter input) throws IOException {
+	public ResponseEntity<JsonNode> getLatestVersion(@Valid @RequestBody LatestVersionParameter input) throws IOException {
 		return JS.message(HttpStatus.OK, instanceServiceClient.latestVersion(input));
 	}
 }
