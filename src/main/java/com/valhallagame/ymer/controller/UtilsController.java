@@ -293,7 +293,12 @@ public class UtilsController {
 		List<EquippedItem> equippedItems = new ArrayList<>();
 		equippedItems.add(new EquippedItem("MAINHAND", character.getMainhandArmament(), null));
 		equippedItems.add(new EquippedItem("OFFHAND", character.getOffHandArmament(), null));
+		equippedItems.add(new EquippedItem("HEAD", null, character.getHeadItem()));
+		equippedItems.add(new EquippedItem("BEARD", null, character.getBeardItem()));
 		equippedItems.add(new EquippedItem("CHEST", null, character.getChestItem()));
+		equippedItems.add(new EquippedItem("HANDS", null, character.getHandsItem()));
+		equippedItems.add(new EquippedItem("LEGS", null, character.getLegsItem()));
+		equippedItems.add(new EquippedItem("FEET", null, character.getFeetItem()));
 
 		ObjectNode itemHandlerObj = mapper.createObjectNode();
 		itemHandlerObj.set("equippedItems", mapper.valueToTree(equippedItems));
