@@ -1,14 +1,13 @@
 #!/bin/sh
 
 set -e
-PWD=$(pwd)
 
 if [ ! -e backend ]; then
 	mkdir backend
 fi
 cd backend
 
-for i in "feat" "character" "person" "statistics" "wardrobe" "notification" "friend" "chat" "party" "instance" "instance-container" "trait" "actionbar" "currency" "recipe"; do
+for i in "feat" "character" "person" "statistics" "wardrobe" "notification" "friend" "chat" "party" "instance" "instance-container" "trait" "actionbar" "currency" "recipe" "bank"; do
 	if [ ! -e $i-service-server ]; then
 		git clone "git@github.com:saiaku-gaming/$i-service-server.git"
 	fi
