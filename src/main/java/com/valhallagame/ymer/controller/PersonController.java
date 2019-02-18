@@ -1,29 +1,22 @@
 package com.valhallagame.ymer.controller;
 
-import java.io.IOException;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.ymer.message.person.LoginParameter;
 import com.valhallagame.ymer.message.person.SignupParameter;
 import com.valhallagame.ymer.message.person.UsernameAvailableParameter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(path = "/v1/person")
 public class PersonController {
-
 	@Autowired
 	private PersonServiceClient personServiceClient;
 

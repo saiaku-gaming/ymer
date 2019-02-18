@@ -1,7 +1,11 @@
 package com.valhallagame.ymer.controller;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.valhallagame.common.JS;
+import com.valhallagame.instanceserviceclient.InstanceServiceClient;
+import com.valhallagame.instanceserviceclient.message.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,25 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.valhallagame.common.JS;
-import com.valhallagame.instanceserviceclient.InstanceServiceClient;
-import com.valhallagame.instanceserviceclient.message.ActivateInstanceParameter;
-import com.valhallagame.instanceserviceclient.message.AddLocalInstanceParameter;
-import com.valhallagame.instanceserviceclient.message.InstancePlayerLoginParameter;
-import com.valhallagame.instanceserviceclient.message.InstancePlayerLogoutParameter;
-import com.valhallagame.instanceserviceclient.message.UpdateInstanceStateParameter;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/v1/server-instance")
 public class ServerInstanceController {
+	private static final Logger logger = LoggerFactory.getLogger(ServerInstanceController.class);
 
 	@Autowired
-	InstanceServiceClient instanceServiceClient;
+	private InstanceServiceClient instanceServiceClient;
 
 	@RequestMapping(path = "/activate-instance", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonNode> activateInstance(@RequestBody ActivateInstanceParameter input) throws IOException {
+		logger.info("Activate Instance called with {}", input);
 		return JS.message(
 				instanceServiceClient.activateInstance(input.getGameSessionId(), input.getAddress(), input.getPort()));
 	}
@@ -37,6 +36,7 @@ public class ServerInstanceController {
 	@ResponseBody
 	public ResponseEntity<JsonNode> updateInstanceState(@RequestBody UpdateInstanceStateParameter input)
 			throws IOException {
+		logger.info("Update Instance State called with {}", input);
 		return JS.message(instanceServiceClient.updateInstanceState(input.getGameSessionId(), input.getState()));
 	}
 
@@ -51,12 +51,14 @@ public class ServerInstanceController {
 	@ResponseBody
 	public ResponseEntity<JsonNode> instancePlayerLogout(@RequestBody InstancePlayerLogoutParameter input)
 			throws IOException {
+		logger.info("Instance Player Logout called with {}", input);
 		return JS.message(instanceServiceClient.instancePlayerLogout(input.getUsername(), input.getGameSessionId()));
 	}
 
 	@RequestMapping(path = "/add-local-instance", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonNode> addLocalInstance(@RequestBody AddLocalInstanceParameter input) throws IOException {
+		logger.info("Add Local Instance called with {}", input);
 		return JS.message(instanceServiceClient.addLocalInstance(input));
 	}
 }

@@ -7,6 +7,8 @@ import com.valhallagame.ymer.message.friend.AcceptCharacterInviteParameter;
 import com.valhallagame.ymer.message.friend.DeclineCharacterParameter;
 import com.valhallagame.ymer.message.friend.RemoveCharacterFriendParameter;
 import com.valhallagame.ymer.message.friend.SendCharacterInviteParameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,18 +23,21 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/v1/friend")
 public class FriendController {
+	private static final Logger logger = LoggerFactory.getLogger(FriendController.class);
 
 	@Autowired
 	private FriendServiceClient friendServiceClient;
 
 	@RequestMapping(path = "/get-friend-data", method = RequestMethod.GET)
 	public ResponseEntity<JsonNode> getFriendData(@RequestAttribute("username") String username) throws IOException {
+		logger.info("Get Friend Data called");
 		return JS.message(friendServiceClient.getFriendData(username));
 	}
 
 	@RequestMapping(path = "/send-character-invite", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> sendCharacterInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody SendCharacterInviteParameter input) throws IOException {
+		logger.info("Send Character Invite called with {}", input);
 		return JS.message(
 				friendServiceClient.sendCharacterInvite(username, input.getDisplayCharacterName()));
 	}
@@ -41,6 +46,7 @@ public class FriendController {
 	@RequestMapping(path = "/accept-character-invite", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> acceptCharacterInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody AcceptCharacterInviteParameter input) throws IOException {
+		logger.info("Accept Character Invite called with {}", input);
 		return JS.message( 
 				friendServiceClient.acceptCharacterInvite(username, input.getDisplayCharacterName()));
 	}
@@ -49,6 +55,7 @@ public class FriendController {
 	@RequestMapping(path = "/decline-character-invite", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> declineCharacterInvite(@RequestAttribute("username") String username,
 			@Valid @RequestBody DeclineCharacterParameter input) throws IOException {
+		logger.info("Decline Character Invite called with {}", input);
 		return JS.message(
 				friendServiceClient.declineCharacterInvite(username, input.getCharacterName()));
 	}
@@ -56,6 +63,7 @@ public class FriendController {
 	@RequestMapping(path = "/remove-character-friend", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> removeCharacterFriend(@RequestAttribute("username") String username,
 			@Valid @RequestBody RemoveCharacterFriendParameter input) throws IOException {
+		logger.info("Remove Character Friend called with {}", input);
 		return JS.message(
 				friendServiceClient.removeCharacterFriend(username, input.getDisplayCharacterName()));
 	}

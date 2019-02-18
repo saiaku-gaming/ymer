@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "server.secret",
+      "type": "java.lang.String",
+      "description": "A weak kind of password protection..."
+    }
+  ]
+}
