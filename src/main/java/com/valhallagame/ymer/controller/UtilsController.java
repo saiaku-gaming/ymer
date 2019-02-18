@@ -34,6 +34,8 @@ import com.valhallagame.ymer.message.VersionParameter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,12 +50,13 @@ import java.util.Optional;
 @Controller
 @RequestMapping(path = "/v1/utils")
 public class UtilsController {
+	private static final Logger logger = LoggerFactory.getLogger(UtilsController.class);
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	private final CharacterServiceClient characterServiceClient;
 	private final InstanceServiceClient instanceServiceClient;
-	private final WardrobeServiceClient wardrobeServiceClient;
+//	private final WardrobeServiceClient wardrobeServiceClient;
 	private final PartyServiceClient partyServiceClient;
 	private final FriendServiceClient friendServiceClient;
 	private final FeatServiceClient featServiceClient;
@@ -63,7 +66,7 @@ public class UtilsController {
 	private final RecipeServiceClient recipeServiceClient;
 	private final NotificationServiceClient notificationServiceClient;
 	private final StatisticsServiceClient statisticsServiceClient;
-	private final ChatServiceClient chatServiceClient;
+//	private final ChatServiceClient chatServiceClient;
 	private final BankServiceClient bankServiceClient;
 
 	@Autowired
@@ -85,7 +88,7 @@ public class UtilsController {
 	) {
 		this.characterServiceClient = characterServiceClient;
 		this.instanceServiceClient = instanceServiceClient;
-		this.wardrobeServiceClient = wardrobeServiceClient;
+//		this.wardrobeServiceClient = wardrobeServiceClient;
 		this.partyServiceClient = partyServiceClient;
 		this.friendServiceClient = friendServiceClient;
 		this.featServiceClient = featServiceClient;
@@ -95,7 +98,7 @@ public class UtilsController {
 		this.recipeServiceClient = recipeServiceClient;
 		this.notificationServiceClient = notificationServiceClient;
 		this.statisticsServiceClient = statisticsServiceClient;
-		this.chatServiceClient = chatServiceClient;
+//		this.chatServiceClient = chatServiceClient;
 		this.bankServiceClient = bankServiceClient;
 	}
 
@@ -115,6 +118,7 @@ public class UtilsController {
 	@ResponseBody
 	public ResponseEntity<JsonNode> userData(@RequestAttribute("username") String username,
 			@RequestBody VersionParameter input) throws IOException {
+		logger.info("User Data called with {}", input);
 		ObjectNode out = mapper.createObjectNode();
 
 		out.set("username", new TextNode(username));
@@ -123,7 +127,7 @@ public class UtilsController {
 		out.set("displayCharacterName", new TextNode(character.getDisplayCharacterName()));
 		out.set("characterName", new TextNode(character.getCharacterName()));
 		out.set("itemHandlerData", getItemHanderData(character));
-		out.set("wardrobeData", getWardrobeData(username));
+//		out.set("wardrobeData", getWardrobeData(username));
 		out.set("traitData", getTraitData(username));
 		out.set("featData", getFeatsData(character));
 		out.set("friendsData", getFriendsData(username));
@@ -142,7 +146,6 @@ public class UtilsController {
 		ObjectNode out = mapper.createObjectNode();
 		out.put("characterServiceClient", characterServiceClient.ping().getStatusCode().value());
 		out.put("instanceServiceClient", instanceServiceClient.ping().getStatusCode().value());
-		out.put("wardrobeServiceClient", wardrobeServiceClient.ping().getStatusCode().value());
 		out.put("partyServiceClient", partyServiceClient.ping().getStatusCode().value());
 		out.put("friendServiceClient", friendServiceClient.ping().getStatusCode().value());
 		out.put("featServiceClient", featServiceClient.ping().getStatusCode().value());
@@ -277,17 +280,17 @@ public class UtilsController {
 		}
 	}
 
-	private ObjectNode getWardrobeData(String username) throws IOException {
-		RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient.getWardrobeItems(username);
-		Optional<List<String>> wardrobeItemOpt = wardrobeItemsResp.get();
-		if (wardrobeItemOpt.isPresent()) {
-			ObjectNode wardrobeObj = mapper.createObjectNode();
-			wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItemOpt.get()));
-			return wardrobeObj;
-		} else {
-			throw new IOException(wardrobeItemsResp.getErrorMessage());
-		}
-	}
+//	private ObjectNode getWardrobeData(String username) throws IOException {
+//		RestResponse<List<String>> wardrobeItemsResp = wardrobeServiceClient.getWardrobeItems(username);
+//		Optional<List<String>> wardrobeItemOpt = wardrobeItemsResp.get();
+//		if (wardrobeItemOpt.isPresent()) {
+//			ObjectNode wardrobeObj = mapper.createObjectNode();
+//			wardrobeObj.set("wardrobe", mapper.valueToTree(wardrobeItemOpt.get()));
+//			return wardrobeObj;
+//		} else {
+//			throw new IOException(wardrobeItemsResp.getErrorMessage());
+//		}
+//	}
 
 	private ObjectNode getItemHanderData(CharacterData character) {
 		List<EquippedItem> equippedItems = new ArrayList<>();

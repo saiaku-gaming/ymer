@@ -6,6 +6,7 @@ import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.personserviceclient.model.SessionData;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,7 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			// So we need to do the same here.
 			String sha1HexPass = DigestUtils.sha1Hex(password);
 			if (personServiceClient.validateCredentials(username, sha1HexPass.toUpperCase()).isOk()) {
+				MDC.put("username", username);
 				request.setAttribute("username", username);
 				chain.doFilter(req, res);
 				return;
@@ -81,6 +83,8 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 				}
 			}
 			request.setAttribute("username", userSession.get().getPerson().getUsername());
+            MDC.put("username", userSession.get().getPerson().getUsername());
+            MDC.put("token", token);
 			chain.doFilter(req, res);
 		}
 	}

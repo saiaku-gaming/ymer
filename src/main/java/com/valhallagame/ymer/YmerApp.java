@@ -1,6 +1,7 @@
 package com.valhallagame.ymer;
 
 import com.valhallagame.common.Properties;
+import com.valhallagame.ymer.filter.RequestFilter;
 import com.valhallagame.ymer.security.PersonAuthenticationFilter;
 import com.valhallagame.ymer.security.ServerAuthenticationFilter;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class YmerApp {
                 "/v1/recipe/*"
         );
 		registration.setName("personAuthenticationFilter");
-		registration.setOrder(1);
+		registration.setOrder(2);
 		return registration;
 	}
 
@@ -64,6 +65,19 @@ public class YmerApp {
                 "/v1/server-currency/*"
         );
 		registration.setName("serverAuthenticationFilter");
+		registration.setOrder(2);
+		return registration;
+	}
+
+	@Bean
+	public FilterRegistrationBean requestFilterRegistration() {
+		FilterRegistrationBean registration = new FilterRegistrationBean();
+		registration.setFilter(getRequestFilter());
+		registration.addUrlPatterns(
+				"/*",
+				"/**"
+		);
+		registration.setName("requestFilter");
 		registration.setOrder(1);
 		return registration;
 	}
@@ -76,5 +90,10 @@ public class YmerApp {
 	@Bean(name = "serverAuthenticationFilter")
 	public Filter getServerAuthenticationFilter() {
 		return new ServerAuthenticationFilter();
+	}
+
+	@Bean(name = "requestFilter")
+	public Filter getRequestFilter() {
+		return new RequestFilter();
 	}
 }
