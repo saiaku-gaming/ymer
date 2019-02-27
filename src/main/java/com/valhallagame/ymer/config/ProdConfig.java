@@ -9,6 +9,7 @@ import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
 import com.valhallagame.featserviceclient.FeatServiceClient;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
+import com.valhallagame.inventoryserviceclient.InventoryServiceClient;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.personserviceclient.PersonServiceClient;
@@ -116,5 +117,12 @@ public class ProdConfig {
 		BankServiceClient
 				.init("http://bank-service:" + DefaultServicePortMappings.BANK_SERVICE_PORT);
 		return BankServiceClient.get();
+	}
+
+	@Bean
+	public InventoryServiceClient inventoryServiceClient() {
+		InventoryServiceClient
+				.init("http://inventory-service:" + DefaultServicePortMappings.INVENTORY_SERVICE_PORT);
+		return InventoryServiceClient.get();
 	}
 }

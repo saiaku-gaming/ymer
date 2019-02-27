@@ -8,6 +8,7 @@ import com.valhallagame.currencyserviceclient.CurrencyServiceClient;
 import com.valhallagame.featserviceclient.FeatServiceClient;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
+import com.valhallagame.inventoryserviceclient.InventoryServiceClient;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.personserviceclient.PersonServiceClient;
@@ -96,5 +97,10 @@ public class DefaultConfig {
 	@Bean
 	public BankServiceClient bankServiceClient() {
 		return BankServiceClient.get();
+	}
+
+	@Bean
+	public InventoryServiceClient inventoryServiceClient() {
+		return InventoryServiceClient.get();
 	}
 }

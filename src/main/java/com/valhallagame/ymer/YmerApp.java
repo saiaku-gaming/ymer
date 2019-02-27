@@ -59,6 +59,7 @@ public class YmerApp {
                 "/v1/server-wardrobe/*",
                 "/v1/server-character/*",
                 "/v1/server-instance/*",
+				"/v1/server-inventory/*",
                 "/v1/server-feat/*",
                 "/v1/server-statistics/*",
                 "/v1/server-trait/*",
