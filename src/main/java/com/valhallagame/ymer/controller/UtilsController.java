@@ -21,6 +21,8 @@ import com.valhallagame.friendserviceclient.FriendServiceClient;
 import com.valhallagame.friendserviceclient.model.FriendsData;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
 import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
+import com.valhallagame.inventoryserviceclient.InventoryServiceClient;
+import com.valhallagame.inventoryserviceclient.message.InventoryItemResult;
 import com.valhallagame.notificationserviceclient.NotificationServiceClient;
 import com.valhallagame.partyserviceclient.PartyServiceClient;
 import com.valhallagame.partyserviceclient.model.PartyAndInvitesData;
@@ -68,6 +70,7 @@ public class UtilsController {
 	private final StatisticsServiceClient statisticsServiceClient;
 //	private final ChatServiceClient chatServiceClient;
 	private final BankServiceClient bankServiceClient;
+	private final InventoryServiceClient inventoryServiceClient;
 
 	@Autowired
 	public UtilsController(
@@ -84,7 +87,8 @@ public class UtilsController {
 			NotificationServiceClient notificationServiceClient,
 			StatisticsServiceClient statisticsServiceClient,
 			ChatServiceClient chatServiceClient,
-			BankServiceClient bankServiceClient
+			BankServiceClient bankServiceClient,
+			InventoryServiceClient inventoryServiceClient
 	) {
 		this.characterServiceClient = characterServiceClient;
 		this.instanceServiceClient = instanceServiceClient;
@@ -100,6 +104,7 @@ public class UtilsController {
 		this.statisticsServiceClient = statisticsServiceClient;
 //		this.chatServiceClient = chatServiceClient;
 		this.bankServiceClient = bankServiceClient;
+		this.inventoryServiceClient = inventoryServiceClient;
 	}
 
 	@RequestMapping(path = "/ping", method = RequestMethod.GET)
@@ -137,6 +142,7 @@ public class UtilsController {
 		out.set("currencyData", getCurrencyData(character.getCharacterName()));
 		out.set("recipeData", getRecipeData(username));
 		out.set("bankData", getBankData(character.getCharacterName()));
+		out.set("inventoryData", getInventoryData(character.getCharacterName()));
 		return JS.message(HttpStatus.OK, out);
 	}
 
@@ -156,6 +162,7 @@ public class UtilsController {
 		out.put("notificationServiceClient", notificationServiceClient.ping().getStatusCode().value());
 		out.put("statisticsServiceClient", statisticsServiceClient.ping().getStatusCode().value());
 		out.put("chatServiceClient", characterServiceClient.ping().getStatusCode().value());
+		out.put("inventoryServiceClient", inventoryServiceClient.ping().getStatusCode().value());
 		return JS.message(HttpStatus.OK, out);
 	}
 
@@ -229,6 +236,18 @@ public class UtilsController {
 			return bankItemList;
 		} else {
 			throw new IOException(bankItems.getErrorMessage());
+		}
+	}
+
+	private ObjectNode getInventoryData(String characterName) throws IOException {
+		RestResponse<List<InventoryItemResult>> inventoryItems = inventoryServiceClient.getInventoryItems(characterName);
+		if(inventoryItems.get().isPresent()) {
+			List<InventoryItemResult> inventoryItemResults = inventoryItems.get().get();
+			ObjectNode inventoryItemList = mapper.createObjectNode();
+			inventoryItemList.set("inventoryItems", mapper.valueToTree(inventoryItemResults));
+			return inventoryItemList;
+		} else {
+			throw new IOException(inventoryItems.getErrorMessage());
 		}
 	}
 
