@@ -12,7 +12,7 @@
 	<groupId>com.valhallagame.valhalla</groupId>
 	<name>Ymer</name>
 	<description>första jätten</description>
-	<version>1.19</version>
+	<version>1.20</version>
 	<url>https://valhalla-game.com</url>
 	<organization>
 		<name>Team Sämst HB</name>
@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>com.valhallagame.valhalla</groupId>
 			<artifactId>common</artifactId>
-			<version>1.12</version>
+			<version>1.13</version>
 		</dependency>
 		<dependency>
 			<groupId>com.valhallagame.valhalla</groupId>
