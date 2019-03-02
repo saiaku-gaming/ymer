@@ -33,7 +33,9 @@ public class RequestFilter extends GenericFilterBean {
             MDC.put("service_name", appName);
             String clientIp = request.getHeader("X-FORWARDED-FOR");
             MDC.put("request_ip", clientIp != null ? clientIp : request.getRemoteHost());
-            logger.info("Received {} call on {}", request.getMethod(), request.getRequestURI());
+            if(!"/".equals(request.getRequestURI())) {
+                logger.info("Received {} call on {}", request.getMethod(), request.getRequestURI());
+            }
             filterChain.doFilter(servletRequest, servletResponse);
         } finally {
             MDC.clear();
