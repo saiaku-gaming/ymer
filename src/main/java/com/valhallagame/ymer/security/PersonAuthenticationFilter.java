@@ -53,7 +53,11 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			if (personServiceClient.validateCredentials(username, sha1HexPass.toUpperCase()).isOk()) {
 				MDC.put("username", username);
 				request.setAttribute("username", username);
-				chain.doFilter(req, res);
+				try {
+					chain.doFilter(req, res);
+				} finally {
+					MDC.remove("username");
+				}
 				return;
 			}
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -85,7 +89,12 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 			request.setAttribute("username", userSession.get().getPerson().getUsername());
             MDC.put("username", userSession.get().getPerson().getUsername());
             MDC.put("token", token);
-			chain.doFilter(req, res);
+            try {
+				chain.doFilter(req, res);
+			} finally {
+            	MDC.remove("username");
+            	MDC.remove("token");
+			}
 		}
 	}
 

@@ -1,11 +1,14 @@
 package com.valhallagame.ymer;
 
 import com.valhallagame.common.Properties;
-import com.valhallagame.ymer.filter.RequestFilter;
+import com.valhallagame.ymer.filter.FirstRequestFilter;
+import com.valhallagame.ymer.filter.LastRequestFilter;
 import com.valhallagame.ymer.security.PersonAuthenticationFilter;
 import com.valhallagame.ymer.security.ServerAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -18,9 +21,18 @@ public class YmerApp {
 
 	private static final Logger logger = LoggerFactory.getLogger(YmerApp.class);
 
+	private static String appName;
+
+	@Value("${spring.application.name}")
+	public void setAppName(String appName) {
+		YmerApp.appName = appName;
+	}
+
 	public static void main(String[] args) {
 		Properties.load(args, logger);
 		SpringApplication.run(YmerApp.class, args);
+
+		MDC.put("service_name", appName);
 	}
 
 	@Bean
@@ -44,7 +56,7 @@ public class YmerApp {
                 "/v1/recipe/*"
         );
 		registration.setName("personAuthenticationFilter");
-		registration.setOrder(1);
+		registration.setOrder(2);
 		return registration;
 	}
 
@@ -66,20 +78,33 @@ public class YmerApp {
                 "/v1/server-currency/*"
         );
 		registration.setName("serverAuthenticationFilter");
+		registration.setOrder(2);
+		return registration;
+	}
+
+	@Bean
+	public FilterRegistrationBean firstRequestFilterRegistration() {
+		FilterRegistrationBean registration = new FilterRegistrationBean();
+		registration.setFilter(getFirstRequestFilter());
+		registration.addUrlPatterns(
+				"/*",
+				"/**"
+		);
+		registration.setName("firstRequestFilter");
 		registration.setOrder(1);
 		return registration;
 	}
 
 	@Bean
-	public FilterRegistrationBean requestFilterRegistration() {
+	public FilterRegistrationBean lastRequestFilterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
-		registration.setFilter(getRequestFilter());
+		registration.setFilter(getLastRequestFilter());
 		registration.addUrlPatterns(
 				"/*",
 				"/**"
 		);
-		registration.setName("requestFilter");
-		registration.setOrder(2);
+		registration.setName("lastRequestFilter");
+		registration.setOrder(3);
 		return registration;
 	}
 
@@ -93,8 +118,13 @@ public class YmerApp {
 		return new ServerAuthenticationFilter();
 	}
 
-	@Bean(name = "requestFilter")
-	public Filter getRequestFilter() {
-		return new RequestFilter();
+	@Bean(name = "firstRequestFilter")
+	public Filter getFirstRequestFilter() {
+		return new FirstRequestFilter();
+	}
+
+	@Bean(name = "lastRequestFilter")
+	public Filter getLastRequestFilter() {
+		return new LastRequestFilter();
 	}
 }
