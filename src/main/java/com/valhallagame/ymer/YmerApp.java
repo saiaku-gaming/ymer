@@ -7,8 +7,6 @@ import com.valhallagame.ymer.security.PersonAuthenticationFilter;
 import com.valhallagame.ymer.security.ServerAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -21,18 +19,9 @@ public class YmerApp {
 
 	private static final Logger logger = LoggerFactory.getLogger(YmerApp.class);
 
-	private static String appName;
-
-	@Value("${spring.application.name}")
-	public void setAppName(String appName) {
-		YmerApp.appName = appName;
-	}
-
 	public static void main(String[] args) {
 		Properties.load(args, logger);
 		SpringApplication.run(YmerApp.class, args);
-
-		MDC.put("service_name", appName);
 	}
 
 	@Bean
