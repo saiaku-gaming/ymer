@@ -44,7 +44,7 @@ public class YmerApp {
                 "/v1/recipe/*"
         );
 		registration.setName("personAuthenticationFilter");
-		registration.setOrder(2);
+		registration.setOrder(1);
 		return registration;
 	}
 
@@ -66,7 +66,7 @@ public class YmerApp {
                 "/v1/server-currency/*"
         );
 		registration.setName("serverAuthenticationFilter");
-		registration.setOrder(2);
+		registration.setOrder(1);
 		return registration;
 	}
 
@@ -79,7 +79,7 @@ public class YmerApp {
 				"/**"
 		);
 		registration.setName("requestFilter");
-		registration.setOrder(1);
+		registration.setOrder(2);
 		return registration;
 	}
 
