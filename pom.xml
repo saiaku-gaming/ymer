@@ -12,7 +12,7 @@
 	<groupId>com.valhallagame.valhalla</groupId>
 	<name>Ymer</name>
 	<description>första jätten</description>
-	<version>1.26-SNAPSHOT</version>
+	<version>1.26</version>
 	<url>https://valhalla-game.com</url>
 	<organization>
 		<name>Team Sämst HB</name>
