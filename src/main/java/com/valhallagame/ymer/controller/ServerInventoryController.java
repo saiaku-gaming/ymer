@@ -31,7 +31,7 @@ public class ServerInventoryController {
     @ResponseBody
     public ResponseEntity<JsonNode> addInventoryItem(@Valid @RequestBody AddInventoryItemParameter input) throws IOException {
         logger.info("Add Inventory Item called with {}", input);
-        return JS.message(inventoryServiceClient.addInventoryItem(input.getCharacterName(), input.getItemName(), input.getPositionX(), input.getPositionY(), input.getMetaData()));
+        return JS.message(inventoryServiceClient.addInventoryItem(input.getCharacterName(), input.getItemName(), input.getPositionX(), input.getPositionY(), input.getItemMetaData()));
     }
 
     @PostMapping("/delete-inventory-item")
