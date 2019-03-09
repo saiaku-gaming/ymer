@@ -31,7 +31,7 @@ public class ServerBankController {
     @ResponseBody
     public ResponseEntity<JsonNode> addBankItem(@Valid @RequestBody AddBankItemParameter input) throws IOException {
         logger.info("Add Bank Item called with {}", input);
-        return JS.message(bankServiceClient.addBankItem(input.getCharacterName(), input.getItemName(), input.getPositionX(), input.getPositionY()));
+        return JS.message(bankServiceClient.addBankItem(input.getCharacterName(), input.getItemName(), input.getPositionX(), input.getPositionY(), input.getMetaData()));
     }
 
     @PostMapping("/delete-bank-item")
