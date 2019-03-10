@@ -313,14 +313,14 @@ public class UtilsController {
 
 	private ObjectNode getItemHanderData(CharacterData character) {
 		List<EquippedItem> equippedItems = new ArrayList<>();
-		equippedItems.add(new EquippedItem("MAINHAND", character.getMainhandArmament(), null));
-		equippedItems.add(new EquippedItem("OFFHAND", character.getOffHandArmament(), null));
-		equippedItems.add(new EquippedItem("HEAD", null, character.getHeadItem()));
-		equippedItems.add(new EquippedItem("BEARD", null, character.getBeardItem()));
-		equippedItems.add(new EquippedItem("CHEST", null, character.getChestItem()));
-		equippedItems.add(new EquippedItem("HANDS", null, character.getHandsItem()));
-		equippedItems.add(new EquippedItem("LEGS", null, character.getLegsItem()));
-		equippedItems.add(new EquippedItem("FEET", null, character.getFeetItem()));
+		equippedItems.add(new EquippedItem("MAINHAND", character.getMainhandArmament(), null, character.getMainhandArmamentMetaData()));
+		equippedItems.add(new EquippedItem("OFFHAND", character.getOffHandArmament(), null, character.getOffHandArmamentMetaData()));
+		equippedItems.add(new EquippedItem("HEAD", null, character.getHeadItem(), character.getHeadItemMetaData()));
+		equippedItems.add(new EquippedItem("BEARD", null, character.getBeardItem(), character.getBeardItemMetaData()));
+		equippedItems.add(new EquippedItem("CHEST", null, character.getChestItem(), character.getChestItemMetaData()));
+		equippedItems.add(new EquippedItem("HANDS", null, character.getHandsItem(), character.getHandsItemMetaData()));
+		equippedItems.add(new EquippedItem("LEGS", null, character.getLegsItem(), character.getLegsItemMetaData()));
+		equippedItems.add(new EquippedItem("FEET", null, character.getFeetItem(), character.getFeetItemMetaData()));
 
 		ObjectNode itemHandlerObj = mapper.createObjectNode();
 		itemHandlerObj.set("equippedItems", mapper.valueToTree(equippedItems));
@@ -334,5 +334,6 @@ public class UtilsController {
 		private String itemSlot;
 		private String armament;
 		private String armor;
+		private String metaData;
 	}
 }
