@@ -26,103 +26,103 @@ import org.springframework.context.annotation.Profile;
 public class ProdConfig {
 	@Bean
 	public CharacterServiceClient characterServiceClient() {
-		CharacterServiceClient.init("http://character-service:" + DefaultServicePortMappings.CHARACTER_SERVICE_PORT);
+		CharacterServiceClient.init("http://character-service.character-service:" + DefaultServicePortMappings.CHARACTER_SERVICE_PORT);
 		return CharacterServiceClient.get();
 	}
 
 	@Bean
 	public PersonServiceClient personServiceClient() {
-		PersonServiceClient.init("http://person-service:" + DefaultServicePortMappings.PERSON_SERVICE_PORT);
+		PersonServiceClient.init("http://person-service.person-service:" + DefaultServicePortMappings.PERSON_SERVICE_PORT);
 		return PersonServiceClient.get();
 	}
 
 	@Bean
 	public ChatServiceClient chatServiceClient() {
-		ChatServiceClient.init("http://chat-service:" + DefaultServicePortMappings.CHAT_SERVICE_PORT);
+		ChatServiceClient.init("http://chat-service.chat-service:" + DefaultServicePortMappings.CHAT_SERVICE_PORT);
 		return ChatServiceClient.get();
 	}
 
 	@Bean
 	public FeatServiceClient featServiceClient() {
-		FeatServiceClient.init("http://feat-service:" + DefaultServicePortMappings.FEAT_SERVICE_PORT);
+		FeatServiceClient.init("http://feat-service.feat-service:" + DefaultServicePortMappings.FEAT_SERVICE_PORT);
 		return FeatServiceClient.get();
 	}
 
 	@Bean
 	public InstanceServiceClient instanceServiceClient() {
-		InstanceServiceClient.init("http://instance-service:" + DefaultServicePortMappings.INSTANCE_SERVICE_PORT);
+		InstanceServiceClient.init("http://instance-service.instance-service:" + DefaultServicePortMappings.INSTANCE_SERVICE_PORT);
 		return InstanceServiceClient.get();
 	}
 
 	@Bean
 	public PartyServiceClient partyServiceClient() {
-		PartyServiceClient.init("http://party-service:" + DefaultServicePortMappings.PARTY_SERVICE_PORT);
+		PartyServiceClient.init("http://party-service.party-service:" + DefaultServicePortMappings.PARTY_SERVICE_PORT);
 		return PartyServiceClient.get();
 	}
 
 	@Bean
 	public NotificationServiceClient notificationServiceClient() {
 		NotificationServiceClient
-				.init("http://notification-service:" + DefaultServicePortMappings.NOTIFICATION_SERVICE_PORT);
+				.init("http://notification-service.notification-service:" + DefaultServicePortMappings.NOTIFICATION_SERVICE_PORT);
 		return NotificationServiceClient.get();
 	}
 
 	@Bean
 	public WardrobeServiceClient wardrobeServiceClient() {
-		WardrobeServiceClient.init("http://wardrobe-service:" + DefaultServicePortMappings.WARDROBE_SERVICE_PORT);
+		WardrobeServiceClient.init("http://wardrobe-service.wardrobe-service:" + DefaultServicePortMappings.WARDROBE_SERVICE_PORT);
 		return WardrobeServiceClient.get();
 	}
 
 	@Bean
 	public FriendServiceClient friendServiceClient() {
-		FriendServiceClient.init("http://friend-service:" + DefaultServicePortMappings.FRIEND_SERVICE_PORT);
+		FriendServiceClient.init("http://friend-service.friend-service:" + DefaultServicePortMappings.FRIEND_SERVICE_PORT);
 		return FriendServiceClient.get();
 	}
 
 	@Bean
 	public StatisticsServiceClient statisticsServiceClient() {
-		StatisticsServiceClient.init("http://statistics-service:" + DefaultServicePortMappings.STATISTICS_SERVICE_PORT);
+		StatisticsServiceClient.init("http://statistics-service.statistics-service:" + DefaultServicePortMappings.STATISTICS_SERVICE_PORT);
 		return StatisticsServiceClient.get();
 	}
 
 	@Bean
 	public TraitServiceClient traitServiceClient() {
-		TraitServiceClient.init("http://trait-service:" + DefaultServicePortMappings.TRAIT_SERVICE_PORT);
+		TraitServiceClient.init("http://trait-service.trait-service:" + DefaultServicePortMappings.TRAIT_SERVICE_PORT);
 		return TraitServiceClient.get();
 	}
 
 	@Bean
 	public ActionbarServiceClient actionbarServiceClient() {
 		ActionbarServiceClient
-				.init("http://actionbar-service:" + DefaultServicePortMappings.ACTIONBAR_SERVICE_PORT);
+				.init("http://actionbar-service.actionbar-service:" + DefaultServicePortMappings.ACTIONBAR_SERVICE_PORT);
 		return ActionbarServiceClient.get();
 	}
 
 	@Bean
 	public CurrencyServiceClient currencyServiceClient() {
 		CurrencyServiceClient
-				.init("http://currency-service:" + DefaultServicePortMappings.CURRENCY_SERVICE_PORT);
+				.init("http://currency-service.currency-service:" + DefaultServicePortMappings.CURRENCY_SERVICE_PORT);
 		return CurrencyServiceClient.get();
 	}
 
     @Bean
     public RecipeServiceClient recipeServiceClient() {
         RecipeServiceClient
-                .init("http://recipe-service:" + DefaultServicePortMappings.RECIPE_SERVICE_PORT);
+                .init("http://recipe-service.recipe-service:" + DefaultServicePortMappings.RECIPE_SERVICE_PORT);
         return RecipeServiceClient.get();
     }
 
 	@Bean
 	public BankServiceClient bankServiceClient() {
 		BankServiceClient
-				.init("http://bank-service:" + DefaultServicePortMappings.BANK_SERVICE_PORT);
+				.init("http://bank-service.bank-service:" + DefaultServicePortMappings.BANK_SERVICE_PORT);
 		return BankServiceClient.get();
 	}
 
 	@Bean
 	public InventoryServiceClient inventoryServiceClient() {
 		InventoryServiceClient
-				.init("http://inventory-service:" + DefaultServicePortMappings.INVENTORY_SERVICE_PORT);
+				.init("http://inventory-service.inventory-service:" + DefaultServicePortMappings.INVENTORY_SERVICE_PORT);
 		return InventoryServiceClient.get();
 	}
 }
