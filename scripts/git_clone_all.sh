@@ -7,7 +7,7 @@ if [ ! -e backend ]; then
 fi
 cd backend
 
-for i in "feat" "character" "person" "statistics" "wardrobe" "notification" "friend" "chat" "party" "instance" "instance-container" "trait" "actionbar" "currency" "recipe" "bank"; do
+for i in "feat" "character" "person" "statistics" "wardrobe" "notification" "friend" "chat" "party" "instance" "instance-container" "trait" "actionbar" "currency" "recipe" "bank" "inventory"; do
 	if [ ! -e $i-service-server ]; then
 		git clone "git@github.com:saiaku-gaming/$i-service-server.git"
 	fi
