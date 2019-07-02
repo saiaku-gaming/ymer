@@ -5,6 +5,7 @@ import com.valhallagame.common.JS;
 import com.valhallagame.personserviceclient.PersonServiceClient;
 import com.valhallagame.ymer.message.person.LoginParameter;
 import com.valhallagame.ymer.message.person.SignupParameter;
+import com.valhallagame.ymer.message.person.SteamLoginParameter;
 import com.valhallagame.ymer.message.person.UsernameAvailableParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,12 @@ public class PersonController {
 	public ResponseEntity<JsonNode> login(@RequestBody LoginParameter input) throws IOException {
 		return JS.message(personServiceClient.login(input.getDisplayUsername(), input.getPassword()));
 	}
+
+    @RequestMapping(path = "/steam-login", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<JsonNode> login(@RequestBody SteamLoginParameter input) throws IOException {
+        return JS.message(personServiceClient.steamLogin(input.getAuthSessionTicket()));
+    }
 
 	@RequestMapping(path = "/logout", method = RequestMethod.GET)
 	@ResponseBody
