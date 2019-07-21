@@ -34,6 +34,7 @@ public class YmerApp {
                 "/v1/character/*",
                 "/v1/person/logout",
                 "/v1/person/heartbeat",
+                "/v1/person/finished-tutorial",
                 "/v1/person/get-person",
                 "/v1/utils/user-data",
                 "/v1/wardrobe/*",
