@@ -48,7 +48,7 @@ public class InstanceController {
 			@RequestBody GetDungeonConnectionParameter input) throws IOException {
 		logger.info("Get Dungeon Connection called with {}", input);
 		return JS.message(
-				instanceServiceClient.getDungeonConnection(username, input.getGameSessionId(), input.getVersion()));
+                instanceServiceClient.getDungeonConnection(username, input.getInstanceId(), input.getVersion()));
 	}
 
 	@RequestMapping(path = "/get-relevant-dungeons", method = RequestMethod.POST)
