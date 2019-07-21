@@ -57,4 +57,16 @@ public class PersonController {
 	public ResponseEntity<JsonNode> heartbeat(@RequestAttribute("username") String username) throws IOException {
 		return JS.message(personServiceClient.heartbeat(username));
 	}
+
+    @RequestMapping(path = "/finished-tutorial", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<JsonNode> finishedTutorial(@RequestAttribute("username") String username) throws IOException {
+        return JS.message(personServiceClient.finishedTutorial(username));
+    }
+
+    @RequestMapping(path = "/get-person", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<JsonNode> getPerson(@RequestAttribute("username") String username) throws IOException {
+        return JS.message(personServiceClient.getPerson(username));
+    }
 }
