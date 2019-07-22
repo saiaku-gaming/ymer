@@ -1,4 +1,4 @@
-package com.valhallagame.ymer.message;
+package com.valhallagame.ymer.message.instance;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VersionParameter {
-	@NotBlank
-	private String version;
+public final class LatestVersionParameter {
+    @NotBlank
+    String clientVersion;
 }

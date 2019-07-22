@@ -13,4 +13,10 @@ public final class SkilledTraitData {
   TraitType trait;
 
   AttributeType selectedAttribute;
+
+    Integer position;
+
+    Integer specialization;
+
+    Integer specializationPosition;
 }

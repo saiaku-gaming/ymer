@@ -24,7 +24,5 @@ public final class SkillTraitParameter {
   @NotNull
   AttributeType selectedAttribute;
 
-  Integer positionX;
-
-  Integer positionY;
+    Integer position;
 }

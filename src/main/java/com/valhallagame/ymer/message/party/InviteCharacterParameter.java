@@ -3,12 +3,13 @@ package com.valhallagame.ymer.message.party;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public final class InviteCharacterParameter {
-  @NotBlank
+    @NotNull
   String displayCharacterName;
 }
