@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.instanceserviceclient.InstanceServiceClient;
-import com.valhallagame.instanceserviceclient.message.GetHubParameter;
-import com.valhallagame.instanceserviceclient.message.GetRelevantDungeonsParameter;
 import com.valhallagame.instanceserviceclient.model.RelevantDungeonData;
 import com.valhallagame.ymer.message.instance.GetDungeonConnectionParameter;
+import com.valhallagame.ymer.message.instance.GetHubParameter;
+import com.valhallagame.ymer.message.instance.GetRelevantDungeonsParameter;
 import com.valhallagame.ymer.message.instance.StartDungeonParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public class InstanceController {
 			@RequestBody GetRelevantDungeonsParameter input) throws IOException {
 		logger.info("Get Relevant Dungeons called with {}", input);
 		RestResponse<RelevantDungeonData> relevantDungeons = instanceServiceClient
-				.getRelevantDungeons(input.getUsername(), input.getVersion());
+                .getRelevantDungeons(username, input.getVersion());
 		return JS.message(relevantDungeons);
 	}
 }

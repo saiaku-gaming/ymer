@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SteamLoginParameter {
+public final class SteamLoginParameter {
     @NotEmpty
-    private String authSessionTicket;
+    String authSessionTicket;
 }

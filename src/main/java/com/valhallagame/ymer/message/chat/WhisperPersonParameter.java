@@ -1,10 +1,10 @@
 package com.valhallagame.ymer.message.chat;
 
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +13,6 @@ public final class WhisperPersonParameter {
   @NotNull
   String message;
 
-  @NotBlank
+    @NotNull
   String targetDisplayUsername;
 }
