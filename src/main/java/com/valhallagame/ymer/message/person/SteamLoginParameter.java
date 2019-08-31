@@ -9,6 +9,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class SteamLoginParameter {
-    @NotEmpty
-    String authSessionTicket;
+  @NotEmpty
+  String authSessionTicket;
 }

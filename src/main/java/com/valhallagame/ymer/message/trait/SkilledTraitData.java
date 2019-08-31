@@ -14,9 +14,9 @@ public final class SkilledTraitData {
 
   AttributeType selectedAttribute;
 
-    Integer position;
+  Integer position;
 
-    Integer specialization;
+  Integer specialization;
 
-    Integer specializationPosition;
+  Integer specializationPosition;
 }

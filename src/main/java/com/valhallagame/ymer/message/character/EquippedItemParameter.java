@@ -3,21 +3,20 @@ package com.valhallagame.ymer.message.character;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public final class EquippedItemParameter {
-  @NotNull
+  @NotBlank
   String itemSlot;
 
-  @NotNull
+  @NotBlank
   String armament;
 
-  @NotNull
+  @NotBlank
   String armor;
 
-    String metaData;
+  String metaData;
 }
