@@ -1,21 +1,20 @@
 package com.valhallagame.ymer.message.notification;
 
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public final class NotificationListenerParameter {
-    @NotNull
+  @NotNull
   String gameSessionId;
 
-    @NotNull
+  @NotNull
   String address;
 
-    @NotNull
+  @NotNull
   int port;
 }

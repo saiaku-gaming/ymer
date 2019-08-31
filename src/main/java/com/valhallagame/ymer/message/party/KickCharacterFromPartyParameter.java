@@ -1,15 +1,14 @@
 package com.valhallagame.ymer.message.party;
 
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public final class KickCharacterFromPartyParameter {
-    @NotNull
+  @NotNull
   String displayCharacterName;
 }

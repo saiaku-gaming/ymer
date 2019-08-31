@@ -2,7 +2,6 @@ package com.valhallagame.ymer.message.recipe;
 
 import com.valhallagame.common.validation.CheckLowercase;
 import com.valhallagame.currencyserviceclient.model.CurrencyType;
-import com.valhallagame.wardrobeserviceclient.message.WardrobeItem;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,8 +17,8 @@ public final class ClaimRecipeParameter {
   @CheckLowercase
   String characterName;
 
-  @NotNull
-  WardrobeItem recipe;
+  @NotBlank
+  String recipe;
 
   @NotNull
   Map<CurrencyType, Integer> currencies;

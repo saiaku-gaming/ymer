@@ -9,6 +9,6 @@ import org.hibernate.validator.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class LatestVersionParameter {
-    @NotBlank
-    String clientVersion;
+  @NotBlank
+  String clientVersion;
 }
