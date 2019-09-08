@@ -2,7 +2,8 @@ package com.valhallagame.ymer.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
-import com.valhallagame.characterserviceclient.message.SaveEquippedItemsParameter;
+import com.valhallagame.characterserviceclient.message.EquipItemParameter;
+import com.valhallagame.characterserviceclient.message.UnequipItemParameter;
 import com.valhallagame.common.JS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,17 @@ public class ServerCharacterController {
     @Autowired
     private CharacterServiceClient characterServiceClient;
 
-    @RequestMapping(path = "/save-equipped-items", method = RequestMethod.POST)
-    public ResponseEntity<JsonNode> saveEquippedItems(@RequestBody @Valid SaveEquippedItemsParameter input) throws IOException {
-        logger.info("Save Equipped Items called with {}", input);
-        return JS.message(characterServiceClient.saveEquippedItems(input.getUsername(), input.getCharacterName(),
-                input.getEquippedItems()));
+    @RequestMapping(path = "/equip-item", method = RequestMethod.POST)
+    public ResponseEntity<JsonNode> equipItem(@RequestBody @Valid EquipItemParameter input) throws IOException {
+        logger.info("Equip Item called with {}", input);
+        return JS.message(characterServiceClient.equipItem(input.getCharacterName(),
+                input.getItemToEquip()));
+    }
+
+    @RequestMapping(path = "/unequip-item", method = RequestMethod.POST)
+    public ResponseEntity<JsonNode> unequipItem(@RequestBody @Valid UnequipItemParameter input) throws IOException {
+        logger.info("Unequip Item called with {}", input);
+        return JS.message(characterServiceClient.unequipItem(input.getCharacterName(),
+                input.getItemSlot()));
     }
 }
