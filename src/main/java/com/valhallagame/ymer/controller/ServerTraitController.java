@@ -25,6 +25,18 @@ public class ServerTraitController {
 	@Autowired
 	private TraitServiceClient traitServiceClient;
 
+	@RequestMapping(path = "/purchase-trait", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> purchaseTrait(@RequestBody PurchaseTraitParameter input) throws IOException {
+		logger.info("Purchase Trait called with {}", input);
+		return JS.message(traitServiceClient.purchaseTrait(input));
+	}
+
+	@RequestMapping(path = "/depurchase-trait", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> depurchaseTrait(@RequestBody DepurchaseTraitParameter input) throws IOException {
+		logger.info("Depurchase Trait called with {}", input);
+		return JS.message(traitServiceClient.depurchaseTrait(input));
+	}
+
 	@RequestMapping(path = "/unlock-trait", method = RequestMethod.POST)
 	public ResponseEntity<JsonNode> unlockTrait(@RequestBody UnlockTraitParameter input) throws IOException {
 		logger.info("Unlock Trait called with {}", input);
