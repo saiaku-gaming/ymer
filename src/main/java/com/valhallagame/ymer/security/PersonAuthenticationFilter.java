@@ -1,6 +1,7 @@
 package com.valhallagame.ymer.security;
 
 import com.valhallagame.characterserviceclient.CharacterServiceClient;
+import com.valhallagame.characterserviceclient.model.CharacterData;
 import com.valhallagame.common.JS;
 import com.valhallagame.common.RestResponse;
 import com.valhallagame.personserviceclient.PersonServiceClient;
@@ -45,7 +46,7 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 		if (auth != null) {
 			int indexOf = auth.indexOf(':');
 			String username = auth.substring(0, indexOf);
-			String password = auth.substring(indexOf + 1, auth.length());
+            String password = auth.substring(indexOf + 1);
 			// unreal does a sha1 to make sure the password never leaves the
 			// client.
 			// So we need to do the same here.
@@ -102,7 +103,7 @@ public class PersonAuthenticationFilter extends GenericFilterBean {
 
 		SessionData debugSession = sessionOpt.get();
 
-		RestResponse<String> restCharacterResponse = characterServiceClient.createDebugCharacter(
+        RestResponse<CharacterData> restCharacterResponse = characterServiceClient.createDebugCharacter(
 				debugSession.getPerson().getUsername(), debugSession.getPerson().getUsername() + "-char");
 		if (!restCharacterResponse.isOk()) {
 			response.setStatus(restCharacterResponse.getStatusCode().value());
