@@ -24,11 +24,10 @@ public class CharacterController {
 	@Autowired
 	private CharacterServiceClient characterServiceClient;
 
-	@RequestMapping(path = "/get-owned-character", method = RequestMethod.POST)
-	public ResponseEntity<JsonNode> getCharacter(@RequestAttribute("username") String username,
-			@RequestBody GetCharacterParameter input) throws IOException {
+    @RequestMapping(path = "/get-character", method = RequestMethod.POST)
+    public ResponseEntity<JsonNode> getCharacter(@RequestBody GetCharacterParameter input) throws IOException {
 		logger.info("Get Character called with {}", input);
-		return JS.message(characterServiceClient.getOwnedCharacter(username, input.getCharacterName()));
+        return JS.message(characterServiceClient.getCharacter(input.getCharacterName()));
 	}
 
 	@RequestMapping(path = "/get-all-characters", method = RequestMethod.GET)
