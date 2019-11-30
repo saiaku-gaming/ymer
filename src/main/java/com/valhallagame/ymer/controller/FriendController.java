@@ -3,10 +3,7 @@ package com.valhallagame.ymer.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.valhallagame.common.JS;
 import com.valhallagame.friendserviceclient.FriendServiceClient;
-import com.valhallagame.ymer.message.friend.AcceptCharacterInviteParameter;
-import com.valhallagame.ymer.message.friend.DeclineCharacterParameter;
-import com.valhallagame.ymer.message.friend.RemoveCharacterFriendParameter;
-import com.valhallagame.ymer.message.friend.SendCharacterInviteParameter;
+import com.valhallagame.ymer.message.friend.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +55,14 @@ public class FriendController {
 		logger.info("Decline Character Invite called with {}", input);
 		return JS.message(
 				friendServiceClient.declineCharacterInvite(username, input.getCharacterName()));
+	}
+
+	@RequestMapping(path = "/cancel-character-invite", method = RequestMethod.POST)
+	public ResponseEntity<JsonNode> cancelCharacterInvite(@RequestAttribute("username") String username,
+														  @Valid @RequestBody CancelCharacterInviteParameter input) throws IOException {
+		logger.info("Cancel Character Invite called with {}", input);
+		return JS.message(
+				friendServiceClient.cancelCharacterInvite(username, input.getDisplayCharacterName()));
 	}
 
 	@RequestMapping(path = "/remove-character-friend", method = RequestMethod.POST)

@@ -16,6 +16,8 @@ public final class SkilledTraitData {
 
   Integer position;
 
+    Boolean purchased;
+
   Integer specialization;
 
   Integer specializationPosition;
