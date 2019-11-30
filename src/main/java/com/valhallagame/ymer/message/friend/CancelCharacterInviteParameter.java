@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class AcceptCharacterInviteParameter {
+public final class CancelCharacterInviteParameter {
     @NotBlank
-  String displayCharacterName;
+    String displayCharacterName;
 }
